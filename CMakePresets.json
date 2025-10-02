@@ -1,0 +1,91 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 23
+    },
+    "configurePresets": [
+        {
+            "name": "base-debug",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "environment": {
+                "PICO_SDK_PATH": "/opt/pico-sdk"
+            },
+            "cacheVariables": {
+                "CMAKE_CXX_STANDARD": "20",
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "base-release",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "environment": {
+                "PICO_SDK_PATH": "/opt/pico-sdk"
+            },
+            "cacheVariables": {
+                "CMAKE_CXX_STANDARD": "20",
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "debug-rev-0",
+            "inherits": "base-debug",
+            "displayName": "Debug Rev 0",
+            "cacheVariables": {
+                "BOARD_REV": "0"
+            }
+        },
+        {
+            "name": "debug-rev-a",
+            "inherits": "base-debug",
+            "displayName": "Debug Rev A",
+            "cacheVariables": {
+                "BOARD_REV": "A"
+            }
+        },
+        {
+            "name": "debug-rev-b",
+            "inherits": "base-debug",
+            "displayName": "Debug Rev B",
+            "cacheVariables": {
+                "BOARD_REV": "B"
+            }
+        },
+        {
+            "name": "release-rev-0",
+            "inherits": "base-release",
+            "displayName": "Release Rev 0",
+            "cacheVariables": {
+                "BOARD_REV": "0"
+            }
+        },
+        {
+            "name": "release-rev-a",
+            "inherits": "base-release",
+            "displayName": "Release Rev A",
+            "cacheVariables": {
+                "BOARD_REV": "A"
+            }
+        },
+        {
+            "name": "release-rev-b",
+            "inherits": "base-release",
+            "displayName": "Release Rev B",
+            "cacheVariables": {
+                "BOARD_REV": "B"
+            }
+        }
+    ],
+    "buildPresets": [
+        { "name": "debug-rev-0", "configurePreset": "debug-rev-0" },
+        { "name": "debug-rev-a", "configurePreset": "debug-rev-a" },
+        { "name": "debug-rev-b", "configurePreset": "debug-rev-b" },
+        { "name": "release-rev-0", "configurePreset": "release-rev-0" },
+        { "name": "release-rev-a", "configurePreset": "release-rev-a" },
+        { "name": "release-rev-b", "configurePreset": "release-rev-b" }
+    ]
+}
