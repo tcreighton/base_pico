@@ -3,10 +3,6 @@
 #ifndef CS_I2C_HPP_
 #define CS_I2C_HPP_
 
-#include <string>
-#include "pico/stdlib.h"
-#include "hardware/i2c.h"
-
 namespace CSdrivers {
 
     // Baud rates
@@ -26,6 +22,10 @@ namespace CSdrivers {
 
 
     class CsI2C final {    // Creighton Scientific wrapper around much of I2C support in Pi Pico SDK
+
+        static constexpr std::string_view getClassName() {
+            return "CsI2C";
+        }
 
     public:
 

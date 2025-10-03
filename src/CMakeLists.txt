@@ -2,6 +2,8 @@
 # Create the executable
 add_executable(${PROJECT_NAME}
     main.cpp
+    worker.hpp
+    worker.cpp
     # other source files here
 
 )
@@ -13,6 +15,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 
 # Link against libraries AND Pico SDK
 target_link_libraries(${PROJECT_NAME}
+    core
     drivers
     utils
     pico_stdlib

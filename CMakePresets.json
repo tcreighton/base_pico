@@ -32,60 +32,126 @@
             }
         },
         {
-            "name": "debug-rev-0",
+            "name": "debug-rev-0-rp2040",
             "inherits": "base-debug",
             "displayName": "Debug Rev 0",
             "cacheVariables": {
-                "BOARD_REV": "0"
+                "BOARD_REV": "0",
+                "PICO_BOARD": "pico"
             }
         },
         {
-            "name": "debug-rev-a",
+            "name": "debug-rev-a-rp2040",
             "inherits": "base-debug",
             "displayName": "Debug Rev A",
             "cacheVariables": {
-                "BOARD_REV": "A"
+                "BOARD_REV": "A",
+                "PICO_BOARD": "pico"
             }
         },
         {
-            "name": "debug-rev-b",
+            "name": "debug-rev-b-rp2040",
             "inherits": "base-debug",
             "displayName": "Debug Rev B",
             "cacheVariables": {
-                "BOARD_REV": "B"
+                "BOARD_REV": "B",
+                "PICO_BOARD": "pico"
             }
         },
         {
-            "name": "release-rev-0",
+            "name": "release-rev-0-rp2040",
             "inherits": "base-release",
             "displayName": "Release Rev 0",
             "cacheVariables": {
-                "BOARD_REV": "0"
+                "BOARD_REV": "0",
+                "PICO_BOARD": "pico"
             }
         },
         {
-            "name": "release-rev-a",
+            "name": "release-rev-a-rp2040",
             "inherits": "base-release",
             "displayName": "Release Rev A",
             "cacheVariables": {
-                "BOARD_REV": "A"
+                "BOARD_REV": "A",
+                "PICO_BOARD": "pico"
             }
         },
         {
-            "name": "release-rev-b",
+            "name": "release-rev-b-rp2040",
             "inherits": "base-release",
             "displayName": "Release Rev B",
             "cacheVariables": {
-                "BOARD_REV": "B"
+                "BOARD_REV": "B",
+                "PICO_BOARD": "pico"
+            }
+        },
+        {
+            "name": "debug-rev-0-rp2350",
+            "inherits": "base-debug",
+            "displayName": "Debug Rev 0",
+            "cacheVariables": {
+                "BOARD_REV": "0",
+                "PICO_BOARD": "pico2"
+            }
+        },
+        {
+            "name": "debug-rev-a-rp2350",
+            "inherits": "base-debug",
+            "displayName": "Debug Rev A",
+            "cacheVariables": {
+                "BOARD_REV": "A",
+                "PICO_BOARD": "pico2"
+            }
+        },
+        {
+            "name": "debug-rev-b-rp2350",
+            "inherits": "base-debug",
+            "displayName": "Debug Rev B",
+            "cacheVariables": {
+                "BOARD_REV": "B",
+                "PICO_BOARD": "pico2"
+            }
+        },
+        {
+            "name": "release-rev-0-rp2350",
+            "inherits": "base-release",
+            "displayName": "Release Rev 0",
+            "cacheVariables": {
+                "BOARD_REV": "0",
+                "PICO_BOARD": "pico2"
+            }
+        },
+        {
+            "name": "release-rev-a-rp2350",
+            "inherits": "base-release",
+            "displayName": "Release Rev A",
+            "cacheVariables": {
+                "BOARD_REV": "A",
+                "PICO_BOARD": "pico2"
+            }
+        },
+        {
+            "name": "release-rev-b-rp2350",
+            "inherits": "base-release",
+            "displayName": "Release Rev B",
+            "cacheVariables": {
+                "BOARD_REV": "B",
+                "PICO_BOARD": "pico2"
             }
         }
     ],
     "buildPresets": [
-        { "name": "debug-rev-0", "configurePreset": "debug-rev-0" },
-        { "name": "debug-rev-a", "configurePreset": "debug-rev-a" },
-        { "name": "debug-rev-b", "configurePreset": "debug-rev-b" },
-        { "name": "release-rev-0", "configurePreset": "release-rev-0" },
-        { "name": "release-rev-a", "configurePreset": "release-rev-a" },
-        { "name": "release-rev-b", "configurePreset": "release-rev-b" }
+        { "name": "debug-rev-0-rp2040", "configurePreset": "debug-rev-0-rp2040" },
+        { "name": "debug-rev-a-rp2040", "configurePreset": "debug-rev-a-rp2040" },
+        { "name": "debug-rev-b-rp2040", "configurePreset": "debug-rev-b-rp2040" },
+        { "name": "release-rev-0-rp2040", "configurePreset": "release-rev-0-rp2040" },
+        { "name": "release-rev-a-rp2040", "configurePreset": "release-rev-a-rp2040" },
+        { "name": "release-rev-b-rp2040", "configurePreset": "release-rev-b-rp2040" },
+        { "name": "debug-rev-0-rp2350", "configurePreset": "debug-rev-0-rp2350" },
+        { "name": "debug-rev-a-rp2350", "configurePreset": "debug-rev-a-rp2350" },
+        { "name": "debug-rev-b-rp2350", "configurePreset": "debug-rev-b-rp2350" },
+        { "name": "release-rev-0-rp2350", "configurePreset": "release-rev-0-rp2350" },
+        { "name": "release-rev-a-rp2350", "configurePreset": "release-rev-a-rp2350" },
+        { "name": "release-rev-b-rp2350", "configurePreset": "release-rev-b-rp2350" }
     ]
 }

@@ -8,7 +8,7 @@
 
 #define LOGGER_ENABLED_     // comment this out to remove all logging from the system (production..)
 
-namespace CSutilities {
+namespace CScore {
 
     // The following definitions allow us to control compilation of log statements (or other things too.)
     // Each group will stand for some set of code to optionally compile.
@@ -118,13 +118,17 @@ namespace CSutilities {
 
         void logMethodEntry(LogLevel level, const std::string &message) const;
 
+        void logMethodEntry(LogLevel level, const std::string &className, const std::string &methodName) const;
+
         void logMethodEntry(LogLevel level, const std::string &className, const std::string &methodName,
-                            const std::string &message) const;
+                    const std::string &message) const;
 
         void logMethodExit(LogLevel level, const std::string &message) const;
 
+        void logMethodExit(LogLevel level, const std::string &className, const std::string &methodName) const;
+
         void logMethodExit(LogLevel level, const std::string &className, const std::string &methodName,
-                           const std::string &message) const;
+                   const std::string &message) const;
 
         void logMethodParameters(LogLevel level, const std::string &className, const std::string &methodName,
                                  const std::string &parameterList, const std::string &message) const;
@@ -143,6 +147,6 @@ namespace CSutilities {
 
     extern Logger logger_;  // Global variable - one logger.
 
-}   // namespace CSutilities;
+}   // namespace CScore
 
 #endif // LOGGER_HPP_

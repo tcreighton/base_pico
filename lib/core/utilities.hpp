@@ -3,13 +3,11 @@
 #ifndef UTILITIES_HPP_
 #define UTILITIES_HPP_
 
-#include <chrono>
 #include <iostream>
 #include <iomanip>  // For std::fixed and std::setprecision
 #include <numeric>
 #include <vector>
 #include <cmath>
-#include <cstring>
 #include <pico/time.h>
 
 #include "packed-datetime.hpp"
@@ -18,45 +16,10 @@
 /**
  * This file holds useful macros and declarations. Also global constants.
  */
-namespace CSutilities {
-
-    #define COMPANY_NAME  "Creighton Scientific, Inc." // This needs to be a #define, not constexpr
-    #define PRODUCT_NAME  "Focus Rack 50-500"
-  //  constexpr std::string_view UTITITIES_getEncodedPicoBoardId_STRING = ("0.3." + __DATE__ + " " + __TIME__);
-
-    constexpr uint8_t FIRMWARE_MAJOR_VERSION = 0x00;
-    constexpr uint8_t FIRMWARE_MINOR_VERSION = 0x09;
-#if defined BOARD_FOCUS500_REV_0
-    constexpr std::string CIRCUIT_BOARD_REVISION = "0";
-#elif defined BOARD_FOCUS500_REV_A
-    constexpr std::string CIRCUIT_BOARD_REVISION = "A";
-#elif defined BOARD_FOCUS500_REV_B
-    constexpr std::string CIRCUIT_BOARD_REVISION = "B";
-#endif
-
-//    std::string getEncodedPicoBoardId ();
-    std::string getPicoBoardId ();
-    std::string getFirmwareVersion ();
-
-    inline std::string getCompanyName () {return COMPANY_NAME;}
-    inline std::string getProductName () {return PRODUCT_NAME;}
+namespace CScommands {
 
 
-
-    struct ProductInfo {
-        std::string         companyName             = COMPANY_NAME;
-        std::string         productName             = PRODUCT_NAME;
-        uint8_t             majorVersion            = FIRMWARE_MAJOR_VERSION;
-        uint8_t             minorVersion            = FIRMWARE_MINOR_VERSION;
-        PackedDateTime_t    buildNumber             = PackedDateTime::getPackedBuildDateTime();// encoded build date
-        std::string         circuitBoardRevision    = CSboard::CURRENT_BOARD_NAME;
-        std::string         encodedPicoBoardId      = getPicoBoardId();// AKA product serial number
-    };
-    using ProductInfo_t = ProductInfo;  // Not really necessary.
-
-    ProductInfo_t getProductInfo ();
-
-    constexpr bool SIMULATE_ADC = false;
+//    constexpr bool SIMULATE_ADC = false;
 
     // Lambda functions to make it easier to & together multiple methods returning true or false.
     inline auto allTrue = [](bool& res, const bool val) {res &= val;};
@@ -147,7 +110,7 @@ namespace CSutilities {
     }
 */
 
-    inline uint8_t getLowerByte(uint16_t uint16) {
+    inline uint8_t getLowerByte(const uint16_t uint16) {
         return static_cast<uint8_t>(uint16  & 0x00ff);
     }
 
@@ -178,17 +141,17 @@ namespace CSutilities {
         return static_cast<int8_t>(getUpperByte(static_cast<uint16_t>(int16)));
     }
 
-    inline uint16_t composeUint16 (uint8_t highByte, uint8_t lowByte) {
+    inline uint16_t composeUint16 (const uint8_t highByte, const uint8_t lowByte) {
         return (static_cast<uint16_t>(highByte) << 8) | static_cast<uint16_t>(lowByte);
     }
 
-    inline int16_t composeInt16(int8_t highByte, int8_t lowByte) {
+    inline int16_t composeInt16(const int8_t highByte, const int8_t lowByte) {
         return static_cast<int16_t>(composeUint16(static_cast<uint8_t>(highByte),
                                                   static_cast<uint8_t>(lowByte)));
     }
 
 //    UInt16ToBytes_t getTwoBytes(uint16_t source);
-    inline UInt16ToBytes_t getTwoBytes (uint16_t source) {
+    inline UInt16ToBytes_t getTwoBytes (const uint16_t source) {
 
         UInt16ToBytes combo = {0};
         combo.bytes.highByte   = ((source >> 8) & 0xff);
@@ -321,15 +284,15 @@ namespace CSutilities {
     }
 
 
-    inline float roundToTwoDecimalPlaces (float value) {
+    inline float roundToTwoDecimalPlaces (const float value) {
         return std::round(value * 100) / 100;
     }
 
-    inline float roundToFourDecimalPlaces (float value) {
+    inline float roundToFourDecimalPlaces (const float value) {
         return std::round(value * 10000) / 10000;
     }
 
-    inline float roundToSixDecimalPlaces (float value) {
+    inline float roundToSixDecimalPlaces (const float value) {
         return std::round(value * 1000000) / 1000000;
     }
 

@@ -1,9 +1,13 @@
 
 add_library(utils
-        logger.cpp
-        packed-datetime.cpp
-        pystring.h
-        utilities.cpp
+        command-declarations.hpp
+        command-handler.cpp
+        command-handler.hpp
+        commands.cpp
+        commands.hpp
+        communication.hpp
+        communication.cpp
+        product-info.hpp
 )
 
 target_include_directories(utils PUBLIC
@@ -11,7 +15,7 @@ target_include_directories(utils PUBLIC
 )
 
 target_link_libraries(utils PUBLIC
-
+        core
         # pico interfaces here
         #       hardware_adc
         hardware_gpio
@@ -22,6 +26,7 @@ target_link_libraries(utils PUBLIC
         #       hardware_uart
         #       pico_multicore
         pico_stdlib
+        pico_stdio_usb
         #       pico_sync
-        pico_unique_id
+        #       pico_unique_id
 )

@@ -5,7 +5,7 @@
 #include "logger.hpp"
 #include "pystring.h"
 
-namespace CSutilities {
+namespace CScore {
 
     Logger logger_; // Global definition.
 
@@ -13,6 +13,12 @@ namespace CSutilities {
     void Logger::logMethodEntry(const LogLevel level, const std::string &message) const {
         if (level >= logLevel_) {
             std::cout << "Log method entry. " << message << ";\n";
+        }
+    }
+
+    void Logger::logMethodEntry(const LogLevel level, const std::string &className, const std::string &methodName) const {
+        if (level >= logLevel_) {
+            std::cout << "Log method entry: " << className << "::" << methodName << ". \n";
         }
     }
 
@@ -33,6 +39,12 @@ namespace CSutilities {
                                const std::string &message) const {
         if (level >= logLevel_) {
             std::cout << "Log method exit: " << className << "::" << methodName << ".\nMessage:\t" << message << "\n";
+        }
+    }
+
+    void Logger::logMethodExit(const LogLevel level, const std::string &className, const std::string &methodName) const {
+        if (level >= logLevel_) {
+            std::cout << "Log method exit: " << className << "::" << methodName << ".\n";
         }
     }
 
@@ -99,4 +111,4 @@ namespace CSutilities {
         return retCode;
     }
 
-} // namespace CSutilities
+} // namespace CScore

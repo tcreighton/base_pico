@@ -5,7 +5,7 @@
 #include "hardware/uart.h"
 #include "gpio-declarations.hpp"
 
-namespace CSboard {
+namespace CSdrivers {
 
     /**
      * Board revision enumeration
@@ -31,6 +31,7 @@ namespace CSboard {
     constexpr auto CURRENT_BOARD = BoardRevision::REV_0;
     constexpr auto CURRENT_BOARD_NAME = "Focus500 Rev 0";
 #endif
+
 
 
 

@@ -1,7 +1,7 @@
 #include <hardware/gpio.h>
 #include "gpio.hpp"
 
-namespace CSconfig {
+namespace CSdrivers {
 
     void Gpio::init() {
         // Initialize different pin groups
@@ -15,7 +15,7 @@ namespace CSconfig {
     }
 
     void Gpio::initI2CPins() {
-        const auto& config = CSboard::BOARD;
+        const auto& config = CSdrivers::BOARD;
         
         // Initialize I2C pins
         gpio_init(config.i2c.c0_sda);
@@ -36,7 +36,7 @@ namespace CSconfig {
     }
 
     void Gpio::initInputPins() {
-        const auto& config = CSboard::BOARD;
+        const auto& config = CSdrivers::BOARD;
         
         /*
         // Only initialize input pins if the board has interlocks
@@ -79,7 +79,7 @@ namespace CSconfig {
     }
 
     void Gpio::initOutputPins() {
-        const auto& config = CSboard::BOARD;
+        const auto& config = CSdrivers::BOARD;
         
         /*
         // Only initialize output pins if the board has HV control
@@ -110,7 +110,7 @@ namespace CSconfig {
 
     void Gpio::setInitialOutputStates() {
         // Only set initial states if the board has HV control
-        if (const auto& config = CSboard::BOARD; !config.capabilities.hasHVControl) {
+        if (const auto& config = CSdrivers::BOARD; !config.capabilities.hasHVControl) {
             return;
         }
 

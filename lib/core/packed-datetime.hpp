@@ -5,7 +5,7 @@
 
 #include <cstdint>
 
-namespace CSutilities {
+namespace CScommands {
 
     using PackedDateTime_t = uint32_t;
 

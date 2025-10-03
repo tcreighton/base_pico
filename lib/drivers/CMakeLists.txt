@@ -2,7 +2,7 @@
 # Create a library for drivers
 
 add_library(drivers
-#    board_config.cpp
+    board-config.hpp
     csi2c.cpp
     gpio.cpp
 )
@@ -13,7 +13,7 @@ target_include_directories(drivers PUBLIC
 
 # Link against Pico SDK libraries this module needs
 target_link_libraries(drivers PUBLIC
-
+        core
 # pico interfaces here
 #       hardware_adc
         hardware_gpio

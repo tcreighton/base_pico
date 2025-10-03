@@ -2,12 +2,14 @@
 
 #include <string>
 #include <utility>
+#include <hardware/i2c.h>
 
-#include "hardware/i2c.h"
 #include "csi2c.hpp"
-#include "errors.hpp"
-#include "logger.hpp"
-#include "utilities.hpp"
+#include "../core/logger.hpp"
+#include "../core/utilities.hpp"
+
+using namespace CScore;
+using namespace CScommands;
 
 namespace CSdrivers {
 
@@ -47,8 +49,9 @@ namespace CSdrivers {
                             const uint8_t *pBuffer,
                             const size_t length,
                             const bool nostop) {
-        logger_.logMethodEntry( LogLevel::Trace,
-                                getClassName(), __func__, getLabel());
+        logger_.logMethodEntry(LogLevel::Trace,
+                       std::string(getClassName()),
+                       __func__);
         int retValue = 0;
 
 #if defined (LOG_GROUP_CSI2C)
@@ -78,30 +81,28 @@ namespace CSdrivers {
                                         nostop);
 
         if (std::cmp_not_equal(retValue ,length)) {
-            setGlobalResponseCode(setResponseCode(picoErrorToF500Response(retValue)));
-            setGlobalStatusCode(setStatus(StatusCode::ERROR));
-            setGlobalResponseType(ResponseType::ERROR);
-            setGlobalErrorMessage(setErrorMessage("I2C Error! \n"));
+            // Report the error somehow. TODO: Figure out the error handling.
 
-            logger_.log(LogLevel::Error, getLabel() + "\n\tFailed to write buffer to device.\n");
+            logger_.log(LogLevel::Error, std::string(getClassName()), __func__,
+                                        " Failed to write buffer to device.\n");
             logger_.log(LogLevel::Error,
-                        "deviceAddress: " + int_to_hex_0x(deviceAddress) +
-                        "; length: " + std::to_string(length) +
-                        "; buffer: [0],[1],[2]: " +
-                        int_to_hex_0x(*pBuffer) + "," +
-                        int_to_hex_0x(*(pBuffer+1)) + "," +
-                        int_to_hex_0x(*(pBuffer+2)) + "\n");
-            logger_.log(LogLevel::Error, getLabel() + "\n\tretValue: " +
-                                                     std::to_string(retValue) + "\n");
+                                "deviceAddress: " + int_to_hex_0x(deviceAddress) +
+                                "; length: " + std::to_string(length) +
+                                "; buffer: [0],[1],[2]: " +
+                                int_to_hex_0x(*pBuffer) + "," +
+                                int_to_hex_0x(*(pBuffer+1)) + "," +
+                                int_to_hex_0x(*(pBuffer+2)) + "\n");
+            logger_.log(LogLevel::Error, "\n\tretValue: " +
+                                                         std::to_string(retValue) + "\n");
         }
 
-        logger_.logMethodExit(LogLevel::Trace, getClassName(), __func__, getLabel());
+        logger_.logMethodExit(LogLevel::Trace, std::string(getClassName()),
+                                                __func__);
         return retValue;
     }
 
     int CsI2C::readBuffer(const uint8_t deviceAddress, uint8_t *pBuffer, const size_t length, const bool nostop) {
-
-        logger_.logMethodEntry(LogLevel::Trace, getClassName(), __func__, getLabel());
+        logger_.logMethodEntry(LogLevel::Trace, std::string(getClassName()), __func__);
 
 #if defined (LOG_GROUP_CSI2C)
 
@@ -126,17 +127,14 @@ namespace CSdrivers {
 
         if (retValue < 0) {
             // This represents an error code.
-            setGlobalResponseCode(setResponseCode(CSerrors::picoErrorToF500Response(retValue)));
-            setGlobalStatusCode(setStatus(CSerrors::StatusCode::ERROR));
-            setGlobalErrorMessage(setErrorMessage(setErrorMessage("I2C Error! \n")));
-            setGlobalResponseType(ResponseType::ERROR);
-            logger_.log(LogLevel::Error, getLabel() + " " + "Failed to read buffer from device.\n");
-            logger_.log(LogLevel::Error, getLabel() + " " + "Error: " +
-                                                     responseToString(getResponseCode()) + "\n");
+            // Report the error somehow. TODO: Figure out the error handling.
+
+            logger_.log(LogLevel::Error, "Failed to read buffer from device.\n");
+
         }
 
         logger_.logMethodExit(  LogLevel::Trace,
-                                getClassName(),
+                                std::string(getClassName()),
                                 __func__,
                                 "retValue:" +
                                 std::to_string(retValue));
@@ -150,4 +148,4 @@ namespace CSdrivers {
 
 //-----------------------------------------------------------------------------
 
-} // namespace CScomponents
+} // namespace CSdrivers

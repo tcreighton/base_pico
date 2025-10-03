@@ -6,7 +6,7 @@
 #include <string>
 #include <bits/stdc++.h>
 #include "hardware/uart.h"
-#include "board_config.hpp"
+#include "../drivers/board-config.hpp"
 
 namespace CScommunication {
 
@@ -89,10 +89,14 @@ namespace CScommunication {
     };
 
     class Communication {
+
+        Communication() = default;  // Private constructor - everything is static!
+        ~Communication() = default;
+
+
     public:
 
-        Communication() = default;
-        ~Communication() = default;
+        // No copy constructor - no constructor.
         Communication(const Communication& other) = delete;
         Communication& operator=(const Communication& other) = delete;
 
@@ -112,8 +116,8 @@ namespace CScommunication {
         static bool initUsb();
 
         // UART interface management
-        static bool initUart(CSboard::UartId uartId = CSboard::UartId::UART0);
-        static void initUartGpio(CSboard::UartId instance);
+        static bool initUart(CSdrivers::UartId uartId = CSdrivers::UartId::UART0);
+        static void initUartGpio(CSdrivers::UartId instance);
 
         // Legacy compatibility - checks if any UART is enabled for commands
         static bool isUartEnabled() { return getActiveCommInterface() == CommInterface::UART; }
@@ -140,7 +144,7 @@ namespace CScommunication {
         static void recordCommands(const std::string& commandString);
         static bool processInputCharacter(char ch, std::string &inputBuffer);
         static uart_inst_t* getCommandUartHardware();
-        static const CSboard::SingleUARTConfig* getCommandUartConfig();
+        static const CSdrivers::SingleUARTConfig* getCommandUartConfig();
 
         // State tracking
         static bool usbEnabled_;    // By default support usb
