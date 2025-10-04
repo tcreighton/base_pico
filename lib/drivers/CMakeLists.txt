@@ -3,6 +3,7 @@
 
 add_library(drivers
     board-config.hpp
+    component.hpp
     csi2c.cpp
     gpio.cpp
 )
