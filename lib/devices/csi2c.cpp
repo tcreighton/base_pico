@@ -9,41 +9,15 @@
 #include "../core/utilities.hpp"
 
 using namespace CScore;
-using namespace CScommands;
+using namespace CScore;
 
-namespace CSdrivers {
-
-
-    CsI2C::CsI2C(const std::string &label,
-                       i2c_inst_t* i2c,
-                 const ControllerId controllerId,
-                 const BaudRate baudRateInHz) :
-                                                controllerId_(controllerId),
-                                                i2cInstance_(i2c),
-                                                requestedBaudRate_(baudRateInHz){
-        setActualBaudRate(baudRateInHz);
-    }
-
+namespace CSdevices {
 
 /**
  *
  * @param requestedBaudRate
  */
 
-    void CsI2C::setRequestedBaudRate(const uint requestedBaudRate) {
-        if (requestedBaudRate >= MIN_KHZ && requestedBaudRate <= MAX_KHZ) {
-            setActualBaudRate(i2c_set_baudrate(i2cInstance_,
-                                               requestedBaudRate_ = requestedBaudRate));
-        }
-    }
-
-    void CsI2C::setActualBaudRate(const uint baudRate) {
-        if (baudRate >= MIN_KHZ && baudRate <= MAX_KHZ) {
-            actualBaudRate_ = i2c_set_baudrate(i2cInstance_,
-                                               baudRate);
-
-        }
-    }
 
     int CsI2C::writeBuffer( const uint8_t deviceAddress,
                             const uint8_t *pBuffer,
@@ -74,7 +48,7 @@ namespace CSdrivers {
             (ControllerId::I2C_CONTROLLER_0 == getControllerId() ? "0." : "1.") << std::endl;
             */
 
-        retValue = i2c_write_blocking(i2cInstance_,
+        retValue = i2c_write_blocking(getI2cInstance(),
                                         deviceAddress,
                                         pBuffer,
                                         length,
@@ -120,7 +94,7 @@ namespace CSdrivers {
 #endif
 
         const auto retValue =
-                i2c_read_blocking(i2cInstance_, deviceAddress, pBuffer, length, nostop);
+                i2c_read_blocking(getI2cInstance(), deviceAddress, pBuffer, length, nostop);
 
 
         // Check for error on read.

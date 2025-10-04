@@ -5,7 +5,7 @@
 #include "hardware/uart.h"
 #include "gpio-declarations.hpp"
 
-namespace CSdrivers {
+namespace CSdevices {
 
     /**
      * Board revision enumeration
@@ -69,8 +69,8 @@ namespace CSdrivers {
      * Single UART configuration
      */
     struct SingleUARTConfig {
-        uint8_t tx_pin{CSdrivers::GPIO_INVALID};
-        uint8_t rx_pin{CSdrivers::GPIO_INVALID};
+        uint8_t tx_pin{CSdevices::GPIO_INVALID};
+        uint8_t rx_pin{CSdevices::GPIO_INVALID};
         uint32_t baud_rate{115200};
         bool enabled{false};
         bool commandHandler{false};     // Is this UART used for user commands?
@@ -85,12 +85,12 @@ namespace CSdrivers {
             if (!retCode) {
                 // Validate correct pins.
                 if (uartId == UartId::UART0) {
-                    retCode = CSdrivers::GPIO_00 == tx_pin && CSdrivers::GPIO_01 == rx_pin ||
-                              CSdrivers::GPIO_12 == tx_pin && CSdrivers::GPIO_13 == rx_pin ||
-                              CSdrivers::GPIO_16 == tx_pin && CSdrivers::GPIO_17 == rx_pin;   // correct one!
+                    retCode = CSdevices::GPIO_00 == tx_pin && CSdevices::GPIO_01 == rx_pin ||
+                              CSdevices::GPIO_12 == tx_pin && CSdevices::GPIO_13 == rx_pin ||
+                              CSdevices::GPIO_16 == tx_pin && CSdevices::GPIO_17 == rx_pin;   // correct one!
                 } else if (uartId == UartId::UART1) {
-                    retCode = CSdrivers::GPIO_04 == tx_pin && CSdrivers::GPIO_05 == rx_pin ||
-                              CSdrivers::GPIO_08 == tx_pin && CSdrivers::GPIO_09 == rx_pin;
+                    retCode = CSdevices::GPIO_04 == tx_pin && CSdevices::GPIO_05 == rx_pin ||
+                              CSdevices::GPIO_08 == tx_pin && CSdevices::GPIO_09 == rx_pin;
                 } else {
                     retCode = false;    // This would be really weird. But the initializer is nullptr, so it would fail.
                 }
@@ -223,23 +223,23 @@ namespace CSdrivers {
                 .hasHVControl   = false
             },
             .i2c = {
-                .c0_sda = CSdrivers::GPIO_08,
-                .c0_scl = CSdrivers::GPIO_09,
-                .c1_sda = CSdrivers::GPIO_10,
-                .c1_scl = CSdrivers::GPIO_11
+                .c0_sda = CSdevices::GPIO_08,
+                .c0_scl = CSdevices::GPIO_09,
+                .c1_sda = CSdevices::GPIO_10,
+                .c1_scl = CSdevices::GPIO_11
             },
             .uart = {
                 .uartConfig0 = {
-                    .tx_pin     = CSdrivers::GPIO_12,
-                    .rx_pin     = CSdrivers::GPIO_13,
+                    .tx_pin     = CSdevices::GPIO_12,
+                    .rx_pin     = CSdevices::GPIO_13,
                     .baud_rate  = 115200,
                     .enabled    = true,
                     .commandHandler = true,
                     .uartId = UartId::UART0
                 },
                 .uartConfig1 = {
-                    .tx_pin     = CSdrivers::GPIO_INVALID,  // Not used on Rev 0
-                    .rx_pin     = CSdrivers::GPIO_INVALID,  // Not used on Rev 0
+                    .tx_pin     = CSdevices::GPIO_INVALID,  // Not used on Rev 0
+                    .rx_pin     = CSdevices::GPIO_INVALID,  // Not used on Rev 0
                     .baud_rate  = 115200,
                     .enabled    = false,
                     .commandHandler = false,
@@ -247,24 +247,24 @@ namespace CSdrivers {
                 }
             },
             .inputs = {
-                .door_interlock         = CSdrivers::GPIO_27,  // Dummy pin for Rev 0
-                .hv_enabled_interlock   = CSdrivers::GPIO_27,  // Dummy pin for Rev 0
-                .voltage_48v_enabled    = CSdrivers::GPIO_27,  // Dummy pin for Rev 0
-                .pump_interlock         = CSdrivers::GPIO_27,  // Dummy pin for Rev 0
-                .flow_interlock         = CSdrivers::GPIO_27,   // Dummy pin for Rev 0
-                .dac_ready              = CSdrivers::GPIO_15,
-                .adc1_ready             = CSdrivers::GPIO_17,
-                .adc2_ready             = CSdrivers::GPIO_16
+                .door_interlock         = CSdevices::GPIO_27,  // Dummy pin for Rev 0
+                .hv_enabled_interlock   = CSdevices::GPIO_27,  // Dummy pin for Rev 0
+                .voltage_48v_enabled    = CSdevices::GPIO_27,  // Dummy pin for Rev 0
+                .pump_interlock         = CSdevices::GPIO_27,  // Dummy pin for Rev 0
+                .flow_interlock         = CSdevices::GPIO_27,   // Dummy pin for Rev 0
+                .dac_ready              = CSdevices::GPIO_15,
+                .adc1_ready             = CSdevices::GPIO_17,
+                .adc2_ready             = CSdevices::GPIO_16
             },
 
             .outputs = {
-                .heater_shutdown = CSdrivers::GPIO_23,  // Dummy pin for Rev 0
-                .g1_shutdown     = CSdrivers::GPIO_23,  // Dummy pin for Rev 0
-                .g2_shutdown     = CSdrivers::GPIO_23,  // Dummy pin for Rev 0
-                .g3_shutdown     = CSdrivers::GPIO_23,  // Dummy pin for Rev 0
-                .hv_shutdown     = CSdrivers::GPIO_23,  // Dummy pin for Rev 0
-                .hv_enable       = CSdrivers::GPIO_23,  // Dummy pin for Rev 0
-                .ldac            = CSdrivers::GPIO_14
+                .heater_shutdown = CSdevices::GPIO_23,  // Dummy pin for Rev 0
+                .g1_shutdown     = CSdevices::GPIO_23,  // Dummy pin for Rev 0
+                .g2_shutdown     = CSdevices::GPIO_23,  // Dummy pin for Rev 0
+                .g3_shutdown     = CSdevices::GPIO_23,  // Dummy pin for Rev 0
+                .hv_shutdown     = CSdevices::GPIO_23,  // Dummy pin for Rev 0
+                .hv_enable       = CSdevices::GPIO_23,  // Dummy pin for Rev 0
+                .ldac            = CSdevices::GPIO_14
             }
         };
 
@@ -278,23 +278,23 @@ namespace CSdrivers {
                 .hasHVControl   = true
             },
             .i2c = {
-                .c0_sda = CSdrivers::GPIO_04,
-                .c0_scl = CSdrivers::GPIO_05,
-                .c1_sda = CSdrivers::GPIO_02,
-                .c1_scl = CSdrivers::GPIO_03
+                .c0_sda = CSdevices::GPIO_04,
+                .c0_scl = CSdevices::GPIO_05,
+                .c1_sda = CSdevices::GPIO_02,
+                .c1_scl = CSdevices::GPIO_03
             },
             .uart = {
                 .uartConfig0 = {
-                    .tx_pin     = CSdrivers::GPIO_16,
-                    .rx_pin     = CSdrivers::GPIO_17,
+                    .tx_pin     = CSdevices::GPIO_16,
+                    .rx_pin     = CSdevices::GPIO_17,
                     .baud_rate  = 115200,
                     .enabled    = true,
                     .commandHandler = true,
                     .uartId = UartId::UART0
                 },
                 .uartConfig1 = {
-                    .tx_pin     = CSdrivers::GPIO_INVALID,  // Not used on Rev A
-                    .rx_pin     = CSdrivers::GPIO_INVALID,  // Not used on Rev A
+                    .tx_pin     = CSdevices::GPIO_INVALID,  // Not used on Rev A
+                    .rx_pin     = CSdevices::GPIO_INVALID,  // Not used on Rev A
                     .baud_rate  = 115200,
                     .enabled    = false,
                     .commandHandler = false,
@@ -302,19 +302,19 @@ namespace CSdrivers {
                 }
             },
             .inputs = {
-                .door_interlock       = CSdrivers::GPIO_15,
-                .hv_enabled_interlock = CSdrivers::GPIO_18,
-                .voltage_48v_enabled  = CSdrivers::GPIO_19,
-                .pump_interlock       = CSdrivers::GPIO_26,
-                .flow_interlock       = CSdrivers::GPIO_27
+                .door_interlock       = CSdevices::GPIO_15,
+                .hv_enabled_interlock = CSdevices::GPIO_18,
+                .voltage_48v_enabled  = CSdevices::GPIO_19,
+                .pump_interlock       = CSdevices::GPIO_26,
+                .flow_interlock       = CSdevices::GPIO_27
             },
             .outputs = {
-                .heater_shutdown = CSdrivers::GPIO_06,
-                .g1_shutdown     = CSdrivers::GPIO_07,
-                .g2_shutdown     = CSdrivers::GPIO_08,
-                .g3_shutdown     = CSdrivers::GPIO_09,
-                .hv_shutdown     = CSdrivers::GPIO_10,
-                .hv_enable       = CSdrivers::GPIO_23
+                .heater_shutdown = CSdevices::GPIO_06,
+                .g1_shutdown     = CSdevices::GPIO_07,
+                .g2_shutdown     = CSdevices::GPIO_08,
+                .g3_shutdown     = CSdevices::GPIO_09,
+                .hv_shutdown     = CSdevices::GPIO_10,
+                .hv_enable       = CSdevices::GPIO_23
             }
         };
 
@@ -328,23 +328,23 @@ namespace CSdrivers {
                 .hasHVControl   = true
             },
             .i2c = {
-                .c0_sda = CSdrivers::GPIO_04,  // Same as Rev A
-                .c0_scl = CSdrivers::GPIO_05,
-                .c1_sda = CSdrivers::GPIO_02,
-                .c1_scl = CSdrivers::GPIO_03
+                .c0_sda = CSdevices::GPIO_04,  // Same as Rev A
+                .c0_scl = CSdevices::GPIO_05,
+                .c1_sda = CSdevices::GPIO_02,
+                .c1_scl = CSdevices::GPIO_03
             },
             .uart = {
                 .uartConfig0 = {
-                    .tx_pin     = CSdrivers::GPIO_16,  // Different from Rev A
-                    .rx_pin     = CSdrivers::GPIO_17,  // Different from Rev A
+                    .tx_pin     = CSdevices::GPIO_16,  // Different from Rev A
+                    .rx_pin     = CSdevices::GPIO_17,  // Different from Rev A
                     .baud_rate  = 115200,
                     .enabled    = true,
                     .commandHandler = false,
                     .uartId = UartId::UART0
                 },
                 .uartConfig1 = {
-                    .tx_pin     = CSdrivers::GPIO_08,  // New UART1
-                    .rx_pin     = CSdrivers::GPIO_09,  // New UART1
+                    .tx_pin     = CSdevices::GPIO_08,  // New UART1
+                    .rx_pin     = CSdevices::GPIO_09,  // New UART1
                     .baud_rate  = 9600,                   // Different baud rate for UART1
                     .enabled    = true,
                     .commandHandler = true,
@@ -352,19 +352,19 @@ namespace CSdrivers {
                 }
             },
             .inputs = {
-                .door_interlock       = CSdrivers::GPIO_15,
-                .hv_enabled_interlock = CSdrivers::GPIO_18,
-                .voltage_48v_enabled  = CSdrivers::GPIO_19,
-                .pump_interlock       = CSdrivers::GPIO_26,
-                .flow_interlock       = CSdrivers::GPIO_27
+                .door_interlock       = CSdevices::GPIO_15,
+                .hv_enabled_interlock = CSdevices::GPIO_18,
+                .voltage_48v_enabled  = CSdevices::GPIO_19,
+                .pump_interlock       = CSdevices::GPIO_26,
+                .flow_interlock       = CSdevices::GPIO_27
             },
             .outputs = {
-                .heater_shutdown = CSdrivers::GPIO_06,
-                .g1_shutdown     = CSdrivers::GPIO_07,
-                .g2_shutdown     = CSdrivers::GPIO_08,
-                .g3_shutdown     = CSdrivers::GPIO_09,
-                .hv_shutdown     = CSdrivers::GPIO_10,
-                .hv_enable       = CSdrivers::GPIO_23
+                .heater_shutdown = CSdevices::GPIO_06,
+                .g1_shutdown     = CSdevices::GPIO_07,
+                .g2_shutdown     = CSdevices::GPIO_08,
+                .g3_shutdown     = CSdevices::GPIO_09,
+                .hv_shutdown     = CSdevices::GPIO_10,
+                .hv_enable       = CSdevices::GPIO_23
             }
         };
 
@@ -403,11 +403,11 @@ namespace CSdrivers {
      * Utility functions for GPIO validation
      */
     constexpr bool isValidGPIOPin(const uint8_t pin) {
-        return pin <= CSdrivers::GPIO_28;
+        return pin <= CSdevices::GPIO_28;
     }
     
     constexpr bool isInvalidGPIOPin(const uint8_t pin) {
-        return pin == CSdrivers::GPIO_INVALID;
+        return pin == CSdevices::GPIO_INVALID;
     }
 
     /**

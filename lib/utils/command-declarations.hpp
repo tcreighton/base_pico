@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <string>
 
-namespace CScommands {
+namespace CScore {
 
     enum class CommandWord : uint8_t {
         HELP    = 0,

@@ -36,6 +36,7 @@ include(CMakePrintHelpers)
 cmake_policy(SET CMP0054 NEW)	# ensures that quoted strings inside if() are always treated as literal strings, not as variable names.
 
 add_subdirectory(lib/core)
+add_subdirectory(lib/devices)
 add_subdirectory(lib/drivers)
 add_subdirectory(lib/utils)
 add_subdirectory(src)

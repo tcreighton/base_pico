@@ -16,6 +16,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 # Link against libraries AND Pico SDK
 target_link_libraries(${PROJECT_NAME}
     core
+    devices
     drivers
     utils
     pico_stdlib

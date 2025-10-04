@@ -2,15 +2,20 @@
 # Create a library for devices
 
 add_library(devices
-
+    component.hpp
+    csi2c.cpp
+    csi2c.hpp
+    mcp-24lc32.cpp
+    mcp-24lc32.hpp
+    mcp-eeprom-declarations.hpp
 )
 
-target_include_directories(drivers PUBLIC
+target_include_directories(devices PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 # Link against Pico SDK libraries this module needs
-target_link_libraries(drivers PUBLIC
+target_link_libraries(devices PUBLIC
         core
 # pico interfaces here
 #       hardware_adc

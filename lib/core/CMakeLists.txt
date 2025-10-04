@@ -7,6 +7,7 @@ add_library(core
     packed-datetime.cpp
     pystring.h
     pystring.cpp
+    random.hpp
     utilities.hpp
     utilities.cpp
 )

@@ -3,10 +3,14 @@
 #ifndef CS_I2C_HPP_
 #define CS_I2C_HPP_
 
-namespace CSdrivers {
+#include <cstdint>
+#include "hardware/i2c.h"
+#include "../devices/component.hpp"
+
+namespace CSdevices {
 
     // Baud rates
-    enum BaudRate : uint32_t {
+    enum class BaudRate : uint32_t {
         MIN_KHZ          = (100 * 1000),        // Define them in terms of HZ
         ONE_HUNDRED_KHZ  = MIN_KHZ,
         FOUR_HUNDRED_KHZ = (400 * 1000),
@@ -15,20 +19,28 @@ namespace CSdrivers {
         MAX_KHZ          = ONE_GHZ
     };
 
-    enum ControllerId : uint8_t {  // Controller - AKA Bus
+    enum class ControllerId : uint8_t {  // Controller - AKA Bus
         I2C_CONTROLLER_0 = 0,
         I2C_CONTROLLER_1
     };
 
 
-    class CsI2C final {    // Creighton Scientific wrapper around much of I2C support in Pi Pico SDK
-
-        static constexpr std::string_view getClassName() {
-            return "CsI2C";
-        }
+    class CsI2C final : public Component {    // Creighton Scientific wrapper around much of I2C support in Pi Pico SDK
 
     public:
 
+        CsI2C ( std::string label,
+                const ControllerId controllerId,
+                const BaudRate baudrateInKHz = BaudRate::FOUR_HUNDRED_KHZ) :
+                        Component("CsI2C", std::move(label)),
+                            controllerId_(controllerId),
+                            requestedBaudRate_(baudrateInKHz) {
+            setBaudRate(baudrateInKHz);
+        }
+
+        CsI2C (const CsI2C& other) = delete;    // No copy constructor!
+        CsI2C& operator=(const CsI2C& other ) = delete;
+        ~CsI2C() override = default;
 
         /**
          * @brief This allows a device user to check if the device is actually listening on the bus.
@@ -41,11 +53,16 @@ namespace CSdrivers {
             return (result >= 0);
         }
 
+        void setBaudRate (const BaudRate requestedBaudRate) {
+            requestedBaudRate_ = requestedBaudRate;
+            actualBaudRate_ = i2c_set_baudrate(getI2cInstance(), static_cast<uint32_t>(requestedBaudRate_));
+        }
+
         /**
          * @brief Gets requestedBaudRate_
          * @return requestedBaudRate_
          */
-        [[nodiscard]] uint getRequestedBaudRate() const {
+        [[nodiscard]] BaudRate getRequestedBaudRate() const {
             return requestedBaudRate_;
         }
 
@@ -55,7 +72,7 @@ namespace CSdrivers {
          * It returns the actual set rate that it chooses.
          * @return actualBaudRate_
          */
-        [[nodiscard]] uint getActualBaudRate() const {
+        [[nodiscard]] uint32_t getActualBaudRate() const {
             return actualBaudRate_;
         }
 
@@ -66,12 +83,12 @@ namespace CSdrivers {
          *        genuine communication failures.
          * @return Timeout duration in microseconds per byte for I2C communication.
          */
-        static uint getI2CTimeoutPerByte_us() {
-            // @ 100 kHz, 10us/bit; 8 bits data + 1 ACK : 90us. (maybe use 100)
+        static uint32_t getI2CTimeoutPerByte_us() {
+            // @ 100 kHz, 10us/bit; 8 bits data + 1 ACK: 90us. (maybe use 100)
             // @ 400 kHz: 90us/4 = 22us.
             // @ 1000 kHz: 90us/100 = 1us.
 
-            /*
+            /* This code could be used if we want fine-grained control over time per byte - not worth it.
             constexpr uint baseTimePerByte_us = 100;
 
             uint timeout = 100000;
@@ -91,11 +108,11 @@ namespace CSdrivers {
             return timeout;
         */
 
-            // Generous 100ms timeout handles most I2C scenarios:
-            // - Typical transactions complete in < 1ms
-            // - Clock stretching for sensor conversions: 1-50ms typical
-            // - EEPROM write cycles: 5-10ms
-            // This provides comfortable safety margin for edge cases
+            // Generous 100 ms timeout handles most I2C scenarios:
+            // - Typical transactions complete in < 1 ms
+            // - Clock stretching for sensor conversions: 1-50 ms typical
+            // - EEPROM write cycles: 5-ert10 ms
+            // This provides a comfortable safety margin for edge cases
             // while still catching genuine communication failures
             return 100000;  // 100 ms
         }
@@ -113,7 +130,7 @@ namespace CSdrivers {
              * @return i2c_inst_t* pointer to the SDK i2c instance
              */
         [[nodiscard]] i2c_inst_t* getI2cInstance() const {
-            return i2cInstance_;
+            return ControllerId::I2C_CONTROLLER_0 == controllerId_ ? i2c0 : i2c1;
         }
 
 
@@ -150,24 +167,7 @@ namespace CSdrivers {
         }
 
 
-
-        // These need to be public because they are deleted.
-        CsI2C(const CsI2C& other) = delete;
-        CsI2C& operator=(const CsI2C& other) = delete;
-
     private:
-        /**
-         * @brief - Sets the requestedBaudRate_ data member.
-         * Requested rate is in kHz. I2C communicates in mHz. Conversion is done within the setter.
-         * @param requestedBaudRate
-         */
-        void setRequestedBaudRate(uint requestedBaudRate);
-
-        /**
-         * @brief Sets the actual baud rate - what the system tells us. (kHz)
-         * @param baudRate
-         */
-        void setActualBaudRate(uint baudRate);
 
         /**
          * @brief Sets the controllerId_.
@@ -176,37 +176,11 @@ namespace CSdrivers {
         void setControllerId(const ControllerId controllerId) {
             controllerId_ = controllerId;
         }
-        /**
-           * @brief Sets the i2c instance pointer.
-           * @param i2cInstance pointer to SDK i2c instance (i2c0 or i2c1)
-           */
-        void setI2cInstance(i2c_inst_t* i2cInstance) {
-            i2cInstance_ = i2cInstance;
-        }
-
-
-        /**
-         * @brief - Singleton constructor.
-         * Use any number between BaudRate. MIN and BaudRate.MAX. It's always in kHz. We convert it for i2c.
-         * @param label Internal name for this class instance. Should refer to some physical thing if appropriate.
-         * @param i2c Which i2c bus
-         * @param controllerId  Id of the I2C bus
-         * @param baudRateInKHz Speed for I2C bus
-         */
-        CsI2C(const std::string &label,
-                    i2c_inst_t* i2c,
-                    ControllerId controllerId,
-                    BaudRate baudRateInKHz = FOUR_HUNDRED_KHZ);
-
-        ~CsI2C() = default;
-
-        //        #define I2C_BUS (ControllerId::I2C_CONTROLLER_0 == getControllerId() ? i2c0 : i2c1)
-
 
         ControllerId controllerId_;
-        i2c_inst_t* i2cInstance_ = i2c0; // Default value - override in initializer
-        uint requestedBaudRate_ = 0; // this is always in kHz. Actual is always in Hz.
-        uint actualBaudRate_ = 0;    // This gets set to the return from a call to i2c_init within a constructor.
+//        i2c_inst_t* i2cInstance_ = i2c0; // Default value - override in initializer
+        BaudRate requestedBaudRate_ = BaudRate::FOUR_HUNDRED_KHZ; // this is always in kHz. Actual is always in Hz.
+        uint32_t actualBaudRate_ = 0;    // This gets set to the return from a call to i2c_init within a constructor.
     };
 
 //-----------------------------------------------------------------------------

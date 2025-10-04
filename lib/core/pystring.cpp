@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <cctype>
 #include <cstring>
-#include <iostream>
 #include <sstream>
 
 namespace pystring

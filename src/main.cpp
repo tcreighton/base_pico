@@ -21,7 +21,7 @@
 
 using namespace CScore;
 using namespace CScommunication;
-using namespace CScommands;
+using namespace CScore;
 
 int main()
 {
@@ -29,7 +29,7 @@ int main()
 
     // Ignore the return value. We are neither displaying it nor executing logic based on it.
     // This call will also initialize the UART0.
-    if (!CSdrivers::boardInit()) {
+    if (!CSdevices::boardInit()) {
         exit(1000); // bad day!
     }
     auto connectTime = Communication::getUsbConnectTime(); // If disabled, should be 0.
@@ -80,7 +80,7 @@ int main()
     Communication::serialOutputLine(s);
     ss = std::stringstream();
 
-    ss << "Current board name: " << CSdrivers::CURRENT_BOARD_NAME;
+    ss << "Current board name: " << CSdevices::CURRENT_BOARD_NAME;
     s = ss.str();
     Communication::serialOutputLine(s);
 

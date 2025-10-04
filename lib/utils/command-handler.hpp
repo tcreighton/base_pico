@@ -2,7 +2,7 @@
 #ifndef COMMAND_HANDLER_HPP_
 #include "command-declarations.hpp"
 
-namespace CScommands {
+namespace CScore {
 
     class CommandHandler final {
 

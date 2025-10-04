@@ -5,7 +5,7 @@
 
 #include <cstdint>
 
-namespace CScommands {
+namespace CScore {
 
     using PackedDateTime_t = uint32_t;
 

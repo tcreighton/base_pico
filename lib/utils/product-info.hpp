@@ -34,8 +34,8 @@ namespace CSutils {
         std::string                     productName             = PRODUCT_NAME;
         uint8_t                         majorVersion            = FIRMWARE_MAJOR_VERSION;
         uint8_t                         minorVersion            = FIRMWARE_MINOR_VERSION;
-        CScommands::PackedDateTime_t   buildNumber             = CScommands::PackedDateTime::getPackedBuildDateTime();// encoded build date
-        std::string                     circuitBoardRevision    = CSdrivers::CURRENT_BOARD_NAME;
+        CScore::PackedDateTime_t   buildNumber             = CScore::PackedDateTime::getPackedBuildDateTime();// encoded build date
+        std::string                     circuitBoardRevision    = CSdevices::CURRENT_BOARD_NAME;
         std::string                     encodedPicoBoardId      = getPicoBoardId();// AKA product serial number
     };
     using ProductInfo_t = ProductInfo;  // Not really necessary.
@@ -43,10 +43,10 @@ namespace CSutils {
     inline std::string getFirmwareVersion () {
         std::stringstream version;
 
-        const auto packed = CScommands::PackedDateTime::getPackedBuildDateTime();
+        const auto packed = CScore::PackedDateTime::getPackedBuildDateTime();
         version << static_cast<int>(FIRMWARE_MAJOR_VERSION) << "."
                 << static_cast<int>(FIRMWARE_MINOR_VERSION) << "."
-                << CScommands::int_to_hex(packed);
+                << CScore::int_to_hex(packed);
         return version.str();
     }
 

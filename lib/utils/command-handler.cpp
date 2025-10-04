@@ -6,7 +6,7 @@
 #include "commands.hpp"
 #include "pico/time.h"
 
-namespace CScommands {
+namespace CScore {
     bool CommandHandler::doCommand() {
         auto retValue = false;
 

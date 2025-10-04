@@ -116,8 +116,8 @@ namespace CScommunication {
         static bool initUsb();
 
         // UART interface management
-        static bool initUart(CSdrivers::UartId uartId = CSdrivers::UartId::UART0);
-        static void initUartGpio(CSdrivers::UartId instance);
+        static bool initUart(CSdevices::UartId uartId = CSdevices::UartId::UART0);
+        static void initUartGpio(CSdevices::UartId instance);
 
         // Legacy compatibility - checks if any UART is enabled for commands
         static bool isUartEnabled() { return getActiveCommInterface() == CommInterface::UART; }
@@ -144,7 +144,7 @@ namespace CScommunication {
         static void recordCommands(const std::string& commandString);
         static bool processInputCharacter(char ch, std::string &inputBuffer);
         static uart_inst_t* getCommandUartHardware();
-        static const CSdrivers::SingleUARTConfig* getCommandUartConfig();
+        static const CSdevices::SingleUARTConfig* getCommandUartConfig();
 
         // State tracking
         static bool usbEnabled_;    // By default support usb

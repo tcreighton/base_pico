@@ -16,7 +16,7 @@
 /**
  * This file holds useful macros and declarations. Also global constants.
  */
-namespace CScommands {
+namespace CScore {
 
 
 //    constexpr bool SIMULATE_ADC = false;

@@ -30,7 +30,7 @@ namespace CScommunication {
         // Priority 2: Command handler UART if available
         // ReSharper disable once CppDFAConstantConditions
         if (const auto* cmdUart = getCommandUartConfig(); nullptr != cmdUart && cmdUart->enabled) {
-            if (CSdrivers::UartId uartId = CSdrivers::BOARD.uart.getCommandHandlerId();
+            if (CSdevices::UartId uartId = CSdevices::BOARD.uart.getCommandHandlerId();
                 uartEnabled_[static_cast<size_t>(uartId)]) {
                 return CommInterface::UART;
             }
@@ -52,11 +52,11 @@ namespace CScommunication {
         }
 
         // Use runtime lookup instead of stored pointer
-        return CSdrivers::getUartHardware(cmdUart->uartId);
+        return CSdevices::getUartHardware(cmdUart->uartId);
     }
 
-    const CSdrivers::SingleUARTConfig* Communication::getCommandUartConfig() {
-        return CSdrivers::BOARD.uart.getCommandHandlerUART(); // can return nullptr
+    const CSdevices::SingleUARTConfig* Communication::getCommandUartConfig() {
+        return CSdevices::BOARD.uart.getCommandHandlerUART(); // can return nullptr
     }
 
 
@@ -153,15 +153,15 @@ namespace CScommunication {
         return isUsbEnabled(); // Note the result. We might have quit before a connection was made. Doesn't matter!
     }
 
-    bool Communication::initUart(const CSdrivers::UartId uartId) {
-        const auto& config = CSdrivers::BOARD;
+    bool Communication::initUart(const CSdevices::UartId uartId) {
+        const auto& config = CSdevices::BOARD;
         
         // Get the specific UART configuration
-        const auto& uart_config = (uartId == CSdrivers::UartId::UART0) ?
+        const auto& uart_config = (uartId == CSdevices::UartId::UART0) ?
                                     config.uart.uartConfig0 : config.uart.uartConfig1;
         
         // Check board capabilities first
-        const bool board_supports_uart = (uartId == CSdrivers::UartId::UART0) ?
+        const bool board_supports_uart = (uartId == CSdevices::UartId::UART0) ?
                                             config.capabilities.hasUART0 : config.capabilities.hasUART1;
         
         if (!board_supports_uart || !uart_config.enabled) {
@@ -171,14 +171,14 @@ namespace CScommunication {
         
         // Validate configuration before proceeding
         if (!uart_config.isValid() ||
-            CSdrivers::isInvalidGPIOPin(uart_config.tx_pin) ||
-            CSdrivers::isInvalidGPIOPin(uart_config.rx_pin)) {
+            CSdevices::isInvalidGPIOPin(uart_config.tx_pin) ||
+            CSdevices::isInvalidGPIOPin(uart_config.rx_pin)) {
             uartEnabled_[static_cast<size_t>(uartId)] = false;
             return false;
         }
 
         // Get hardware instance at runtime
-        uart_inst_t* uart_hw = CSdrivers::getUartHardware(uart_config.uartId);
+        uart_inst_t* uart_hw = CSdevices::getUartHardware(uart_config.uartId);
 
         // Initialize UART hardware
         actualUartBaudRate_[static_cast<size_t>(uartId)] =
@@ -208,15 +208,15 @@ namespace CScommunication {
 
     }
 
-    void Communication::initUartGpio(const CSdrivers::UartId instance) {
-        const auto& config = CSdrivers::BOARD;
+    void Communication::initUartGpio(const CSdevices::UartId instance) {
+        const auto& config = CSdevices::BOARD;
         
         // Get the specific UART configuration
-        const auto& uart_config = (instance == CSdrivers::UartId::UART0) ?
+        const auto& uart_config = (instance == CSdevices::UartId::UART0) ?
                                   config.uart.uartConfig0 : config.uart.uartConfig1;
         
         // Double-check that this UART should be initialized
-        const bool board_supports_uart = (instance == CSdrivers::UartId::UART0) ?
+        const bool board_supports_uart = (instance == CSdevices::UartId::UART0) ?
                                    config.capabilities.hasUART0 : config.capabilities.hasUART1;
                                    
         if (!board_supports_uart || !uart_config.enabled || !uart_config.isValid()) {
@@ -296,7 +296,7 @@ namespace CScommunication {
 
     uint Communication::getCommandUartBaudRate() {
         if (CommInterface::UART == getActiveCommInterface()) {
-            return actualUartBaudRate_[static_cast<size_t>(CSdrivers::BOARD.uart.getCommandHandlerId())];
+            return actualUartBaudRate_[static_cast<size_t>(CSdevices::BOARD.uart.getCommandHandlerId())];
         } else {
             return 0;
         }
@@ -307,7 +307,7 @@ namespace CScommunication {
             case CommInterface::USB:
                 return "USB";
             case CommInterface::UART: {
-                CSdrivers::UartId uartId = CSdrivers::BOARD.uart.getCommandHandlerId();
+                CSdevices::UartId uartId = CSdevices::BOARD.uart.getCommandHandlerId();
                 return "UART" + std::to_string(static_cast<int>(uartId));
             }
             case CommInterface::NONE:
@@ -320,7 +320,7 @@ namespace CScommunication {
         std::vector<std::string> tokens;
         pystring::split(commandString, tokens, sSEMI);
         for (const auto& token : tokens) {
-            CScommands::Command::recordCommandString(token);
+            CScore::Command::recordCommandString(token);
         }
     }
 }

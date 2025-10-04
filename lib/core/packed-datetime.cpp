@@ -5,7 +5,7 @@
 #include "utilities.hpp"
 
 
-namespace CScommands {
+namespace CScore {
 
 
     PackedDateTime::PackedDateTime( const uint16_t year,

@@ -3,9 +3,10 @@
 
 add_library(drivers
     board-config.hpp
-    component.hpp
-    csi2c.cpp
+    board-init.hpp
     gpio.cpp
+    gpio.hpp
+    gpio-declarations.hpp
 )
 
 target_include_directories(drivers PUBLIC
@@ -15,6 +16,7 @@ target_include_directories(drivers PUBLIC
 # Link against Pico SDK libraries this module needs
 target_link_libraries(drivers PUBLIC
         core
+        devices
 # pico interfaces here
 #       hardware_adc
         hardware_gpio

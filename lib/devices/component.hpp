@@ -4,8 +4,9 @@
 #define COMPONENT_HPP_
 
 #include <string>
+#include <utility>
 
-namespace CSdrivers {
+namespace CSdevices {
 
 /**
  * @brief Component defines an interface to be implemented by most drivers.
@@ -14,10 +15,10 @@ namespace CSdrivers {
     class Component {
 
     public:
-        Component (const std::string &className,
-                   const std::string &label) :
-                        className_(className),
-                        label_(label) {}
+        Component (std::string className,
+                   std::string label) :
+                        className_(std::move(className)),
+                        label_(std::move(label)) {}
 
         virtual ~Component () = default;
 
@@ -37,6 +38,6 @@ namespace CSdrivers {
 
     };
 
-}   // namespace CSdrivers
+}   // namespace CSdevices
 
 #endif  // COMPONENT_HPP_

@@ -7,7 +7,7 @@
 #include "../utils/communication.hpp"
 #include "pico/stdio.h"
 
-namespace CSdrivers {
+namespace CSdevices {
 
     // This initializes the low-level devices: gpio, i2c, communication.
     // All of these need to be in place before pretty much anything else.
