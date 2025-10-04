@@ -7,6 +7,7 @@
 // 4096 bytes arranged in 128 pages of 32 bytes
 
 #include "csi2c.hpp"
+#include "devicesContainer.hpp"
 #include "mcp-eeprom-declarations.hpp"
 
 namespace CSdevices {
@@ -15,10 +16,10 @@ class Mcp24Lc32 : public Component {
 
     public:
 
-        Mcp24Lc32 (   const std::string &className,
-                        const std::string &label,
-                        const uint8_t eePromAddress,    // 3-bit address. Use a different controller to get more blocks.
-                        CsI2C* controller) : Component(className,label), controller_(controller) {
+        Mcp24Lc32 ( const std::string &label,
+                    const uint8_t eePromAddress,    // 3-bit address. Use a different controller to get more blocks.
+                    const ControllerId controllerId) : Component("Mcp24Lc32",label),
+                                                       controllerId_(controllerId) {
             setEePromAddress(eePromAddress);
         }
 
@@ -26,9 +27,11 @@ class Mcp24Lc32 : public Component {
         Mcp24Lc32& operator=(const Mcp24Lc32& other) = delete;
         ~Mcp24Lc32() override = default;
 
-
-        [[nodiscard]] CsI2C* getController () const {
-            return controller_;
+        [[nodiscard]] CsI2C& getController () const {
+            return CSdevices::getController(getControllerId());
+        }
+        [[nodiscard]] ControllerId getControllerId () const {
+            return controllerId_;
         }
 
         // Override this if your block needs to support a signature check.
@@ -156,7 +159,7 @@ class Mcp24Lc32 : public Component {
         // Initializing it just is a precaution in case it's checked before it should be.
         absolute_time_t readyTime_ = get_absolute_time();
         uint8_t eePromAddress_ = 0;
-        CsI2C* controller_;
+        ControllerId controllerId_;
 
     };
 }

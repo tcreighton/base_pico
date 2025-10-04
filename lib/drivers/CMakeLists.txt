@@ -4,6 +4,9 @@
 add_library(drivers
     board-config.hpp
     board-init.hpp
+    eeprom0.cpp
+    eeprom0.hpp
+    eeprom0-page-declarations.hpp
     gpio.cpp
     gpio.hpp
     gpio-declarations.hpp

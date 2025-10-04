@@ -17,6 +17,7 @@ namespace CSworkers {
         //-------------------------------------------------------------------------------------------------
         //  Singleton component declarations here!
 
+        /*
         static CSdevices::CsI2C& getController0 () {
             using CSdevices::ControllerId::I2C_CONTROLLER_0;
             static CSdevices::CsI2C controller0_ {std::string("I2C_Controller_0 is i2c0"), I2C_CONTROLLER_0};
@@ -29,8 +30,11 @@ namespace CSworkers {
             return controller1_;
         };
 
+        static CSdevices::CsI2C& getController (const CSdevices::ControllerId controllerId) {
+            return CSdevices::ControllerId::I2C_CONTROLLER_0 == controllerId ? getController0() : getController1();
+        }
 
-
+    */
     };
 };
 

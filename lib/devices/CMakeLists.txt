@@ -5,6 +5,7 @@ add_library(devices
     component.hpp
     csi2c.cpp
     csi2c.hpp
+    devicesContainer.hpp
     mcp-24lc32.cpp
     mcp-24lc32.hpp
     mcp-eeprom-declarations.hpp

@@ -9,6 +9,7 @@
 
 namespace CSdevices {
 
+
     constexpr uint8_t I2C_EEPROM_ADDRESS = 0x50;       // For multiple eeproms on same controller see EEPromID.
     constexpr uint8_t CONTROL_I2C_DEVICE = 0b101;       // This will combine with the chip select bits: 101xabc
     constexpr uint8_t MCP_EEPROM_PAGE_COUNT = 128;     // 128 pages per eeprom. pages 0-127

@@ -1,8 +1,10 @@
 
 #include <cstring>
 
-#include "mcp-24lc32.hpp"
 #include "logger.hpp"
+#include "mcp-24lc32.hpp"
+
+#include "devicesContainer.hpp"
 #include "random.hpp"
 #include "utilities.hpp"
 
@@ -61,18 +63,19 @@ namespace CSdevices {
 
         // Check that no prior write is pending.
         if ((retCode = isEEPromWriteReady(controlByte))) {
-            bytesWritten = getController()->writeBuffer(controlByte.byte,
-                                                        addressBigEndian,
-                                                        sizeof(addressBigEndian),
-                                                        false);
+            bytesWritten = getController().writeBuffer(controlByte.byte,
+                                                       addressBigEndian,
+                                                       sizeof(addressBigEndian),
+                                                       false);
 
             if (sizeof(addressBigEndian) ==  bytesWritten) {
-                bytesRead = getController()->readBuffer(controlByte.byte,
-                                                        buffer,
-                                                        MCP_EEPROM_PAGE_SIZE,
-                                                        false); // send the stop bit
-                constexpr int foo = MCP_EEPROM_PAGE_SIZE;   // Why foo? so the static analyzer won't freak out
-                retCode = (foo == bytesRead);               // about comparing signed & unsigned.
+                bytesRead = getController().readBuffer(controlByte.byte,
+                                                             buffer,
+                                                             MCP_EEPROM_PAGE_SIZE,
+                                                             false); // send the stop bit
+//                constexpr int foo = MCP_EEPROM_PAGE_SIZE;   // Why foo? so the static analyzer won't freak out
+//                retCode = (foo == bytesRead);               // about comparing signed & unsigned.
+                retCode = (MCP_EEPROM_PAGE_SIZE == bytesRead);
             }
         } else {
             CScore::logger_.log(CScore::LogLevel::Error,
@@ -95,10 +98,10 @@ namespace CSdevices {
 
             std::memcpy(&bigEndianAddressPlusData[2], buffer, MCP_EEPROM_PAGE_SIZE);
 
-            const auto bytesWritten = getController()->writeBuffer(controlByte.byte,
-                                                                        bigEndianAddressPlusData,
-                                                                        MCP_EEPROM_PAGE_SIZE + 2,
-                                                                        false); // send the stop bit
+            const auto bytesWritten = getController().writeBuffer(controlByte.byte,
+                                                                     bigEndianAddressPlusData,
+                                                                     MCP_EEPROM_PAGE_SIZE + 2,
+                                                                     false); // send the stop bit
 
             if ((retCode = (MCP_EEPROM_PAGE_SIZE + 2 == bytesWritten))) {
                 setReadyTime();
@@ -127,10 +130,10 @@ namespace CSdevices {
 
         constexpr uint8_t value = 0;  // dummy value for the control byte write
 
-        const auto bytesWritten = getController()->writeBuffer(controlByte.byte,
-                                                                   &value,
-                                                                   0,       // Not really writing. Just checking
-                                                                   false); // send the stop bit
+        const auto bytesWritten = getController().writeBuffer(controlByte.byte,
+                                                                 &value,
+                                                                 0,       // Not really writing. Just checking
+                                                                 false); // send the stop bit
 
         if (bytesWritten < 0 && tryNumber > 0) {
             // Did not work. Let's try once more.
