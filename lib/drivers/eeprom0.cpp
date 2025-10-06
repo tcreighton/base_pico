@@ -2,52 +2,37 @@
 
 #include <cstring>
 
-#include "focus500-container.hpp"
 #include "eeprom0.hpp"
 #include "eeprom0-page-declarations.hpp"
 #include "logger.hpp"
 #include "mcp-24lc32.hpp"
-#include "ps-declarations-root.hpp"
-#include "random.hpp"
-
-using namespace CSutilities;
+#include "packed-datetime.hpp"
+#include "utilities.hpp"
 
 namespace CSdrivers {
 
 
-    CSerrors::StatusCode EeProm0::init() {
+    bool EeProm0::init() {
 
-#if defined LOG_GROUP_INIT
-        logger_.log(LogLevel::Debug, getLabel() + " **LOG_GROUP_INIT**" +
-                    __func__ + ": Initializing...\n");
+        auto retCode = Mcp24Lc32::init(); // Let the base classes have a chance to initialize.
 
-#endif
-
-        const auto retCode = Mcp24Lc32::init(); // Let the base classes have a chance to initialize.
-
-        auto signatureCheck = true;
         if (!checkSignature()) {    // This means we need to format and initialize the block.
             formatEEProm();
-            signatureCheck = Mcp24Lc32::initializeEEProm();
+            retCode = Mcp24Lc32::initializeEEProm();
         }
-
-#if defined LOG_GROUP_INIT
-        logger_.log(LogLevel::Debug, getLabel() + " **LOG_GROUP_INIT**" +
-                    __func__ + ": Signature check: " + (signatureCheck ? "true." : "false.") +
-                    " Initialization complete: " + statusToLabel(retCode) + "\n");
-
-#endif
 
         return retCode;
     }
 
+    /*
     EeProm0& EeProm0::getEEProm0() {
         return CSfocus500::Focus500Container::getEEProm0();
     }
+    */
 
     void EeProm0::computeSignature(uint8_t *signature) { // assumes that signature points at an array large enough.
-        const PackedDateTime_t dt = PackedDateTime::getPackedBuildDate();
-        UInt32ToBytes dateBytes;
+        const CScore::PackedDateTime_t dt = CScore::PackedDateTime::getPackedBuildDate();
+        CScore::UInt32ToBytes dateBytes;
         dateBytes.data = dt;
         memcpy(signature, SIGNATURE_DEFAULT, sizeof(SIGNATURE_DEFAULT));    // copy in the const data
         memcpy(signature + SIGNATURE_BUILD_DATE_OFFSET,
@@ -99,92 +84,112 @@ namespace CSdrivers {
                 break;
 
             case GRID1_CONTROL_DATA_PAGE_1: {
+                /*
                 PSControlDataPage1_t newData;
                 newData.data = getControlDataPage1FromControlData(
                                     CSfactory::getControlDataFromFactory(
                                         CSpowersupply::PowerSupplyID::G1));
                 retValue = writePage(GRID1_CONTROL_DATA_PAGE_1, newData);
+            */
             }
                 break;
 
             case GRID1_CONTROL_DATA_PAGE_2: {
+                /*
                 PSControlDataPage2_t newData;
                 newData.data = getControlDataPage2FromControlData(
                                     CSfactory::getControlDataFromFactory(
                                         CSpowersupply::PowerSupplyID::G1));
                 retValue = writePage(GRID1_CONTROL_DATA_PAGE_2, newData);
+            */
             }
                 break;
 
             case GRID2_CONTROL_DATA_PAGE_1: {
+                /*
                 PSControlDataPage1_t newData;
                 newData.data = getControlDataPage1FromControlData(
                                     CSfactory::getControlDataFromFactory(
                                         CSpowersupply::PowerSupplyID::G2));
                 retValue = writePage(GRID2_CONTROL_DATA_PAGE_1, newData);
+            */
             }
                 break;
 
             case GRID2_CONTROL_DATA_PAGE_2: {
+                /*
                 PSControlDataPage2_t newData;
                 newData.data = getControlDataPage2FromControlData(
                                     CSfactory::getControlDataFromFactory(
                                         CSpowersupply::PowerSupplyID::G2));
                 retValue = writePage(GRID2_CONTROL_DATA_PAGE_2, newData);
+            */
             }
                 break;
 
             case GRID3_CONTROL_DATA_PAGE_1: {
+                /*
                 PSControlDataPage1_t newData;
                 newData.data = getControlDataPage1FromControlData(
                                     CSfactory::getControlDataFromFactory(
                                         CSpowersupply::PowerSupplyID::G3));
                 retValue = writePage(GRID3_CONTROL_DATA_PAGE_1, newData);
+            */
             }
                 break;
 
             case GRID3_CONTROL_DATA_PAGE_2: {
+                /*
                 PSControlDataPage2_t newData;
                 newData.data = getControlDataPage2FromControlData(
                                     CSfactory::getControlDataFromFactory(
                                         CSpowersupply::PowerSupplyID::G3));
                 retValue = writePage(GRID3_CONTROL_DATA_PAGE_2, newData);
+            */
             }
                 break;
 
             case HEATER_CONTROL_DATA_PAGE_1: {
+                /*
                 PSControlDataPage1_t newData;
                 newData.data = getControlDataPage1FromControlData(
                                     CSfactory::getControlDataFromFactory(
                                         CSpowersupply::PowerSupplyID::HEATER));
                 retValue = writePage(HEATER_CONTROL_DATA_PAGE_1, newData);
+            */
             }
                 break;
 
             case HEATER_CONTROL_DATA_PAGE_2: {
+                /*
                 PSControlDataPage2_t newData;
                 newData.data = getControlDataPage2FromControlData(
                                     CSfactory::getControlDataFromFactory(
                                         CSpowersupply::PowerSupplyID::HEATER));
                 retValue = writePage(HEATER_CONTROL_DATA_PAGE_2, newData);
+            */
             }
                 break;
 
             case HV_CONTROL_DATA_PAGE_1: {
+                /*
                 PSControlDataPage1_t newData;
                 newData.data = getControlDataPage1FromControlData(
                                     CSfactory::getControlDataFromFactory(
                                         CSpowersupply::PowerSupplyID::HV));
                 retValue = writePage(HV_CONTROL_DATA_PAGE_1, newData);
+            */
             }
                 break;
 
             case HV_CONTROL_DATA_PAGE_2: {
+                /*
                 PSControlDataPage2_t newData;
                 newData.data = getControlDataPage2FromControlData(
                                     CSfactory::getControlDataFromFactory(
                                         CSpowersupply::PowerSupplyID::HV));
                 retValue = writePage(HV_CONTROL_DATA_PAGE_2, newData);
+            */
             }
                 break;
 
@@ -208,6 +213,7 @@ namespace CSdrivers {
         return retValue;
     }
 
+    /*
     CSfactory::ControlData EeProm0::getControlDataFromStorage(  const ControlDataPage1 &controlDataPage1,
                                                                 const ControlDataPage2 &controlDataPage2) {
         CSfactory::ControlData controlData;
@@ -230,7 +236,9 @@ namespace CSdrivers {
 
         return controlData;
     }
+    */
 
+    /*
     CSfactory::ControlData EeProm0::getControlDataFromStorage(CSpowersupply::PowerSupplyID psId) {
             PSControlDataPage1_t page1;
             PSControlDataPage2_t page2;
@@ -291,7 +299,9 @@ namespace CSdrivers {
             return controlData;
 
     }
+    */
 
+    /*
     void EeProm0::setControlDataInStorage(CSpowersupply::PowerSupplyID psId,
                                                 const CSfactory::ControlData &controlData) {
         PSControlDataPage1 page1 {};
@@ -328,7 +338,9 @@ namespace CSdrivers {
 
         }
     }
+    */
 
+    /*
     void EeProm0::setControlDataInStorage(const CSpowersupply::PowerSupplyID psId) {
         setControlDataInStorage(psId,
                 CSfocus500::Focus500Container::getPowerSupply(psId).getPSControlData().getControlData());
@@ -346,7 +358,9 @@ namespace CSdrivers {
         controlDataPage1.vwcMVoltageSlope       = controlData.voltageWriteControlData.mVoltageSlope;
         return controlDataPage1;
     }
+    */
 
+    /*
     ControlDataPage2 EeProm0::getControlDataPage2FromControlData(const CSfactory::ControlData &controlData) {
         ControlDataPage2 controlDataPage2;
         controlDataPage2.vwcBVoltageOffset          = controlData.voltageWriteControlData.bVoltageOffset;
@@ -359,6 +373,7 @@ namespace CSdrivers {
         controlDataPage2.pdcCollectionWindowSize    = controlData.pidControlData.collectionWindowSize;
         return controlDataPage2;
     }
+    */
 
     // ReSharper disable once CppMemberFunctionMayBeStatic
     void EeProm0::logPageInitError(const PageId pageId) {

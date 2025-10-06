@@ -7,7 +7,6 @@ add_library(utils
         commands.hpp
         communication.hpp
         communication.cpp
-        product-info.hpp
 )
 
 target_include_directories(utils PUBLIC

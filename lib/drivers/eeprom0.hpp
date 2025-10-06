@@ -4,14 +4,10 @@
 #ifndef EEPROM0_HPP_
 #define EEPROM0_HPP_
 
+#include "csi2c.hpp"
 #include "eeprom0-page-declarations.hpp"
 #include "mcp-24lc32.hpp"
 
-/*
-namespace CSfocus500 {
-    class Focus500Container;
-}
-*/
 
 namespace CSdrivers {
 
@@ -19,12 +15,13 @@ namespace CSdrivers {
 
         public:
 
-        EeProm0 (   const std::string &className,
-                    const std::string &label,
-                    CScomponents::CsI2C* controller) : Mcp24Lc32( className,
-                                                                    label,
-                                                                    EEPromIDToNumber(EEPromId::EEPROM_0),
-                                                                    controller) {}
+        explicit EeProm0 (const ControllerId controllerId) :
+                                Mcp24Lc32(EEPromIDToNumber(EEPromId::EEPROM_0), controllerId) {
+            setClassName("EEProm0");
+            setLabel("SW EEProm 0");
+            prependToHierarchy("EeProm0");
+        }
+
 
         EeProm0 (const EeProm0& other) = delete;
         EeProm0& operator=(const EeProm0& other) = delete;
@@ -35,7 +32,7 @@ namespace CSdrivers {
         }
 
         // This gets called during system initialization - StateMachine::doInitialEEPromState
-        CSerrors::StatusCode init () override;
+        bool init () override;
 
         ///
         /// @return The global instance of EEProm0 from focus500 container.
@@ -82,6 +79,7 @@ namespace CSdrivers {
         /// @param controlDataPage1 First page as declared for eeprom;
         /// @param controlDataPage2 Second page as declared for eeprom;
         /// @return A copy of ControlData.
+        /*
         static CSfactory::ControlData getControlDataFromStorage (  const ControlDataPage1& controlDataPage1,
                                                                    const ControlDataPage2& controlDataPage2);
 
@@ -100,6 +98,7 @@ namespace CSdrivers {
 
         static ControlDataPage2 getControlDataPage2FromControlData (const CSfactory::ControlData& controlData);
 
+        */
         // Page methods here.
 
         /**

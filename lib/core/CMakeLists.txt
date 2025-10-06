@@ -5,6 +5,7 @@ add_library(core
     logger.cpp
     packed-datetime.hpp
     packed-datetime.cpp
+    product-info.hpp
     pystring.h
     pystring.cpp
     random.hpp

@@ -15,25 +15,35 @@ namespace CSdevices {
     class Component {
 
     public:
-        Component (std::string className,
-                   std::string label) :
-                        className_(std::move(className)),
-                        label_(std::move(label)) {}
+        Component () {
+            setClassName("Component");
+            setLabel("Base class for most primary classes.");
+        }
 
         virtual ~Component () = default;
 
-        virtual std::string getClassName() {return className_;}
-        [[nodiscard]] virtual std::string getLabel() const { return label_; }
+        virtual bool init () {return true;}
+
+        std::string getClassName() {return className_;}
+        [[nodiscard]] std::string getLabel() const { return label_; }
+        [[nodiscard]] std::string getHierarchy() const { return hierarchy_; }
 
     protected:
 
-        void appendLabel (const std::string &appendix) { setLabel(getLabel() + appendix); }
-        virtual void setLabel (const std::string &label) { label_ = label; }
+        void prependToHierarchy (const std::string& className) {
+            hierarchy_ = hierarchy_.empty() ?
+                            className       :
+                            className + ":" + hierarchy_;
+        }
+
+        void setClassName (const std::string& className) {className_ = className;}
+        void setLabel (const std::string &label) { label_ = label; }
 
     private:
 
-        const std::string className_;
+        std::string className_;
         std::string label_;
+        std::string hierarchy_;
 
 
     };

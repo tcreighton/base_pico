@@ -21,7 +21,7 @@ namespace CSutils {
     }
 
     #define COMPANY_NAME  "Creighton Scientific, Inc." // This needs to be a #define, not constexpr
-    #define PRODUCT_NAME  "This is the greatest product ever!"  // TODO: Change this to something more meaningful.
+    #define PRODUCT_NAME  "This is the greatest product!"  // TODO: Change this to something more meaningful.
 
     constexpr uint8_t FIRMWARE_MAJOR_VERSION = 0x00;
     constexpr uint8_t FIRMWARE_MINOR_VERSION = 0x00;

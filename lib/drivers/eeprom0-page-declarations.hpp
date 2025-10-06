@@ -9,6 +9,7 @@
 //#include "ps-declarations.hpp"
 //#include "utilities.hpp"
 #include "mcp-eeprom-declarations.hpp"
+#include "product-info.hpp"
 
 using namespace CSdevices;
 
@@ -124,7 +125,7 @@ namespace CSdrivers {
     };
 
     constexpr size_t CD_PAGE1_SIZE = sizeof(ControlDataPage1);
-    static_assert(CD_PAGE1_SIZE <= CSdrivers::MCP_EEPROM_PAGE_SIZE, "Page1 size exceeds MCP24LC32_PAGE_SIZE");
+    static_assert(CD_PAGE1_SIZE <= MCP_EEPROM_PAGE_SIZE, "Page1 size exceeds MCP24LC32_PAGE_SIZE");
 
     struct ControlDataPage2 {
         float       vwcBVoltageOffset                       = 0.0f;
@@ -134,11 +135,12 @@ namespace CSdrivers {
         float       pdcKdValue                              = 0.0f;
         float       pdcMinControlVariable                   = 0.0f;
         float       pdcMaxControlVariable                   = 0.0f;
-        CSfactory::ErrorWindowSize_t pdcCollectionWindowSize  = 0;
+//        CSfactory::ErrorWindowSize_t pdcCollectionWindowSize  = 0;
+        uint8_t pdcCollectionWindowSize  = 0;
     };
 
     constexpr size_t CD_PAGE2_SIZE = sizeof(ControlDataPage2);
-    static_assert(CD_PAGE2_SIZE <= CSdrivers::MCP_EEPROM_PAGE_SIZE, "Page2 size exceeds MCP24LC32_PAGE_SIZE");
+    static_assert(CD_PAGE2_SIZE <= MCP_EEPROM_PAGE_SIZE, "Page2 size exceeds MCP24LC32_PAGE_SIZE");
 
 
     // Declarations for power supply control data pages. Two for each ps.

@@ -29,12 +29,24 @@ namespace CSdevices {
 
     public:
 
-        CsI2C ( std::string label,
-                const ControllerId controllerId,
-                const BaudRate baudrateInKHz = BaudRate::FOUR_HUNDRED_KHZ) :
-                        Component("CsI2C", std::move(label)),
-                            controllerId_(controllerId),
-                            requestedBaudRate_(baudrateInKHz) {
+        explicit CsI2C (    const ControllerId controllerId,
+                            const BaudRate baudrateInKHz = BaudRate::FOUR_HUNDRED_KHZ) :
+                                controllerId_(controllerId),
+                                requestedBaudRate_(baudrateInKHz) {
+            setClassName("CsI2C");
+            setLabel("I2C Controller");
+            prependToHierarchy("CsI2C");
+            setBaudRate(baudrateInKHz);
+        }
+
+        CsI2C (const std::string& label,
+            const ControllerId controllerId,
+            const BaudRate baudrateInKHz = BaudRate::FOUR_HUNDRED_KHZ) :
+                controllerId_(controllerId),
+                requestedBaudRate_(baudrateInKHz) {
+            setClassName("CsI2C");
+            setLabel(label);
+            prependToHierarchy("CsI2C");
             setBaudRate(baudrateInKHz);
         }
 
@@ -178,7 +190,6 @@ namespace CSdevices {
         }
 
         ControllerId controllerId_;
-//        i2c_inst_t* i2cInstance_ = i2c0; // Default value - override in initializer
         BaudRate requestedBaudRate_ = BaudRate::FOUR_HUNDRED_KHZ; // this is always in kHz. Actual is always in Hz.
         uint32_t actualBaudRate_ = 0;    // This gets set to the return from a call to i2c_init within a constructor.
     };

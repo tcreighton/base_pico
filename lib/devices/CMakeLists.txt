@@ -5,10 +5,13 @@ add_library(devices
     component.hpp
     csi2c.cpp
     csi2c.hpp
+    dac-declarations.hpp
     devicesContainer.hpp
     mcp-24lc32.cpp
     mcp-24lc32.hpp
     mcp-eeprom-declarations.hpp
+    mcp4728.cpp
+    mcp4728.hpp
 )
 
 target_include_directories(devices PUBLIC

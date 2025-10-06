@@ -10,6 +10,7 @@ add_library(drivers
     gpio.cpp
     gpio.hpp
     gpio-declarations.hpp
+    driversContainer.hpp
 )
 
 target_include_directories(drivers PUBLIC

@@ -16,11 +16,12 @@ class Mcp24Lc32 : public Component {
 
     public:
 
-        Mcp24Lc32 ( const std::string &label,
-                    const uint8_t eePromAddress,    // 3-bit address. Use a different controller to get more blocks.
-                    const ControllerId controllerId) : Component("Mcp24Lc32",label),
-                                                       controllerId_(controllerId) {
+        Mcp24Lc32 ( const uint8_t eePromAddress,    // 3-bit address. Use a different controller to get more blocks.
+                    const ControllerId controllerId) : controllerId_(controllerId) {
             setEePromAddress(eePromAddress);
+            setClassName("Mcp24Lc32");
+            setLabel("MCP 24LC32");
+            prependToHierarchy("Mcp24Lc32");
         }
 
         Mcp24Lc32 (const Mcp24Lc32& other) = delete;
