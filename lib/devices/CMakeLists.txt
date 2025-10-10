@@ -2,6 +2,10 @@
 # Create a library for devices
 
 add_library(devices
+    ads1115-config.hpp
+    ads1115-declarations.hpp
+    ads1115.cpp
+    ads1115.hpp
     component.hpp
     csi2c.cpp
     csi2c.hpp

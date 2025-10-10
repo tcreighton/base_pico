@@ -1,6 +1,7 @@
 #pragma once
 #ifndef DEVICES_CONTAINER_HPP_
 
+#include "ads1115.hpp"
 #include "csi2c.hpp"
 #include "dac-channel.hpp"
 #include "mcp4728.hpp"
@@ -77,6 +78,26 @@ namespace CSdevices {
         return gridAnodeChannelA_;
     }
 
+    inline Ads1115& getAdc0 () {
+        static Ads1115 adc0_{std::string(   "ADC For Heater & Grid 1"),
+                                                ControllerId::I2C_CONTROLLER_0,
+                                            0x48};
+        return adc0_;
+    }
+
+    inline Ads1115& getAdc1 () {
+        static Ads1115 adc1_{std::string(   "ADC For Grid 2 & Grid 3"),
+                                                ControllerId::I2C_CONTROLLER_0,
+                                            0x49};
+        return adc1_;
+    }
+
+    inline Ads1115& getAdc2 () {
+        static Ads1115 adc2_{std::string(   "ADC For Anode"),
+                                                ControllerId::I2C_CONTROLLER_1,
+                                            0x48};
+        return adc2_;
+    }
 
 }
 

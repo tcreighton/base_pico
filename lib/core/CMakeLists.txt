@@ -1,6 +1,7 @@
 # Create a library for drivers
 
 add_library(core
+    assertion.hpp
     logger.hpp
     logger.cpp
     packed-datetime.hpp

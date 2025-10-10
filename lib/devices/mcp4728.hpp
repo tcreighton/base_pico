@@ -11,6 +11,7 @@
 namespace CSdevices {
 
     CsI2C& getController(ControllerId controllerId); // A little forward reference.
+
     class DacChannel;   // forward reference to DacChannel
 
     class Mcp4728 final : public Component {
