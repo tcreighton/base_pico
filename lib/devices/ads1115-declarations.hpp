@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <string>
 
-namespace CSdevices {
+namespace CScore {
 
     // Programmable Gain Amplifier (PGA) Config register bits [2:0]
     enum class Ads1115GainValues : uint8_t {  // Programmable Gain Amplifier (PGA) Settings

@@ -2,7 +2,7 @@
 #ifndef GPIO_DECL_HPP_
 #define GPIO_DECL_HPP_
 
-namespace CSdevices {
+namespace CScore {
 
     // Basic GPIO pin definitions (physical mapping)
     // Physical pins are designated by P-xx for pico; RP-xx for RP2040

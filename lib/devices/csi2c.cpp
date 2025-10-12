@@ -1,22 +1,15 @@
 
-
 #include <string>
 #include <utility>
-#include <hardware/i2c.h>
 
 #include "csi2c.hpp"
-#include "../core/logger.hpp"
-#include "../core/utilities.hpp"
+#include "logger.hpp"
+#include "utilities.hpp"
 
 using namespace CScore;
 using namespace CScore;
 
-namespace CSdevices {
-
-/**
- *
- * @param requestedBaudRate
- */
+namespace CScore {
 
 
     int CsI2C::writeBuffer( const uint8_t deviceAddress,

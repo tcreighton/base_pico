@@ -4,9 +4,8 @@
 #define COMPONENT_HPP_
 
 #include <string>
-#include <utility>
 
-namespace CSdevices {
+namespace CScore {
 
 /**
  * @brief Component defines an interface to be implemented by most drivers.

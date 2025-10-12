@@ -5,9 +5,9 @@
 
 #include <cstdint>
 #include "hardware/i2c.h"
-#include "../devices/component.hpp"
+#include "component.hpp"
 
-namespace CSdevices {
+namespace CScore {
 
     // Baud rates
     enum class BaudRate : uint32_t {

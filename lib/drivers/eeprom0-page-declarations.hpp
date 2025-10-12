@@ -11,7 +11,7 @@
 #include "mcp-eeprom-declarations.hpp"
 #include "product-info.hpp"
 
-using namespace CSdevices;
+using namespace CScore;
 
 namespace CSdrivers {
 

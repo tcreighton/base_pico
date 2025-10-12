@@ -2,6 +2,14 @@
 
 add_library(core
     assertion.hpp
+    board-config.hpp
+    board-config.cpp
+    error-context.hpp
+    errors.hpp
+    errors.cpp
+    gpio.cpp
+    gpio.hpp
+    gpio-declarations.hpp
     logger.hpp
     logger.cpp
     packed-datetime.hpp
@@ -10,6 +18,8 @@ add_library(core
     pystring.h
     pystring.cpp
     random.hpp
+    serial-comm.hpp
+    serial-comm.cpp
     utilities.hpp
     utilities.cpp
 )
@@ -30,6 +40,7 @@ target_link_libraries(core PUBLIC
         #       hardware_uart
         #       pico_multicore
         pico_stdlib
+        pico_stdio_usb
         #       pico_sync
         pico_unique_id
 )

@@ -7,7 +7,7 @@
 #include "csi2c.hpp"
 #include "ads1115-declarations.hpp"
 
-namespace CSdevices {
+namespace CScore {
 
 //    class CsI2C;    // forward reference
     CsI2C& getController(ControllerId controllerId); // A little forward reference.
@@ -50,7 +50,7 @@ namespace CSdevices {
         }
 
         [[nodiscard]] CsI2C& getController () const {
-            return CSdevices::getController(getControllerId());
+            return CScore::getController(getControllerId());
         }
         [[nodiscard]] ControllerId getControllerId () const {
             return controllerId_;

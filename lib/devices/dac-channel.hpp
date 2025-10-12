@@ -9,7 +9,7 @@
 #include "dac-declarations.hpp"
 
 
-namespace CSdevices {
+namespace CScore {
 
 /**
  * @brief - The DacChannel class provides interface information for MCP4728 and MCP4725 DACs.

@@ -5,8 +5,7 @@
 
 #include <string>
 #include <bits/stdc++.h>
-#include "hardware/uart.h"
-#include "../drivers/board-config.hpp"
+#include "serial-comm.hpp"
 
 namespace CScommunication {
 
@@ -70,24 +69,6 @@ namespace CScommunication {
         WRAPPED_GAMMA_DISPLAY, // GAMMA_DISPLAY wrapped in STX/ETX.
     };
 
-    /*
-    // uart0 and uart1 are declared in uart.h.
-    static const auto UART_ID_0 = uart0;     // actual type is uart_inst_t *
-    static const auto UART_ID_1 = uart1;     // actual type is uart_inst_t *
-    */
-
-    /**
-     * Communication interface priorities:
-     * 1. USB (if connected)
-     * 2. Command Handler UART (if configured and enabled)
-     * 3. Fallback to any enabled UART
-     */
-    enum class CommInterface : uint8_t {
-        NONE,
-        USB,
-        UART
-    };
-
     class Communication {
 
         Communication() = default;  // Private constructor - everything is static!
@@ -108,22 +89,9 @@ namespace CScommunication {
             displayMode_ = mode;
         }
 
-        // USB interface management
-        static bool isUsbEnabled() { return usbEnabled_; }
-        static void setUsbEnabled() { usbEnabled_ = true; }
-        static void setUsbDisabled() { usbEnabled_ = false; }
-        static uint16_t getUsbConnectTime() { return usbConnectTime_; }
-        static bool initUsb();
-
-        // UART interface management
-        static bool initUart(CSdevices::UartId uartId = CSdevices::UartId::UART0);
-        static void initUartGpio(CSdevices::UartId instance);
-
-        // Legacy compatibility - checks if any UART is enabled for commands
-        static bool isUartEnabled() { return getActiveCommInterface() == CommInterface::UART; }
-
-        static CommInterface getActiveCommInterface();
-        static bool hasCommandInterface() { return getActiveCommInterface() != CommInterface::NONE; }
+        static bool hasCommandInterface() {
+            return CScore::SerialComm::getActiveCommInterface() != CScore::CommInterface::NONE;
+        }
 
         static void handleInputBuffer();
 
@@ -135,26 +103,12 @@ namespace CScommunication {
         static void displayStandardGammaError();
         static void displayStandardGammaPositiveResponse();
 
-        static uint getCommandUartBaudRate();
-
-        // Debug/diagnostic functions
-        static std::string getActiveInterfaceInfo();
-
     private:
         static void recordCommands(const std::string& commandString);
         static bool processInputCharacter(char ch, std::string &inputBuffer);
-        static uart_inst_t* getCommandUartHardware();
-        static const CSdevices::SingleUARTConfig* getCommandUartConfig();
 
         // State tracking
-        static bool usbEnabled_;    // By default support usb
-        static uint16_t usbConnectTime_;
         static DisplayMode displayMode_;    // run silent, run deep.
-
-        // Per-UART state (indexed by UARTInstance)
-        static bool uartEnabled_[2];
-        static uint actualUartBaudRate_[2];
-
 
     };
 

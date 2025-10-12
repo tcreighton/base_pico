@@ -6,7 +6,7 @@
 
 #include "ads1115-declarations.hpp"
 
-namespace CSdevices {
+namespace CScore {
 
 
     class Ads1115Config {

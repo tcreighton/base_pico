@@ -6,22 +6,18 @@
 // PICO support
 #include "pico/time.h"
 
-// Local project directories
-#include "board-init.hpp"
-//#include "test.hpp"
+// Local project includes
 
-#include "../lib/utils/communication.hpp"
-#include "../lib/drivers/board-init.hpp"
-#include "../lib/core/packed-datetime.hpp"
+#include "communication.hpp"
+#include "packed-datetime.hpp"
 //#include "stats.hpp"
 #include "logger.hpp"
 #include "product-info.hpp"
 #include "worker.hpp"
-#include "../lib/core/utilities.hpp"
+#include "utilities.hpp"
 
 using namespace CScore;
 using namespace CScommunication;
-using namespace CScore;
 
 int main()
 {
@@ -29,11 +25,11 @@ int main()
 
     // Ignore the return value. We are neither displaying it nor executing logic based on it.
     // This call will also initialize the UART0.
-    if (!CSdevices::boardInit()) {
+    if (!boardInit()) {
         exit(1000); // bad day!
     }
-    auto connectTime = Communication::getUsbConnectTime(); // If disabled, should be 0.
-    auto uartActualBaudRate = Communication::getCommandUartBaudRate();
+    auto connectTime = SerialComm::getUsbConnectTime(); // If disabled, should be 0.
+    auto uartActualBaudRate = SerialComm::getCommandUartBaudRate();
 
 //    sleep_ms(2 * 1000);
 
@@ -44,10 +40,10 @@ int main()
     Communication::serialOutputLine(ss.str());
     ss = std::stringstream();
 
-    if (Communication::isUsbEnabled()) {
+    if (SerialComm::isUsbEnabled()) {
         ss << "USB enabled.";
     }
-    if (Communication::isUartEnabled()) {
+    if (SerialComm::isUartEnabled()) {
         ss << "UART enabled @ "+ std::to_string(uartActualBaudRate) + " baud. ";
     }
     Communication::serialOutputLine(ss.str());
@@ -80,7 +76,7 @@ int main()
     Communication::serialOutputLine(s);
     ss = std::stringstream();
 
-    ss << "Current board name: " << CSdevices::CURRENT_BOARD_NAME;
+    ss << "Current board name: " << CScore::CURRENT_BOARD_NAME;
     s = ss.str();
     Communication::serialOutputLine(s);
 

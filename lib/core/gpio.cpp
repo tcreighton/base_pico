@@ -1,7 +1,8 @@
 #include <hardware/gpio.h>
 #include "gpio.hpp"
+#include "board-config.hpp"
 
-namespace CSdevices {
+namespace CScore {
 
     void Gpio::init() {
         // Initialize different pin groups
@@ -15,7 +16,7 @@ namespace CSdevices {
     }
 
     void Gpio::initI2CPins() {
-        const auto& config = CSdevices::BOARD;
+        const auto& config = BOARD;
         
         // Initialize I2C pins
         gpio_init(config.i2c.c0_sda);
@@ -36,7 +37,7 @@ namespace CSdevices {
     }
 
     void Gpio::initInputPins() {
-        const auto& config = CSdevices::BOARD;
+        const auto& config = BOARD;
         
         /*
         // Only initialize input pins if the board has interlocks
@@ -79,7 +80,7 @@ namespace CSdevices {
     }
 
     void Gpio::initOutputPins() {
-        const auto& config = CSdevices::BOARD;
+        const auto& config = BOARD;
         
         /*
         // Only initialize output pins if the board has HV control
@@ -110,7 +111,7 @@ namespace CSdevices {
 
     void Gpio::setInitialOutputStates() {
         // Only set initial states if the board has HV control
-        if (const auto& config = CSdevices::BOARD; !config.capabilities.hasHVControl) {
+        if (const auto& config = BOARD; !config.capabilities.hasHVControl) {
             return;
         }
 
@@ -123,4 +124,110 @@ namespace CSdevices {
         disableHVRelay();    // Pull down (disable HV relay)
     }
 
-} // namespace CScomponents
+    // ReSharper disable once CppDFAConstantFunctionResult
+    bool Gpio::isDoorClosed() {
+        if constexpr (!BOARD.capabilities.hasInterlocks) {
+            return false; // Safe default for boards without interlocks
+        }
+        return gpio_get(BOARD.inputs.door_interlock);
+    }
+
+    // ReSharper disable once CppDFAConstantFunctionResult
+    bool Gpio::isHVEnabled() {
+        if constexpr (!BOARD.capabilities.hasInterlocks) {
+            return false;
+        }
+        return gpio_get(BOARD.inputs.hv_enabled_interlock);
+    }
+
+    // ReSharper disable once CppDFAConstantFunctionResult
+    bool Gpio::is48VoltEnabled() {
+        if constexpr (!CScore::BOARD.capabilities.hasInterlocks) {
+            return false;
+        }
+        return gpio_get(BOARD.inputs.voltage_48v_enabled);
+    }
+
+    // ReSharper disable once CppDFAConstantFunctionResult
+    bool Gpio::isIonPumpEnabled() {
+        if constexpr (!BOARD.capabilities.hasInterlocks) {
+            return false;
+        }
+        return gpio_get(BOARD.inputs.pump_interlock);
+    }
+
+    // ReSharper disable once CppDFAConstantFunctionResult
+    bool Gpio::isFlowEnabled() {
+        if constexpr (!BOARD.capabilities.hasInterlocks) {
+            return false;
+        }
+        return gpio_get(BOARD.inputs.flow_interlock);
+    }
+
+    void Gpio::setHeaterShutdown(const bool shutdown) {
+        if (BOARD.capabilities.hasHVControl) {
+            gpio_put(BOARD.outputs.heater_shutdown, shutdown);
+        }
+    }
+
+    void Gpio::setG1Shutdown(const bool shutdown) {
+        gpio_put(BOARD.outputs.g1_shutdown, shutdown);
+    }
+
+    void Gpio::setG2Shutdown(const bool shutdown) {
+        gpio_put(BOARD.outputs.g2_shutdown, shutdown);
+    }
+
+    void Gpio::setG3Shutdown(const bool shutdown) {
+        if (BOARD.capabilities.hasHVControl) {
+            gpio_put(BOARD.outputs.g3_shutdown, shutdown);
+        }
+    }
+
+    void Gpio::setHVShutdown(const bool shutdown) {
+        if (BOARD.capabilities.hasHVControl) {
+            gpio_put(BOARD.outputs.hv_shutdown, shutdown);
+        }
+    }
+
+    void Gpio::setHVEnabled(const bool enabled) {
+        if (BOARD.capabilities.hasHVControl) {
+            gpio_put(BOARD.outputs.hv_enable, enabled);
+        }
+    }
+
+    /*
+    constexpr bool Gpio::boardHasUART0() {
+        return BOARD.capabilities.hasUART0;
+    }
+    */
+
+    constexpr bool Gpio::boardHasUART0() {
+        return BOARD.capabilities.hasUART0;
+    }
+
+    constexpr bool Gpio::boardHasUART1() {
+        return BOARD.capabilities.hasUART1;
+    }
+
+    constexpr bool Gpio::boardHasInterlocks() {
+        return BOARD.capabilities.hasInterlocks;
+    }
+
+    constexpr bool Gpio::boardHasHVControl() {
+        return BOARD.capabilities.hasHVControl;
+    }
+
+    constexpr bool Gpio::boardHasUART() {
+        return boardHasUART0() || boardHasUART1();
+    }
+
+    /*
+    constexpr BoardRevision Gpio::getBoardRevision() {
+        return BOARD.revision;
+    }
+    */
+
+
+
+} // namespace CScore

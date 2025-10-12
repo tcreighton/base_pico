@@ -8,7 +8,7 @@
 #include "csi2c.hpp"
 #include "dac-declarations.hpp"
 
-namespace CSdevices {
+namespace CScore {
 
     CsI2C& getController(ControllerId controllerId); // A little forward reference.
 
@@ -35,7 +35,7 @@ namespace CSdevices {
         ~Mcp4728 () override = default;
 
         [[nodiscard]] CsI2C& getController () const {
-            return CSdevices::getController(getControllerId());
+            return CScore::getController(getControllerId());
         }
         [[nodiscard]] ControllerId getControllerId () const {
             return controllerId_;

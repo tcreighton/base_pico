@@ -7,7 +7,7 @@
 #include <cstdint>
 
 
-namespace CSdevices {
+namespace CScore {
 
 
     constexpr uint8_t I2C_EEPROM_ADDRESS = 0x50;       // For multiple eeproms on same controller see EEPromID.

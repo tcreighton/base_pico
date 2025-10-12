@@ -8,7 +8,7 @@
 #include "random.hpp"
 #include "utilities.hpp"
 
-namespace CSdevices {
+namespace CScore {
 
 
     // Format all even if one fails.

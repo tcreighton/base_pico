@@ -7,7 +7,7 @@
 
 using namespace CScore;
 
-namespace CSdevices {
+namespace CScore {
 
 
     bool Ads1115::writeConfigRegister(const Ads1115ConfigRegister_t configRegister) {

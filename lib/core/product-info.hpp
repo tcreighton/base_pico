@@ -3,11 +3,11 @@
 #ifndef PRODUCT_INFO_HPP_
 #include <cstdint>
 #include <string>
+#include "pico/unique_id.h"
 
 #include "board-config.hpp"
 #include "packed-datetime.hpp"
 #include "utilities.hpp"
-#include "pico/unique_id.h"
 
 namespace CSutils {
 
@@ -35,7 +35,7 @@ namespace CSutils {
         uint8_t                         majorVersion            = FIRMWARE_MAJOR_VERSION;
         uint8_t                         minorVersion            = FIRMWARE_MINOR_VERSION;
         CScore::PackedDateTime_t   buildNumber             = CScore::PackedDateTime::getPackedBuildDateTime();// encoded build date
-        std::string                     circuitBoardRevision    = CSdevices::CURRENT_BOARD_NAME;
+        std::string                     circuitBoardRevision    = CScore::CURRENT_BOARD_NAME;
         std::string                     encodedPicoBoardId      = getPicoBoardId();// AKA product serial number
     };
     using ProductInfo_t = ProductInfo;  // Not really necessary.

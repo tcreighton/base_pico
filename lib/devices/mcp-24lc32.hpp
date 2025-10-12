@@ -10,7 +10,7 @@
 #include "devicesContainer.hpp"
 #include "mcp-eeprom-declarations.hpp"
 
-namespace CSdevices {
+namespace CScore {
 
 class Mcp24Lc32 : public Component {
 
@@ -29,7 +29,7 @@ class Mcp24Lc32 : public Component {
         ~Mcp24Lc32() override = default;
 
         [[nodiscard]] CsI2C& getController () const {
-            return CSdevices::getController(getControllerId());
+            return CScore::getController(getControllerId());
         }
         [[nodiscard]] ControllerId getControllerId () const {
             return controllerId_;
