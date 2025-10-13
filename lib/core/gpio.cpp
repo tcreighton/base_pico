@@ -116,6 +116,7 @@ namespace CScore {
         }
 
         // Set safe initial states - shutdown everything initially
+        // ReSharper disable once CppDFAUnreachableCode
         shutDownHeater();    // Pull up (shutdown)
         shutDownG1();        // Pull up (shutdown)
         shutDownG2();        // Pull up (shutdown)
@@ -129,6 +130,7 @@ namespace CScore {
         if constexpr (!BOARD.capabilities.hasInterlocks) {
             return false; // Safe default for boards without interlocks
         }
+        // ReSharper disable once CppDFAUnreachableCode
         return gpio_get(BOARD.inputs.door_interlock);
     }
 
@@ -137,6 +139,7 @@ namespace CScore {
         if constexpr (!BOARD.capabilities.hasInterlocks) {
             return false;
         }
+        // ReSharper disable once CppDFAUnreachableCode
         return gpio_get(BOARD.inputs.hv_enabled_interlock);
     }
 
@@ -145,6 +148,7 @@ namespace CScore {
         if constexpr (!CScore::BOARD.capabilities.hasInterlocks) {
             return false;
         }
+        // ReSharper disable once CppDFAUnreachableCode
         return gpio_get(BOARD.inputs.voltage_48v_enabled);
     }
 
@@ -153,6 +157,7 @@ namespace CScore {
         if constexpr (!BOARD.capabilities.hasInterlocks) {
             return false;
         }
+        // ReSharper disable once CppDFAUnreachableCode
         return gpio_get(BOARD.inputs.pump_interlock);
     }
 
@@ -161,11 +166,13 @@ namespace CScore {
         if constexpr (!BOARD.capabilities.hasInterlocks) {
             return false;
         }
+        // ReSharper disable once CppDFAUnreachableCode
         return gpio_get(BOARD.inputs.flow_interlock);
     }
 
     void Gpio::setHeaterShutdown(const bool shutdown) {
         if (BOARD.capabilities.hasHVControl) {
+            // ReSharper disable once CppDFAUnreachableCode
             gpio_put(BOARD.outputs.heater_shutdown, shutdown);
         }
     }
@@ -180,18 +187,21 @@ namespace CScore {
 
     void Gpio::setG3Shutdown(const bool shutdown) {
         if (BOARD.capabilities.hasHVControl) {
+            // ReSharper disable once CppDFAUnreachableCode
             gpio_put(BOARD.outputs.g3_shutdown, shutdown);
         }
     }
 
     void Gpio::setHVShutdown(const bool shutdown) {
         if (BOARD.capabilities.hasHVControl) {
+            // ReSharper disable once CppDFAUnreachableCode
             gpio_put(BOARD.outputs.hv_shutdown, shutdown);
         }
     }
 
     void Gpio::setHVEnabled(const bool enabled) {
         if (BOARD.capabilities.hasHVControl) {
+            // ReSharper disable once CppDFAUnreachableCode
             gpio_put(BOARD.outputs.hv_enable, enabled);
         }
     }
@@ -219,6 +229,8 @@ namespace CScore {
     }
 
     constexpr bool Gpio::boardHasUART() {
+        // ReSharper disable once CppDFAUnreachableCode
+        // ReSharper disable once CppRedundantBooleanExpressionArgument
         return boardHasUART0() || boardHasUART1();
     }
 
