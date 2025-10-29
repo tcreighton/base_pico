@@ -40,8 +40,6 @@ namespace CScore {
         ~DacChannel() override = default;
 
         [[nodiscard]] ControllerId getControllerId() const { return controllerId_; }
-//        [[nodiscard]] CsI2C& getController() const {return getController(getControllerId());}
-//        [[nodiscard]] Mcp4728& getDac () const {return dacId_; }
         [[nodiscard]] DacChannelIds getChannelId() const { return channelId_; }
         [[nodiscard]] DacPowerDownValues getPowerMode() const { return powerMode_; }
         [[nodiscard]] DacGainValues getGain() const { return gain_; }
