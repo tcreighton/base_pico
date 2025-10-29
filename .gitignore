@@ -1,6 +1,8 @@
 # IDE configs
-.idea/
-.vscode/
+.idea/*
+!.idea/runConfigurations
+!.idea/cmake.xml
+.vscode/*
 
 # Build directories (out-of-source builds are recommended)
 build/
