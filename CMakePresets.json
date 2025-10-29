@@ -10,9 +10,6 @@
             "hidden": true,
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/build/${presetName}",
-            "environment": {
-                "PICO_SDK_PATH": "/opt/pico-sdk"
-            },
             "cacheVariables": {
                 "CMAKE_CXX_STANDARD": "20",
                 "CMAKE_BUILD_TYPE": "Debug"
@@ -23,9 +20,6 @@
             "hidden": true,
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/build/${presetName}",
-            "environment": {
-                "PICO_SDK_PATH": "/opt/pico-sdk"
-            },
             "cacheVariables": {
                 "CMAKE_CXX_STANDARD": "20",
                 "CMAKE_BUILD_TYPE": "Release"
