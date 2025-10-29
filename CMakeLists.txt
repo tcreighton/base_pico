@@ -38,6 +38,7 @@ cmake_policy(SET CMP0054 NEW)	# ensures that quoted strings inside if() are alwa
 add_subdirectory(lib/core)
 add_subdirectory(lib/devices)
 add_subdirectory(lib/drivers)
+add_subdirectory(lib/tests)
 add_subdirectory(lib/utils)
 add_subdirectory(src)
 
@@ -78,6 +79,6 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 #pico_add_extra_outputs(${PROJECT_NAME})
 
 
-# Enable usb output, disable uart output
-#pico_enable_stdio_usb(${PROJECT_NAME} 1)
-#pico_enable_stdio_uart(${PROJECT_NAME} 0)
+# Enable usb and uart output
+pico_enable_stdio_usb(${PROJECT_NAME} 1)
+pico_enable_stdio_uart(${PROJECT_NAME} 1)

@@ -2,7 +2,7 @@
 # Create a library for drivers
 
 add_library(drivers
-        driversContainer.hpp
+    driversContainer.hpp
     eeprom0.cpp
     eeprom0.hpp
     eeprom0-page-declarations.hpp
