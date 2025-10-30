@@ -6,13 +6,13 @@
 #include <string>
 #include "component.hpp"
 #include "csi2c.hpp"
-#include "dac-declarations.hpp"
+#include "dac-channel.hpp"
 
-namespace CScore {
+namespace CSdevices {
 
     CsI2C& getController(ControllerId controllerId); // A little forward reference.
 
-//    class DacChannel;   // forward reference to DacChannel
+    class DacChannel;   // forward reference to DacChannel
 
     class Mcp4728 final : public Component {
 
@@ -34,13 +34,13 @@ namespace CScore {
         ~Mcp4728 () override = default;
 
         [[nodiscard]] CsI2C& getController () const {
-            return CScore::getController(getControllerId());
+            return CSdevices::getController(getControllerId());
         }
         [[nodiscard]] ControllerId getControllerId () const {
             return controllerId_;
         }
 
-        bool writeDacInputRegister(const DacChannel& dacChannel, uint16_t data) const;
+        [[nodiscard]] bool writeDacInputRegister(const DacChannel& dacChannel, uint16_t data) const;
         [[nodiscard]] DacId getDacType() const { return dacId_; }
 
     private:

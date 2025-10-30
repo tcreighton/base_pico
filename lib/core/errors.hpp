@@ -5,7 +5,7 @@
 #include <pico/error.h>
 
 
-namespace CSerrors {
+namespace CScore {
 
     enum class ResponseCode {
         PICO_ERROR_RESOURCE_IN_USE_ERROR            = PICO_ERROR_RESOURCE_IN_USE,           // -21

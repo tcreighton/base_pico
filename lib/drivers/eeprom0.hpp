@@ -10,13 +10,15 @@
 
 
 namespace CSdrivers {
+    namespace ee = CSdevices;   // alias the namespace to make it less verbose in this file.
+    namespace i2c = CSdevices;  // alias the namespace to make it less verbose in this file.
 
-    class EeProm0 final : public Mcp24Lc32 {
+    class EeProm0 final : public ee::Mcp24Lc32 {
 
         public:
 
-        explicit EeProm0 (const ControllerId controllerId) :
-                                Mcp24Lc32(EEPromIDToNumber(EEPromId::EEPROM_0), controllerId) {
+        explicit EeProm0 (const i2c::ControllerId controllerId) :
+                                Mcp24Lc32(ee::EEPromIDToNumber(ee::EEPromId::EEPROM_0), controllerId) {
             setClassName("EEProm0");
             setLabel("SW EEProm 0");
         }
@@ -26,8 +28,8 @@ namespace CSdrivers {
         EeProm0& operator=(const EeProm0& other) = delete;
         ~EeProm0() override = default;
 
-        [[nodiscard]] static EEPromId getEePromId () {
-            return EEPromId::EEPROM_0;
+        [[nodiscard]] static ee::EEPromId getEePromId () {
+            return ee::EEPromId::EEPROM_0;
         }
 
         // This gets called during system initialization - StateMachine::doInitialEEPromState
@@ -36,7 +38,7 @@ namespace CSdrivers {
         ///
         /// @return The global instance of EEProm0 from focus500 container.
         ///
-        static EeProm0& getEEProm0 ();
+        //static EeProm0& getEEProm0 ();
 
         static void computeSignature (uint8_t* signature);
         /**
@@ -72,7 +74,7 @@ namespace CSdrivers {
 
         // Initialization of pages here. These are called from initializeEEProm.
 
-        bool initializePage (PageId pageId) override;
+        bool initializePage (ee::EEPromPageId pageId) override;
         
         /// @brief Converts the two pages of eeprom associated with control data into ControlData
         /// @param controlDataPage1 First page as declared for eeprom;
@@ -262,7 +264,7 @@ namespace CSdrivers {
 
     private:
 
-        void logPageInitError (PageId pageId);
+        void logPageInitError (ee::EEPromPageId pageId);
     };
 
 

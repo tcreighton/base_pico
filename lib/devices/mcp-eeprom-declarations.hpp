@@ -6,9 +6,7 @@
 #include <algorithm>
 #include <cstdint>
 
-
-namespace CScore {
-
+namespace CSdevices {
 
     constexpr uint8_t I2C_EEPROM_ADDRESS = 0x50;       // For multiple eeproms on same controller see EEPromID.
     constexpr uint8_t CONTROL_I2C_DEVICE = 0b101;       // This will combine with the chip select bits: 101xabc
@@ -86,7 +84,7 @@ namespace CScore {
 
 
     // Page IDs can have the same value, but they better be used in separate memory devices (ie. different EEPROMs.)
-    enum class PageId : uint8_t {
+    enum class EEPromPageId : uint8_t {
         PAGE_000,PAGE_001,PAGE_002,PAGE_003,PAGE_004,PAGE_005,PAGE_006,PAGE_007,
         PAGE_008,PAGE_009,PAGE_010,PAGE_011,PAGE_012,PAGE_013,PAGE_014,PAGE_015,
         PAGE_016,PAGE_017,PAGE_018,PAGE_019,PAGE_020,PAGE_021,PAGE_022,PAGE_023,
@@ -107,15 +105,15 @@ namespace CScore {
         // Note: PAGE_TOO_BIG is not a valid PageId.
     };
 
-    constexpr uint8_t PageIdToNumber (PageId pageId) {
+    constexpr uint8_t PageIdToNumber (EEPromPageId pageId) {
         return static_cast<uint8_t>(pageId);
     }
-    constexpr uint8_t MIN_PAGE_ID = PageIdToNumber(PageId::PAGE_MINIMUM);
-    constexpr uint8_t MAX_PAGE_ID = PageIdToNumber(PageId::PAGE_MAXIMUM);
-    constexpr PageId NumberToPageId (uint8_t pageId) {
-        return static_cast<PageId>(pageId > MAX_PAGE_ID ? MAX_PAGE_ID : pageId);
+    constexpr uint8_t MIN_PAGE_ID = PageIdToNumber(EEPromPageId::PAGE_MINIMUM);
+    constexpr uint8_t MAX_PAGE_ID = PageIdToNumber(EEPromPageId::PAGE_MAXIMUM);
+    constexpr EEPromPageId NumberToPageId (uint8_t pageId) {
+        return static_cast<EEPromPageId>(pageId > MAX_PAGE_ID ? MAX_PAGE_ID : pageId);
     }
-    constexpr uint16_t getPageBaseAddress (const PageId pageId) {
+    constexpr uint16_t getPageBaseAddress (const EEPromPageId pageId) {
         return PageIdToNumber(pageId) * MCP_EEPROM_PAGE_SIZE;
     }
     constexpr uint16_t MAX_PAGE_ADDRESS = MCP_EEPROM_PAGE_COUNT * MCP_EEPROM_PAGE_SIZE;
@@ -127,28 +125,28 @@ namespace CScore {
 // a need to use the value first and then increment. It's slightly more efficient.
 
     // Prefix increment operator
-    inline PageId& operator++ (PageId& pageId) { // To make this safer, we should clamp result to the max value.
+    inline EEPromPageId& operator++ (EEPromPageId& pageId) { // To make this safer, we should clamp result to the max value.
 //        uint8_t i = static_cast<uint8_t>(pageId) + 1;
 //        pageId = static_cast<PageId>(i > MAX_PAGE_ID ? MIN_PAGE_ID : i); // make this wrap around, just as uint8_t.
-        pageId = pageId < PageId::PAGE_MAXIMUM
+        pageId = pageId < EEPromPageId::PAGE_MAXIMUM
                     ? NumberToPageId(PageIdToNumber(pageId) + 1)
-                    : PageId::PAGE_MINIMUM; // make sure we don't go too far.
+                    : EEPromPageId::PAGE_MINIMUM; // make sure we don't go too far.
         return pageId;
     }
     // Postfix increment operator. This is here just to remember how. It has to be able to return the value prior to ++.
-    inline PageId operator++(PageId& pageId, int) { // Note the int. This simply distinguishes signature. Required!
+    inline EEPromPageId operator++(EEPromPageId& pageId, int) { // Note the int. This simply distinguishes signature. Required!
         const auto originalValue = pageId;  // save for return
         ++pageId;                           // This could be replaced by the body of the prefix version.
         return originalValue;
     }
     // Prefix decrement operator
-    inline PageId& operator-- (PageId& pageId) {
+    inline EEPromPageId& operator-- (EEPromPageId& pageId) {
         uint8_t i = static_cast<uint8_t>(pageId) - 1;
-        pageId = static_cast<PageId>(i > MAX_PAGE_ID ? MAX_PAGE_ID : i);
+        pageId = static_cast<EEPromPageId>(i > MAX_PAGE_ID ? MAX_PAGE_ID : i);
         return pageId;
     }
     // Postfix decrement operator
-    inline PageId operator--(PageId &pageId, int) {
+    inline EEPromPageId operator--(EEPromPageId &pageId, int) {
         const auto originalValue = pageId;  // save for return
         --pageId;
         return originalValue;

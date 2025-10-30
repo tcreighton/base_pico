@@ -6,8 +6,6 @@
 #include "pico/stdio.h"
 
 #include "gpio-declarations.hpp"
-#include "gpio.hpp"
-//#include "serial-comm.hpp"
 
 namespace CScore {
 
@@ -224,23 +222,23 @@ namespace CScore {
                 .hasHVControl   = false
             },
             .i2c = {
-                .c0_sda = CScore::GPIO_08,
-                .c0_scl = CScore::GPIO_09,
-                .c1_sda = CScore::GPIO_10,
-                .c1_scl = CScore::GPIO_11
+                .c0_sda = GPIO_08,
+                .c0_scl = GPIO_09,
+                .c1_sda = GPIO_10,
+                .c1_scl = GPIO_11
             },
             .uart = {
                 .uartConfig0 = {
-                    .tx_pin     = CScore::GPIO_12,
-                    .rx_pin     = CScore::GPIO_13,
+                    .tx_pin     = GPIO_12,
+                    .rx_pin     = GPIO_13,
                     .baud_rate  = 115200,
                     .enabled    = true,
                     .commandHandler = true,
                     .uartId = UartId::UART0
                 },
                 .uartConfig1 = {
-                    .tx_pin     = CScore::GPIO_INVALID,  // Not used on Rev 0
-                    .rx_pin     = CScore::GPIO_INVALID,  // Not used on Rev 0
+                    .tx_pin     = GPIO_INVALID,  // Not used on Rev 0
+                    .rx_pin     = GPIO_INVALID,  // Not used on Rev 0
                     .baud_rate  = 115200,
                     .enabled    = false,
                     .commandHandler = false,
@@ -248,24 +246,24 @@ namespace CScore {
                 }
             },
             .inputs = {
-                .door_interlock         = CScore::GPIO_27,  // Dummy pin for Rev 0
-                .hv_enabled_interlock   = CScore::GPIO_27,  // Dummy pin for Rev 0
-                .voltage_48v_enabled    = CScore::GPIO_27,  // Dummy pin for Rev 0
-                .pump_interlock         = CScore::GPIO_27,  // Dummy pin for Rev 0
-                .flow_interlock         = CScore::GPIO_27,   // Dummy pin for Rev 0
-                .dac_ready              = CScore::GPIO_15,
-                .adc1_ready             = CScore::GPIO_17,
-                .adc2_ready             = CScore::GPIO_16
+                .door_interlock         = GPIO_27,  // Dummy pin for Rev 0
+                .hv_enabled_interlock   = GPIO_27,  // Dummy pin for Rev 0
+                .voltage_48v_enabled    = GPIO_27,  // Dummy pin for Rev 0
+                .pump_interlock         = GPIO_27,  // Dummy pin for Rev 0
+                .flow_interlock         = GPIO_27,   // Dummy pin for Rev 0
+                .dac_ready              = GPIO_15,
+                .adc1_ready             = GPIO_17,
+                .adc2_ready             = GPIO_16
             },
 
             .outputs = {
-                .heater_shutdown = CScore::GPIO_23,  // Dummy pin for Rev 0
-                .g1_shutdown     = CScore::GPIO_23,  // Dummy pin for Rev 0
-                .g2_shutdown     = CScore::GPIO_23,  // Dummy pin for Rev 0
-                .g3_shutdown     = CScore::GPIO_23,  // Dummy pin for Rev 0
-                .hv_shutdown     = CScore::GPIO_23,  // Dummy pin for Rev 0
-                .hv_enable       = CScore::GPIO_23,  // Dummy pin for Rev 0
-                .ldac            = CScore::GPIO_14
+                .heater_shutdown = GPIO_23,  // Dummy pin for Rev 0
+                .g1_shutdown     = GPIO_23,  // Dummy pin for Rev 0
+                .g2_shutdown     = GPIO_23,  // Dummy pin for Rev 0
+                .g3_shutdown     = GPIO_23,  // Dummy pin for Rev 0
+                .hv_shutdown     = GPIO_23,  // Dummy pin for Rev 0
+                .hv_enable       = GPIO_23,  // Dummy pin for Rev 0
+                .ldac            = GPIO_14
             }
         };
 
@@ -279,23 +277,23 @@ namespace CScore {
                 .hasHVControl   = true
             },
             .i2c = {
-                .c0_sda = CScore::GPIO_04,
-                .c0_scl = CScore::GPIO_05,
-                .c1_sda = CScore::GPIO_02,
-                .c1_scl = CScore::GPIO_03
+                .c0_sda = GPIO_04,
+                .c0_scl = GPIO_05,
+                .c1_sda = GPIO_02,
+                .c1_scl = GPIO_03
             },
             .uart = {
                 .uartConfig0 = {
-                    .tx_pin     = CScore::GPIO_16,
-                    .rx_pin     = CScore::GPIO_17,
+                    .tx_pin     = GPIO_16,
+                    .rx_pin     = GPIO_17,
                     .baud_rate  = 115200,
                     .enabled    = true,
                     .commandHandler = true,
                     .uartId = UartId::UART0
                 },
                 .uartConfig1 = {
-                    .tx_pin     = CScore::GPIO_INVALID,  // Not used on Rev A
-                    .rx_pin     = CScore::GPIO_INVALID,  // Not used on Rev A
+                    .tx_pin     = GPIO_INVALID,  // Not used on Rev A
+                    .rx_pin     = GPIO_INVALID,  // Not used on Rev A
                     .baud_rate  = 115200,
                     .enabled    = false,
                     .commandHandler = false,
@@ -303,19 +301,19 @@ namespace CScore {
                 }
             },
             .inputs = {
-                .door_interlock       = CScore::GPIO_15,
-                .hv_enabled_interlock = CScore::GPIO_18,
-                .voltage_48v_enabled  = CScore::GPIO_19,
-                .pump_interlock       = CScore::GPIO_26,
-                .flow_interlock       = CScore::GPIO_27
+                .door_interlock       = GPIO_15,
+                .hv_enabled_interlock = GPIO_18,
+                .voltage_48v_enabled  = GPIO_19,
+                .pump_interlock       = GPIO_26,
+                .flow_interlock       = GPIO_27
             },
             .outputs = {
-                .heater_shutdown = CScore::GPIO_06,
-                .g1_shutdown     = CScore::GPIO_07,
-                .g2_shutdown     = CScore::GPIO_08,
-                .g3_shutdown     = CScore::GPIO_09,
-                .hv_shutdown     = CScore::GPIO_10,
-                .hv_enable       = CScore::GPIO_23
+                .heater_shutdown = GPIO_06,
+                .g1_shutdown     = GPIO_07,
+                .g2_shutdown     = GPIO_08,
+                .g3_shutdown     = GPIO_09,
+                .hv_shutdown     = GPIO_10,
+                .hv_enable       = GPIO_23
             }
         };
 
@@ -329,23 +327,23 @@ namespace CScore {
                 .hasHVControl   = true
             },
             .i2c = {
-                .c0_sda = CScore::GPIO_04,  // Same as Rev A
-                .c0_scl = CScore::GPIO_05,
-                .c1_sda = CScore::GPIO_02,
-                .c1_scl = CScore::GPIO_03
+                .c0_sda = GPIO_04,  // Same as Rev A
+                .c0_scl = GPIO_05,
+                .c1_sda = GPIO_02,
+                .c1_scl = GPIO_03
             },
             .uart = {
                 .uartConfig0 = {
-                    .tx_pin     = CScore::GPIO_16,  // Different from Rev A
-                    .rx_pin     = CScore::GPIO_17,  // Different from Rev A
+                    .tx_pin     = GPIO_16,  // Different from Rev A
+                    .rx_pin     = GPIO_17,  // Different from Rev A
                     .baud_rate  = 115200,
                     .enabled    = true,
                     .commandHandler = false,
                     .uartId = UartId::UART0
                 },
                 .uartConfig1 = {
-                    .tx_pin     = CScore::GPIO_08,  // New UART1
-                    .rx_pin     = CScore::GPIO_09,  // New UART1
+                    .tx_pin     = GPIO_08,  // New UART1
+                    .rx_pin     = GPIO_09,  // New UART1
                     .baud_rate  = 9600,                   // Different baud rate for UART1
                     .enabled    = true,
                     .commandHandler = true,
@@ -353,19 +351,19 @@ namespace CScore {
                 }
             },
             .inputs = {
-                .door_interlock       = CScore::GPIO_15,
-                .hv_enabled_interlock = CScore::GPIO_18,
-                .voltage_48v_enabled  = CScore::GPIO_19,
-                .pump_interlock       = CScore::GPIO_26,
-                .flow_interlock       = CScore::GPIO_27
+                .door_interlock       = GPIO_15,
+                .hv_enabled_interlock = GPIO_18,
+                .voltage_48v_enabled  = GPIO_19,
+                .pump_interlock       = GPIO_26,
+                .flow_interlock       = GPIO_27
             },
             .outputs = {
-                .heater_shutdown = CScore::GPIO_06,
-                .g1_shutdown     = CScore::GPIO_07,
-                .g2_shutdown     = CScore::GPIO_08,
-                .g3_shutdown     = CScore::GPIO_09,
-                .hv_shutdown     = CScore::GPIO_10,
-                .hv_enable       = CScore::GPIO_23
+                .heater_shutdown = GPIO_06,
+                .g1_shutdown     = GPIO_07,
+                .g2_shutdown     = GPIO_08,
+                .g3_shutdown     = GPIO_09,
+                .hv_shutdown     = GPIO_10,
+                .hv_enable       = GPIO_23
             }
         };
 

@@ -1,10 +1,10 @@
 
-#include "serial-comm.hpp"
-
-#include <cstdint>
 
 #include <class/cdc/cdc_device.h>
 #include <pico/time.h>
+
+#include "hardware/gpio.h"
+#include "serial-comm.hpp"
 
 namespace CScore {
 
@@ -37,14 +37,14 @@ namespace CScore {
 
     bool SerialComm::initUart(UartId uartId) {
 
-        const auto& config = CScore::BOARD;
+        const auto& config = BOARD;
 
         // Get the specific UART configuration
-        const auto& uart_config = (uartId == CScore::UartId::UART0) ?
+        const auto& uart_config = (uartId == UartId::UART0) ?
                                     config.uart.uartConfig0 : config.uart.uartConfig1;
 
         // Check board capabilities first
-        const bool board_supports_uart = (uartId == CScore::UartId::UART0) ?
+        const bool board_supports_uart = (uartId == UartId::UART0) ?
                                             config.capabilities.hasUART0 : config.capabilities.hasUART1;
 
         if (!board_supports_uart || !uart_config.enabled) {
@@ -54,14 +54,14 @@ namespace CScore {
 
         // Validate configuration before proceeding
         if (!uart_config.isValid() ||
-            CScore::isInvalidGPIOPin(uart_config.tx_pin) ||
-            CScore::isInvalidGPIOPin(uart_config.rx_pin)) {
+            isInvalidGPIOPin(uart_config.tx_pin) ||
+            isInvalidGPIOPin(uart_config.rx_pin)) {
             uartEnabled_[static_cast<size_t>(uartId)] = false;
             return false;
             }
 
         // Get hardware instance at runtime
-        uart_inst_t* uart_hw = CScore::getUartHardware(uart_config.uartId);
+        uart_inst_t* uart_hw = getUartHardware(uart_config.uartId);
 
         // Initialize UART hardware
         actualUartBaudRate_[static_cast<size_t>(uartId)] =
@@ -93,14 +93,14 @@ namespace CScore {
 
     void SerialComm::initUartGpio (UartId instance) {
 
-        const auto& config = CScore::BOARD;
+        const auto& config = BOARD;
 
         // Get the specific UART configuration
-        const auto& uart_config = (instance == CScore::UartId::UART0) ?
+        const auto& uart_config = (instance == UartId::UART0) ?
                                   config.uart.uartConfig0 : config.uart.uartConfig1;
 
         // Double-check that this UART should be initialized
-        const bool board_supports_uart = (instance == CScore::UartId::UART0) ?
+        const bool board_supports_uart = (instance == UartId::UART0) ?
                                    config.capabilities.hasUART0 : config.capabilities.hasUART1;
 
         if (!board_supports_uart || !uart_config.enabled || !uart_config.isValid()) {
@@ -123,7 +123,7 @@ namespace CScore {
         // Priority 2: Command handler UART if available
         // ReSharper disable once CppDFAConstantConditions
         if (const auto* cmdUart = getCommandUartConfig(); nullptr != cmdUart && cmdUart->enabled) {
-            if (CScore::UartId uartId = CScore::BOARD.uart.getCommandHandlerId();
+            if (UartId uartId = BOARD.uart.getCommandHandlerId();
                 uartEnabled_[static_cast<size_t>(uartId)]) {
                 return CommInterface::UART;
                 }
@@ -140,7 +140,7 @@ namespace CScore {
 
     uint SerialComm::getCommandUartBaudRate() {
         if (CommInterface::UART == getActiveCommInterface()) {
-            return actualUartBaudRate_[static_cast<size_t>(CScore::BOARD.uart.getCommandHandlerId())];
+            return actualUartBaudRate_[static_cast<size_t>(BOARD.uart.getCommandHandlerId())];
         } else {
             return 0;
         }
@@ -151,7 +151,7 @@ namespace CScore {
             case CommInterface::USB:
                 return "USB";
             case CommInterface::UART: {
-                CScore::UartId uartId = CScore::BOARD.uart.getCommandHandlerId();
+                UartId uartId = BOARD.uart.getCommandHandlerId();
                 return "UART" + std::to_string(static_cast<int>(uartId));
             }
             case CommInterface::NONE:

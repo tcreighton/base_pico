@@ -8,7 +8,7 @@
 
 #include "command-declarations.hpp"
 
-namespace CScore {
+namespace CSutils {
 
     class Command final {
 

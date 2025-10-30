@@ -1,19 +1,20 @@
 #pragma once
 #ifndef DRIVERS_CONTAINER_HPP_
+
 #include "eeprom0.hpp"
 
 namespace CSdrivers {
 
     inline EeProm0& getEEProm0 () {
-        static EeProm0 eeProm0_{ControllerId::I2C_CONTROLLER_1};
+        static EeProm0 eeProm0_{CSdevices::ControllerId::I2C_CONTROLLER_1};
         return eeProm0_;
     }
 
-    inline Mcp24Lc32& getEEProm (const EEPromId eepromId) {
+    inline CSdevices::Mcp24Lc32& getEEProm (const CSdevices::EEPromId eepromId) {
         switch (eepromId) {
             default:
 
-            case EEPromId::EEPROM_0:
+            case CSdevices::EEPromId::EEPROM_0:
                 return getEEProm0();
 
             /* future expansion

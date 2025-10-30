@@ -1,6 +1,7 @@
 
 #pragma once
 #ifndef PRODUCT_INFO_HPP_
+
 #include <cstdint>
 #include <string>
 #include "pico/unique_id.h"
@@ -9,7 +10,7 @@
 #include "packed-datetime.hpp"
 #include "utilities.hpp"
 
-namespace CSutils {
+namespace CScore {
 
     inline std::string getPicoBoardId () {
         char boardId[2 * PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1];
@@ -30,23 +31,23 @@ namespace CSutils {
     inline std::string getProductName () {return PRODUCT_NAME;}
 
     struct ProductInfo {
-        std::string                     companyName             = COMPANY_NAME;
-        std::string                     productName             = PRODUCT_NAME;
-        uint8_t                         majorVersion            = FIRMWARE_MAJOR_VERSION;
-        uint8_t                         minorVersion            = FIRMWARE_MINOR_VERSION;
-        CScore::PackedDateTime_t   buildNumber             = CScore::PackedDateTime::getPackedBuildDateTime();// encoded build date
-        std::string                     circuitBoardRevision    = CScore::CURRENT_BOARD_NAME;
-        std::string                     encodedPicoBoardId      = getPicoBoardId();// AKA product serial number
+        std::string         companyName             = COMPANY_NAME;
+        std::string         productName             = PRODUCT_NAME;
+        uint8_t             majorVersion            = FIRMWARE_MAJOR_VERSION;
+        uint8_t             minorVersion            = FIRMWARE_MINOR_VERSION;
+        PackedDateTime_t    buildNumber             = PackedDateTime::getPackedBuildDateTime();// encoded build date
+        std::string         circuitBoardRevision    = CURRENT_BOARD_NAME;
+        std::string         encodedPicoBoardId      = getPicoBoardId();// AKA product serial number
     };
     using ProductInfo_t = ProductInfo;  // Not really necessary.
 
     inline std::string getFirmwareVersion () {
         std::stringstream version;
 
-        const auto packed = CScore::PackedDateTime::getPackedBuildDateTime();
+        const auto packed = PackedDateTime::getPackedBuildDateTime();
         version << static_cast<int>(FIRMWARE_MAJOR_VERSION) << "."
                 << static_cast<int>(FIRMWARE_MINOR_VERSION) << "."
-                << CScore::int_to_hex(packed);
+                << int_to_hex(packed);
         return version.str();
     }
 

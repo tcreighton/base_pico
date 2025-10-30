@@ -7,7 +7,7 @@
 #include "mcp4728.hpp"
 #include "utilities.hpp"
 
-namespace CScore {
+namespace CSdevices {
 
 /**
  * @brief - This is the concrete method for writing to an input register on MCP4728

@@ -6,11 +6,9 @@
 #include "eeprom0-page-declarations.hpp"
 #include "logger.hpp"
 #include "mcp-24lc32.hpp"
-#include "packed-datetime.hpp"
 #include "utilities.hpp"
 
 namespace CSdrivers {
-
 
     bool EeProm0::init() {
 
@@ -23,12 +21,6 @@ namespace CSdrivers {
 
         return retCode;
     }
-
-    /*
-    EeProm0& EeProm0::getEEProm0() {
-        return CSfocus500::Focus500Container::getEEProm0();
-    }
-    */
 
     void EeProm0::computeSignature(uint8_t *signature) { // assumes that signature points at an array large enough.
         const CScore::PackedDateTime_t dt = CScore::PackedDateTime::getPackedBuildDate();
@@ -55,7 +47,7 @@ namespace CSdrivers {
         return retCode;
     }
 
-    bool EeProm0::initializePage(const PageId pageId) {
+    bool EeProm0::initializePage(const CSdevices::EEPromPageId pageId) {
         auto retValue = false;
 
         switch (pageId) {
@@ -376,7 +368,7 @@ namespace CSdrivers {
     */
 
     // ReSharper disable once CppMemberFunctionMayBeStatic
-    void EeProm0::logPageInitError(const PageId pageId) {
+    void EeProm0::logPageInitError(const CSdevices::EEPromPageId pageId) {
 
 #if defined (LOG_GROUP_TWO)
 

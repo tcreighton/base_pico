@@ -7,9 +7,9 @@
 #include <bits/stdc++.h>
 #include "serial-comm.hpp"
 
-namespace CScommunication {
+namespace CSutils {
 
-    static const auto CONSOLE_COMMAND_PROMPT = std::string("Focus500: ");
+//    static const auto CONSOLE_COMMAND_PROMPT = std::string("Focus500: ");
 
     static const auto sCR = std::string("\r");        // 0x0D; carriage return: ctl-M
     static const auto sLF = std::string("\n");        // 0x0A; line feed: ctl-J

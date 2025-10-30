@@ -1,6 +1,7 @@
 #pragma once
 #ifndef DAC_HPP_
 #define DAC_HPP_
+
 #include "component.hpp"
 #include "dac-channel.hpp"
 #include "devicesContainer.hpp"
@@ -16,14 +17,14 @@ namespace CSdrivers {
     /// since each instantiation can be used for several channels and therefore several of these DacMcp4728
     /// instances, we depend on those being instantiated in the CSdevices container. Access via getDac...
     ///
-    class DacMcp4728 final : public CScore::Component {
+    class DacMcp4728 final : public CSdevices::Component {
 
     public:
         DacMcp4728 (const std::string &label,
                     const std::string &dacLabel,
-                    const CScore::ControllerId controllerId,
-                    const CScore::DacId dacId,
-                    const CScore::DacChannelIds channelId) :
+                    const CSdevices::ControllerId controllerId,
+                    const CSdevices::DacId dacId,
+                    const CSdevices::DacChannelIds channelId) :
                             dacChannel_(dacLabel, controllerId, dacId, channelId) {
             setClassName("DacMcp4728");
             setLabel (label);
@@ -31,11 +32,11 @@ namespace CSdrivers {
         ~DacMcp4728 () override = default;
 
         [[nodiscard]] bool writeDacInputRegister (const uint16_t data) const {
-            return CScore::getDac(dacChannel_.getDacId()).writeDacInputRegister(dacChannel_, data);
+            return getDac(dacChannel_.getDacId()).writeDacInputRegister(dacChannel_, data);
         }
 
     private:
-        CScore::DacChannel dacChannel_;
+        CSdevices::DacChannel dacChannel_;
     };
 
 }

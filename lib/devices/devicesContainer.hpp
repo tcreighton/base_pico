@@ -3,10 +3,9 @@
 
 #include "ads1115.hpp"
 #include "csi2c.hpp"
-#include "dac-channel.hpp"
 #include "mcp4728.hpp"
 
-namespace CScore {
+namespace CSdevices {
 
     inline CsI2C& getController0 () {   // inline ensures just one instance linked from multiple declarations
         using ControllerId::I2C_CONTROLLER_0;

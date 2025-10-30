@@ -2,13 +2,13 @@
 #include "ads1115.hpp"
 #include "ads1115-config.hpp"
 #include "assertion.hpp"
+#include "devicesContainer.hpp"
 #include "logger.hpp"
 #include "utilities.hpp"
 
 using namespace CScore;
 
-namespace CScore {
-
+namespace CSdevices {
 
     bool Ads1115::writeConfigRegister(const Ads1115ConfigRegister_t configRegister) {
 
@@ -63,7 +63,7 @@ namespace CScore {
             // The register write succeeded. Now read the register we just indicated.
             if (const auto result = getController().readBuffer(getDeviceAddress(), dataBuffer_, 2);
                 2 == result) {
-                value = CScore::networkByteOrderToLocalUint16(dataBuffer_);
+                value = networkByteOrderToLocalUint16(dataBuffer_);
             } else {
                 logger_.log(LogLevel::Error,
                             getClassName(),
@@ -249,8 +249,12 @@ namespace CScore {
         return name;
     }
 
+    CsI2C & Ads1115::getController() const {
+        return CSdevices::getController(getControllerId());
+    }
 
-//-------------------------------------------------------------------------------------------------------
+
+    //-------------------------------------------------------------------------------------------------------
 // The following methods are the only public methods from Ads1115
 //-------------------------------------------------------------------------------------------------------
 

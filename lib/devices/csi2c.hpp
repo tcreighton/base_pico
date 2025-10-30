@@ -7,7 +7,7 @@
 #include "hardware/i2c.h"
 #include "component.hpp"
 
-namespace CScore {
+namespace CSdevices {
 
     // Baud rates
     enum class BaudRate : uint32_t {

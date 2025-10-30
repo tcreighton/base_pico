@@ -4,7 +4,6 @@
 #include "pystring.h"
 #include "utilities.hpp"
 
-
 namespace CScore {
 
 

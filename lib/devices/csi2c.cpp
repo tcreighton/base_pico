@@ -7,9 +7,8 @@
 #include "utilities.hpp"
 
 using namespace CScore;
-using namespace CScore;
 
-namespace CScore {
+namespace CSdevices {
 
 
     int CsI2C::writeBuffer( const uint8_t deviceAddress,
@@ -17,8 +16,8 @@ namespace CScore {
                             const size_t length,
                             const bool nostop) {
         logger_.logMethodEntry(LogLevel::Trace,
-                       std::string(getClassName()),
-                       __func__);
+                                       std::string(getClassName()),
+                                       __func__);
         int retValue = 0;
 
 #if defined (LOG_GROUP_CSI2C)

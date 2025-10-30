@@ -5,7 +5,7 @@
 
 #include <string>
 
-namespace CScore {
+namespace CSdevices {
 
 /**
  * @brief Component defines an interface to be implemented by most drivers.

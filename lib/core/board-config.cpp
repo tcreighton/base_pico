@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 
+#include "gpio.hpp"
 #include "serial-comm.hpp"
 
 namespace CScore {

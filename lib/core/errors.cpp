@@ -1,7 +1,7 @@
 
 #include "errors.hpp"
 
-namespace CSerrors {
+namespace CScore {
     std::string responseToString(const ResponseCode error) {
         switch (error) {
             case ResponseCode::PICO_ERROR_RESOURCE_IN_USE_ERROR:            return "Resource in use";          // -21

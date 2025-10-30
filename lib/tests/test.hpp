@@ -9,7 +9,6 @@
 #include <functional>
 #include "assertion.hpp"
 
-
 namespace CStest {
 
     class Test {

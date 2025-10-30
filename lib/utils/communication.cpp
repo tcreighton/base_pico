@@ -2,8 +2,6 @@
 #include <iostream>
 #include <class/cdc/cdc_device.h>
 #include <device/usbd.h>
-#include <hardware/gpio.h>
-#include <pico/time.h>
 
 #include "commands.hpp"
 #include "communication.hpp"
@@ -12,7 +10,7 @@
 
 using namespace CScore;
 
-namespace CScommunication {
+namespace CSutils {
 
     // Static member definitions
     DisplayMode Communication::displayMode_ = DisplayMode::GAMMA_DISPLAY;
@@ -159,7 +157,7 @@ namespace CScommunication {
         std::vector<std::string> tokens;
         pystring::split(commandString, tokens, sSEMI);
         for (const auto& token : tokens) {
-            CScore::Command::recordCommandString(token);
+            Command::recordCommandString(token);
         }
     }
 }

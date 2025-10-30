@@ -4,7 +4,6 @@
 
 #include <hardware/gpio.h>
 
-
 namespace CScore {
 
     /**

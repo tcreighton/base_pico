@@ -1,9 +1,10 @@
 #pragma once
 #ifndef COMMAND_DECLARATIONS_HPP_
+
 #include <cstdint>
 #include <string>
 
-namespace CScore {
+namespace CSutils {
 
     enum class CommandWord : uint8_t {
         HELP    = 0,

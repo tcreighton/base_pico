@@ -1,8 +1,9 @@
 #pragma once
 #ifndef COMMAND_HANDLER_HPP_
+
 #include "command-declarations.hpp"
 
-namespace CScore {
+namespace CSutils {
 
     class CommandHandler final {
 

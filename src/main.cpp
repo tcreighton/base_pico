@@ -10,14 +10,13 @@
 
 #include "communication.hpp"
 #include "packed-datetime.hpp"
-//#include "stats.hpp"
 #include "logger.hpp"
 #include "product-info.hpp"
 #include "worker.hpp"
 #include "utilities.hpp"
 
 using namespace CScore;
-using namespace CScommunication;
+using namespace CSutils;
 
 int main()
 {
@@ -57,12 +56,12 @@ int main()
     ss << "Focus Rack 500 initializing. USB connect time about " << connectTime << " milliseconds.";
     Communication::serialOutputLine(ss.str());
     ss = std::stringstream();
-    ss << "Focus Rack 500 Power Supply ID: " << CSutils::getPicoBoardId();
+    ss << "Focus Rack 500 Power Supply ID: " << getPicoBoardId();
     Communication::serialOutputLine(ss.str());
     ss = std::stringstream();
     auto [seconds, minutes, hours, day, month, year]
                         = PackedDateTime::getUnpackedDateTime(PackedDateTime::getPackedBuildDateTime());
-    ss << "Build: " << CSutils::getFirmwareVersion();
+    ss << "Build: " << getFirmwareVersion();
     Communication::serialOutputLine(ss.str());
     ss = std::stringstream();
     ss << "Decoded: "   << static_cast<int>(year) << "-"
@@ -76,7 +75,7 @@ int main()
     Communication::serialOutputLine(s);
     ss = std::stringstream();
 
-    ss << "Current board name: " << CScore::CURRENT_BOARD_NAME;
+    ss << "Current board name: " << CURRENT_BOARD_NAME;
     s = ss.str();
     Communication::serialOutputLine(s);
 

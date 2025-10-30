@@ -5,7 +5,6 @@
 
 #include <string>
 
-
 #define LOGGER_ENABLED_     // comment this out to remove all logging from the system (production..)
 
 namespace CScore {

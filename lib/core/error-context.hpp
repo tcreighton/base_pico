@@ -5,7 +5,7 @@
 #include <string>
 #include "errors.hpp"
 
-namespace CSerrors {
+namespace CScore {
 
     class ErrorContext {
 

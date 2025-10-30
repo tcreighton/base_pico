@@ -10,7 +10,7 @@
 #include "devicesContainer.hpp"
 #include "mcp-eeprom-declarations.hpp"
 
-namespace CScore {
+namespace CSdevices {
 
 class Mcp24Lc32 : public Component {
 
@@ -28,7 +28,7 @@ class Mcp24Lc32 : public Component {
         ~Mcp24Lc32() override = default;
 
         [[nodiscard]] CsI2C& getController () const {
-            return CScore::getController(getControllerId());
+            return CSdevices::getController(getControllerId());
         }
         [[nodiscard]] ControllerId getControllerId () const {
             return controllerId_;
@@ -58,7 +58,7 @@ class Mcp24Lc32 : public Component {
          * @param pageBuffer The data to write to the page in question. Typically the same for all pages in a block.
          * @return true if the page was correctly formatted.
          */
-        virtual bool formatPage (PageId pageId, EepBuffer_t pageBuffer);
+        virtual bool formatPage (EEPromPageId pageId, EepBuffer_t pageBuffer);
 
         /**
          * @brief This initializes all pages of the block.
@@ -75,11 +75,11 @@ class Mcp24Lc32 : public Component {
          * @param pageId The id of the page: MIN_PAGE_ID through MAX_PAGE_ID.
          * @return true if succes.
          */
-        virtual bool initializePage (const PageId pageId) {return initializePage(PageIdToNumber(pageId));}
+        virtual bool initializePage (const EEPromPageId pageId) {return initializePage(PageIdToNumber(pageId));}
         virtual bool initializePage (uint8_t pageNumber) {return true;}
 
         template <typename PageType>
-        bool updatePage (const PageId pageId, PageType& newPage) {
+        bool updatePage (const EEPromPageId pageId, PageType& newPage) {
             auto retCode = false;
 
             if (PageType oldPage{}; readPage(pageId, oldPage)) {
@@ -90,14 +90,14 @@ class Mcp24Lc32 : public Component {
         }
 
         template <typename PageType>
-        bool readPage (const PageId pageId, PageType& page) {
+        bool readPage (const EEPromPageId pageId, PageType& page) {
             const auto retCode = readBytes(pageId, page.buffer);
 
             return retCode; // declaring retCode can make debug easier.
         }
 
         template <typename PageType>
-        bool writePage (const PageId pageId, PageType &page) {
+        bool writePage (const EEPromPageId pageId, PageType &page) {
             const auto retCode = writeBytes(pageId, page.buffer);
 
             return retCode; // declaring retCode can make debug easier.
@@ -111,7 +111,7 @@ class Mcp24Lc32 : public Component {
          * @param buffer - where to put the data.
          * @return true if a page of buffer were read, else false.
          */
-        bool readBytes (const PageId pageId, uint8_t* buffer) {
+        bool readBytes (const EEPromPageId pageId, uint8_t* buffer) {
             return readBytes(PageIdToNumber(pageId) * MCP_EEPROM_PAGE_SIZE, buffer);
         }
 
@@ -123,7 +123,7 @@ class Mcp24Lc32 : public Component {
          * @param buffer Pointer to the data for the write.
          * @return true if all is well.
          */
-        bool writeBytes (const PageId pageId, const uint8_t* buffer) {
+        bool writeBytes (const EEPromPageId pageId, const uint8_t* buffer) {
             return writeBytes(PageIdToNumber(pageId) * MCP_EEPROM_PAGE_SIZE, buffer);
         }
 

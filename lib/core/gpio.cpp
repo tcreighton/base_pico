@@ -1,3 +1,4 @@
+
 #include <hardware/gpio.h>
 #include "gpio.hpp"
 #include "board-config.hpp"
@@ -145,7 +146,7 @@ namespace CScore {
 
     // ReSharper disable once CppDFAConstantFunctionResult
     bool Gpio::is48VoltEnabled() {
-        if constexpr (!CScore::BOARD.capabilities.hasInterlocks) {
+        if constexpr (!BOARD.capabilities.hasInterlocks) {
             return false;
         }
         // ReSharper disable once CppDFAUnreachableCode

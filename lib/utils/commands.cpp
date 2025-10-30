@@ -6,7 +6,7 @@
 #include "pystring.h"
 
 
-namespace CScore {
+namespace CSutils {
 
     std::queue<std::string> Command::commandStrings_;    // definition of the private queue.
 

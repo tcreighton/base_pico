@@ -4,7 +4,8 @@
 
 #include <algorithm>
 #include <cstdint>
-namespace CScore {
+
+namespace CSdevices {
 
 /**
  * @brief dac-declarations.hpp declares many types, structs, and const values for use with DACs.

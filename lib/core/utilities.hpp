@@ -12,12 +12,10 @@
 
 #include "packed-datetime.hpp"
 
-
 /**
  * This file holds useful macros and declarations. Also global constants.
  */
 namespace CScore {
-
 
 //    constexpr bool SIMULATE_ADC = false;
 

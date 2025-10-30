@@ -1,12 +1,11 @@
 
-#include "command-handler.hpp"
-
 #include <iostream>
 
 #include "commands.hpp"
+#include "command-handler.hpp"
 #include "pico/time.h"
 
-namespace CScore {
+namespace CSutils {
     bool CommandHandler::doCommand() {
         auto retValue = false;
 

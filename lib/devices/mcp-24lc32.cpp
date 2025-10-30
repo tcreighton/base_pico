@@ -1,14 +1,15 @@
 
 #include <cstring>
 
+#include "devicesContainer.hpp"
 #include "logger.hpp"
 #include "mcp-24lc32.hpp"
-
-#include "devicesContainer.hpp"
 #include "random.hpp"
 #include "utilities.hpp"
 
-namespace CScore {
+using namespace CScore;
+
+namespace CSdevices {
 
 
     // Format all even if one fails.
@@ -18,7 +19,7 @@ namespace CScore {
         // range-based for loop
         for(auto & ix : pageBuffer) {
             // generate a random value for each byte in the buffer.
-            ix = CScore::RandomGenerator::getInstance().generateUint8();
+            ix = RandomGenerator::getInstance().generateUint8();
         }
 
         auto retCode = true;
@@ -28,7 +29,7 @@ namespace CScore {
         return retCode;
     }
 
-    bool Mcp24Lc32::formatPage(const PageId pageId, EepBuffer_t pageBuffer) {
+    bool Mcp24Lc32::formatPage(const EEPromPageId pageId, EepBuffer_t pageBuffer) {
         const auto retCode = writeBytes(pageId, pageBuffer);
 
         return retCode;
@@ -41,13 +42,13 @@ namespace CScore {
      */
     bool Mcp24Lc32::initializeEEProm() {
         auto retVal = true;
-        auto pageId = PageId::PAGE_MINIMUM;
+        auto pageId = EEPromPageId::PAGE_MINIMUM;
 
         // If one is false, all are false. But go ahead and initialize all.
 
         do {
             retVal &= initializePage(pageId);
-        } while (PageId::PAGE_MAXIMUM > pageId++);
+        } while (EEPromPageId::PAGE_MAXIMUM > pageId++);
 
 
         return retVal;
@@ -59,7 +60,7 @@ namespace CScore {
         uint8_t addressBigEndian[2];
         int bytesRead = -2, bytesWritten = -4;
 
-        CScore::localUint16ToNetworkByteOrder(address, addressBigEndian);
+        localUint16ToNetworkByteOrder(address, addressBigEndian);
 
         // Check that no prior write is pending.
         if ((retCode = isEEPromWriteReady(controlByte))) {
@@ -78,7 +79,7 @@ namespace CScore {
                 retCode = (MCP_EEPROM_PAGE_SIZE == bytesRead);
             }
         } else {
-            CScore::logger_.log(CScore::LogLevel::Error,
+            logger_.log(LogLevel::Error,
                                      getClassName(),
                                      "readBytes; bytes read, written: " +
                                      std::to_string(bytesRead),
@@ -94,7 +95,7 @@ namespace CScore {
         if (const ControlByte_t controlByte = getControlByte(); (retCode = isEEPromWriteReady(controlByte))) {
             uint8_t bigEndianAddressPlusData[2 + MCP_EEPROM_PAGE_SIZE];
 
-            CScore::localUint16ToNetworkByteOrder(address, bigEndianAddressPlusData);
+            localUint16ToNetworkByteOrder(address, bigEndianAddressPlusData);
 
             std::memcpy(&bigEndianAddressPlusData[2], buffer, MCP_EEPROM_PAGE_SIZE);
 
