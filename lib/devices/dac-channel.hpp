@@ -32,7 +32,6 @@ namespace CScore {
                                     i2cTimeOut_(CsI2C::getI2CTimeoutPerByte_us()) {
             setClassName("DacChannel");
             setLabel(label);
-            prependToHierarchy("DacChannel");
         }
 
         DacChannel(const DacChannel& other) = delete;
@@ -41,6 +40,7 @@ namespace CScore {
 
         [[nodiscard]] ControllerId getControllerId() const { return controllerId_; }
         [[nodiscard]] DacChannelIds getChannelId() const { return channelId_; }
+        [[nodiscard]] DacId getDacId() const { return dacId_; }
         [[nodiscard]] DacPowerDownValues getPowerMode() const { return powerMode_; }
         [[nodiscard]] DacGainValues getGain() const { return gain_; }
         [[nodiscard]] DacVrefValues getVref() const { return vref_; }

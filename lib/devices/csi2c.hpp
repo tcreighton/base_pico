@@ -35,7 +35,6 @@ namespace CScore {
                                 requestedBaudRate_(baudrateInKHz) {
             setClassName("CsI2C");
             setLabel("I2C Controller");
-            prependToHierarchy("CsI2C");
             setBaudRate(baudrateInKHz);
         }
 
@@ -46,7 +45,6 @@ namespace CScore {
                 requestedBaudRate_(baudrateInKHz) {
             setClassName("CsI2C");
             setLabel(label);
-            prependToHierarchy("CsI2C");
             setBaudRate(baudrateInKHz);
         }
 

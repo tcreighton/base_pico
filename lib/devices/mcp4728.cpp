@@ -15,7 +15,7 @@ namespace CScore {
  * @param data
  * @return true if no errors.
  */
-    bool Mcp4728::writeDacInputRegister(const DacChannel& dacChannel, uint16_t data) {
+    bool Mcp4728::writeDacInputRegister(const DacChannel& dacChannel, uint16_t data) const {
 
 #if defined (LOG_GROUP_DAC)
         logger_.logMethodEntry(LogLevel::Trace,

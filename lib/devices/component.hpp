@@ -29,16 +29,19 @@ namespace CScore {
 
     protected:
 
-        void prependToHierarchy (const std::string& className) {
-            hierarchy_ = hierarchy_.empty() ?
-                            className       :
-                            className + ":" + hierarchy_;
+        void setClassName(const std::string_view className) {
+            className_ = className;
+            prependToHierarchy(className.data());
         }
 
-        void setClassName (const std::string& className) {className_ = className;}
         void setLabel (const std::string &label) { label_ = label; }
 
     private:
+        void prependToHierarchy (const std::string_view className) {
+            hierarchy_ = hierarchy_.empty() ?
+                            className.data()       :
+                            className.data() + std::string(":") + hierarchy_;
+        }
 
         std::string className_;
         std::string label_;

@@ -19,7 +19,6 @@ namespace CSdrivers {
                                 Mcp24Lc32(EEPromIDToNumber(EEPromId::EEPROM_0), controllerId) {
             setClassName("EEProm0");
             setLabel("SW EEProm 0");
-            prependToHierarchy("EeProm0");
         }
 
 

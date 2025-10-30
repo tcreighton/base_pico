@@ -21,7 +21,6 @@ class Mcp24Lc32 : public Component {
             setEePromAddress(eePromAddress);
             setClassName("Mcp24Lc32");
             setLabel("MCP 24LC32");
-            prependToHierarchy("Mcp24Lc32");
         }
 
         Mcp24Lc32 (const Mcp24Lc32& other) = delete;

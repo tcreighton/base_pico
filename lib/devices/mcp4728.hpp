@@ -12,7 +12,7 @@ namespace CScore {
 
     CsI2C& getController(ControllerId controllerId); // A little forward reference.
 
-    class DacChannel;   // forward reference to DacChannel
+//    class DacChannel;   // forward reference to DacChannel
 
     class Mcp4728 final : public Component {
 
@@ -20,13 +20,12 @@ namespace CScore {
 
         Mcp4728( const std::string& label,
                  const ControllerId controllerId,
-                 const DacId dacType) :
+                 const DacId dacId) :
                             controllerId_(controllerId),
-                            dacId_(dacType) {
+                            dacId_(dacId) {
 
-            setClassName("Mcp4728");
+            setClassName("DacMcp4728");
             setLabel(label);
-            prependToHierarchy("Mcp4728");
         }
 
         Mcp4728() = delete;
@@ -41,10 +40,10 @@ namespace CScore {
             return controllerId_;
         }
 
-        bool writeDacInputRegister(const DacChannel& dacChannel, uint16_t data);
+        bool writeDacInputRegister(const DacChannel& dacChannel, uint16_t data) const;
         [[nodiscard]] DacId getDacType() const { return dacId_; }
 
-    protected:
+    private:
         /**
          * @brief - Commands for MCP4728 & MCP4725
          * Only the commands we are likely to need. Not all are listed.
@@ -103,11 +102,10 @@ namespace CScore {
 
         using Mcp4728CommandWord_t = Mcp4728CommandByte;
 
-    private:
 
         ControllerId controllerId_;
 
-        DacId dacId_ = DacId::GRID_DAC;
+        DacId dacId_;
     };
 
 }   // namespace CSdevices

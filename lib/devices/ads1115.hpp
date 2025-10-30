@@ -27,7 +27,6 @@ namespace CScore {
                                             conversionTimeout_(::get_absolute_time()) {
             setClassName("Ads1115");
             setLabel(label);
-            prependToHierarchy("Ads1115");
         }
 
         Ads1115 () = delete;

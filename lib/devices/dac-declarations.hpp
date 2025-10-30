@@ -19,10 +19,8 @@ namespace CScore {
  */
 
     enum class DacId {
-        GRID_DAC = 0b00,
-        HV_DAC,
-        ANODE_DAC = HV_DAC, // Just an alias.
-        NOT_A_DAC_ID
+        DAC_00 = 0b00,
+//        DAC_01
     };
 /**
  * @brief - Defines values for four dac channels (IDs)
