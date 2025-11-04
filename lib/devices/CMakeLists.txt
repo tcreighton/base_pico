@@ -3,9 +3,11 @@
 
 add_library(devices
     ads1115-config.hpp
-    ads1115-declarations.hpp
+    ads1115-definitions.hpp
     ads1115.cpp
     ads1115.hpp
+    ads1114-definitions.hpp
+    ads1113-definitions.hpp
     component.hpp
     csi2c.cpp
     csi2c.hpp
@@ -16,6 +18,7 @@ add_library(devices
     mcp-eeprom-declarations.hpp
     mcp4728.cpp
     mcp4728.hpp
+        ads1113.hpp
 )
 
 target_include_directories(devices PUBLIC

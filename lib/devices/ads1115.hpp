@@ -5,7 +5,7 @@
 
 #include "component.hpp"
 #include "csi2c.hpp"
-#include "ads1115-declarations.hpp"
+#include "ads1115-definitions.hpp"
 
 namespace CSdevices {
 
@@ -15,8 +15,8 @@ namespace CSdevices {
         Ads1115( const std::string&         label,
                  const ControllerId         controllerId,
                  const uint8_t              i2cAddress,
-                 const Ads1115GainValues    gain = Ads1115GainValues::GAIN_2p048V,
-                 const Ads1115DataRates     dataRate = Ads1115DataRates::DR_860SPS) :
+                 const AdsGainValues        gain = AdsGainValues::GAIN_2p048V,
+                 const Ads111xDataRates     dataRate = Ads111xDataRates::DR_860SPS) :
                                             controllerId_(controllerId),
                                             i2cAddress_(i2cAddress),
                                             gain_(gain),
@@ -35,14 +35,14 @@ namespace CSdevices {
         bool startConversion (Ads1115Channel_t channel);
         int16_t completeConversion (Ads1115Channel_t channel);  // Returns the counts
         static Ads1115ConfigRegister_t buildConfigRegister (Ads1115Channel_t channel,
-                                                            Ads1115OperationalStatus opStatus);
+                                                            Ads111xOperationalStatus opStatus);
         static Ads1115ConfigRegister_t buildConfigRegister ();
-        static std::string registerAddressToName (Ads1115RegisterAddresses address);
+        static std::string registerAddressToName (Ads1113RegisterAddresses address);
 
         // PGA: 2; FSR: 2.048V
         // 6.25e-5 == (2.048/32767)
         [[nodiscard]] float getVoltsPerCount () const {
-            return ads1115GetFSRRatio(getGain());
+            return adsGetFSRRatio(getGain());
         }
 
         [[nodiscard]] CsI2C& getController () const;
@@ -52,16 +52,16 @@ namespace CSdevices {
         }
 
         [[nodiscard]] uint8_t getDeviceAddress () const {return i2cAddress_;}
-        [[nodiscard]] float getFSRRatio () const {return ads1115GetFSRRatio(getGain());}
+        [[nodiscard]] float getFSRRatio () const {return adsGetFSRRatio(getGain());}
 
     protected:
 
         bool startConversion (Ads1115ConfigRegister_t configRegister);
 
-        [[nodiscard]] Ads1115OperationalStatus isConversionPending () const {
+        [[nodiscard]] Ads111xOperationalStatus isConversionPending () const {
             return conversionPending_;
         }
-        void setConversionPendingState (const Ads1115OperationalStatus state) {
+        void setConversionPendingState (const Ads111xOperationalStatus state) {
             conversionPending_ = state;
         }
         /**
@@ -71,7 +71,7 @@ namespace CSdevices {
          *
          * @return true if the op bit set on config. Else returns false.
          */
-        Ads1115OperationalStatus checkConversionReady (Ads1115Channel_t channel);
+        Ads111xOperationalStatus checkConversionReady (Ads1115Channel_t channel);
 
 
         /**
@@ -79,15 +79,15 @@ namespace CSdevices {
          * This is used to compute the voltage from count.
          * @return voltage gain: the range value given the gain setting.
          */
-        [[nodiscard]] Ads1115Gain_t getGain () const {return gain_;}
+        [[nodiscard]] AdsGain_t getGain () const {return gain_;}
         // Just the ordinal number for the enum.
-        [[nodiscard]] uint8_t getGainValue () const {return ads1115GainValuesToNumber(getGain());}
+        [[nodiscard]] uint8_t getGainValue () const {return adsGainValuesToNumber(getGain());}
         // Just the ordinal number for the enum.
-        [[nodiscard]] Ads1115DataRates getDataRate () const {return dataRate_;}
+        [[nodiscard]] Ads111xDataRates getDataRate () const {return dataRate_;}
         // Just the ordinal number for the enum.
         [[nodiscard]] uint8_t getDataRateValue () const {return static_cast<uint8_t> (getDataRate());}
-        void setGain (const Ads1115Gain_t gain) { gain_ = gain;}
-        void setDataRate (const Ads1115DataRates dataRate) {dataRate_ = dataRate;}
+        void setGain (const AdsGain_t gain) { gain_ = gain;}
+        void setDataRate (const Ads111xDataRates dataRate) {dataRate_ = dataRate;}
 
         [[maybe_unused]] [[nodiscard]] uint32_t getExpectedConversionTime_us () const;
 
@@ -115,7 +115,7 @@ namespace CSdevices {
          * @param registerAddresses
          * @return
          */
-        uint16_t setAndReadRegister (Ads1115RegisterAddresses registerAddresses);
+        uint16_t setAndReadRegister (Ads1113RegisterAddresses registerAddresses);
 
         /**
          * @brief Reads the config register.
@@ -127,7 +127,7 @@ namespace CSdevices {
         Ads1115ConfigRegister_t readConfigRegister () {
             Ads1115ConfigRegister_t reg;
 
-            reg.shortWord =  readRegister(Ads1115RegisterAddresses::ADS1115_CONFIG_REG_ADDR);
+            reg.shortWord =  readRegister(Ads1113RegisterAddresses::ADS1113_CONFIG_REG_ADDR);
 
             return reg;
         }
@@ -139,7 +139,7 @@ namespace CSdevices {
          * @param reg
          * @return
          */
-        uint16_t readRegister (const Ads1115RegisterAddresses reg) {
+        uint16_t readRegister (const Ads1113RegisterAddresses reg) {
             return setAndReadRegister(reg);
         }
 
@@ -158,25 +158,20 @@ namespace CSdevices {
          * @param reg
          * @return true on success. false on any error.
          */
-        bool writeAddressRegister(Ads1115RegisterAddresses reg);
-
-
+        bool writeAddressRegister(Ads1113RegisterAddresses reg);
 
     private:
 
         // Note that I've not implemented the pre-check of current register or the post-check of current channel!!
 
-        ControllerId controllerId_;
-        uint8_t                     i2cAddress_;    // This is
-        Ads1115Gain_t               gain_;
-        Ads1115DataRates            dataRate_;
+        ControllerId                controllerId_;
+        uint8_t                     i2cAddress_;
+        AdsGain_t                   gain_;
+        Ads111xDataRates            dataRate_;
         uint8_t                     dataBuffer_ [3] = {0,0,0};
-//        Ads1115RegisterAddresses    currentRegisterAddress_{0}; // Last register written
-        // This is the AIN used in the last config. Again, a shortcut.
-//        Ads1115Channel_t            currentChannel_;
         absolute_time_t             conversionTimeout_;    // This gets set when we start a conversion.
-        Ads1115OperationalStatus    conversionPending_ =
-                                        Ads1115OperationalStatus::START_NEW_CONVERSION_OR_CONVERSION_COMPLETE;
+        Ads111xOperationalStatus    conversionPending_ =
+                                        Ads111xOperationalStatus::START_NEW_CONVERSION_OR_CONVERSION_COMPLETE;
 
     };
 

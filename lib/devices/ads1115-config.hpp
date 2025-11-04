@@ -4,7 +4,7 @@
 #ifndef ADS1115_CONFIG_
 #define ADS1115_CONFIG_
 
-#include "ads1115-declarations.hpp"
+#include "ads1115-definitions.hpp"
 
 namespace CSdevices {
 
@@ -19,57 +19,57 @@ namespace CSdevices {
         // Fluent setters
         //------------------------------------------------------------------
 
-        Ads1115Config& setData (Ads1115ConfigRegister_t configRegister) {
+        Ads1115Config& setData (const Ads1115ConfigRegister_t configRegister) {
             data_ = configRegister;
             return *this;
         }
 
-        Ads1115Config& setDataShortWord (uint16_t data) {
+        Ads1115Config& setDataShortWord (const uint16_t data) {
             data_.shortWord = data;
             return *this;
         }
 
-        Ads1115Config& setOperationalStatus (Ads1115OperationalStatus os) {
+        Ads1115Config& setOperationalStatus (const Ads111xOperationalStatus os) {
             data_.fields.opStatus = ads1115OperationalStatusToNumber(os);
             return *this;
         }
 
-        Ads1115Config& setMux (Ads1115Channel channel) {
+        Ads1115Config& setMux (const Ads1115Channel channel) {
             data_.fields.mux = ads1115ChannelToNumber(channel);
             return *this;
         }
 
-        Ads1115Config& setPGA (Ads1115GainValues pga) {
-            data_.fields.gain = ads1115GainValuesToNumber(pga);
+        Ads1115Config& setPGA (const AdsGainValues pga) {
+            data_.fields.gain = adsGainValuesToNumber(pga);
             return *this;
         }
 
-        Ads1115Config& setOperatingMode (Ads1115OperatingMode mode) {
-            data_.fields.operatingMode = ads1115OperatingModeToNumber(mode);
+        Ads1115Config& setOperatingMode (const Ads111xOperatingMode mode) {
+            data_.fields.operatingMode = ads111xOperatingModeToNumber(mode);
             return *this;
         }
 
-        Ads1115Config& setDataRate (Ads1115DataRates dataRate) {
-            data_.fields.dataRate = ads1115DataRatesToNumber(dataRate);
+        Ads1115Config& setDataRate (const Ads111xDataRates dataRate) {
+            data_.fields.dataRate = ads111xDataRatesToNumber(dataRate);
             return *this;
         }
 
-        Ads1115Config& setComparatorMode (Ads1115ComparatorMode mode) {
+        Ads1115Config& setComparatorMode (const Ads1115ComparatorMode mode) {
             data_.fields.compMode = ads1115ComparatorModeToNumber(mode);
             return *this;
         }
 
-        Ads1115Config& setComparatorPolarity (Ads1115ComparatorPolarity polarity) {
+        Ads1115Config& setComparatorPolarity (const Ads1115ComparatorPolarity polarity) {
             data_.fields.compPolarity = ads1115ComparatorPolarityToNumber(polarity);
             return *this;
         }
 
-        Ads1115Config& setLatchingComparator (Ads1115LatchingComparator compLat) {
+        Ads1115Config& setLatchingComparator (const Ads1115LatchingComparator compLat) {
             data_.fields.compLatch = ads1115LatchingComparatorToNumber(compLat);
             return *this;
         }
 
-        Ads1115Config& setComparatorQueue (Ads1115ComparatorQueue comparatorQueue) {
+        Ads1115Config& setComparatorQueue (const Ads1115ComparatorQueue comparatorQueue) {
             data_.fields.compQue = ads1115ComparatorQueueToNumber(comparatorQueue);
             return *this;
         }
@@ -86,24 +86,24 @@ namespace CSdevices {
             return data_.shortWord;
         }
 
-        [[nodiscard]] Ads1115OperationalStatus getOperationalStatus () const {
-            return numberToAds1115OperationalStatus(data_.fields.opStatus);
+        [[nodiscard]] Ads111xOperationalStatus getOperationalStatus () const {
+            return numberToAds111xOperationalStatus(data_.fields.opStatus);
         }
 
         [[nodiscard]] Ads1115Channel getMux () const {
             return numberToAds1115Channel(data_.fields.mux);
         }
 
-        [[nodiscard]] Ads1115GainValues getPGA () const {
-            return numberToAds1115GainValues(data_.fields.gain);
+        [[nodiscard]] AdsGainValues getPGA () const {
+            return numberToAdsGainValues(data_.fields.gain);
         }
 
-        [[nodiscard]] Ads1115OperatingMode getOperatingMode () const {
-            return numberToAds1115OperatingMode(data_.fields.operatingMode);
+        [[nodiscard]] Ads111xOperatingMode getOperatingMode () const {
+            return numberToAds111xOperatingMode(data_.fields.operatingMode);
         }
 
-        [[nodiscard]] Ads1115DataRates getDataRate () const {
-            return numberToAds1115DataRates(data_.fields.dataRate);
+        [[nodiscard]] Ads111xDataRates getDataRate () const {
+            return numberToAds111xDataRates(data_.fields.dataRate);
         }
 
         [[nodiscard]] Ads1115ComparatorMode getComparatorMode () const {
