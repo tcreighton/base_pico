@@ -30,7 +30,7 @@ namespace CSdevices {
         }
 
         Ads1115Config& setOperationalStatus (const Ads111xOperationalStatus os) {
-            data_.fields.opStatus = ads1115OperationalStatusToNumber(os);
+            data_.fields.opStatus = ads111xOperationalStatusToNumber(os);
             return *this;
         }
 
@@ -49,8 +49,8 @@ namespace CSdevices {
             return *this;
         }
 
-        Ads1115Config& setDataRate (const Ads111xDataRates dataRate) {
-            data_.fields.dataRate = ads111xDataRatesToNumber(dataRate);
+        Ads1115Config& setDataRate (const Ads111xSampleRates dataRate) {
+            data_.fields.dataRate = ads111xSampleRatesToNumber(dataRate);
             return *this;
         }
 
@@ -102,8 +102,8 @@ namespace CSdevices {
             return numberToAds111xOperatingMode(data_.fields.operatingMode);
         }
 
-        [[nodiscard]] Ads111xDataRates getDataRate () const {
-            return numberToAds111xDataRates(data_.fields.dataRate);
+        [[nodiscard]] Ads111xSampleRates getDataRate () const {
+            return numberToAds111xSampleRates(data_.fields.dataRate);
         }
 
         [[nodiscard]] Ads1115ComparatorMode getComparatorMode () const {

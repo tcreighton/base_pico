@@ -6,13 +6,9 @@
 #include <string>
 #include "component.hpp"
 #include "csi2c.hpp"
-#include "dac-channel.hpp"
+#include "dac-declarations.hpp"
 
 namespace CSdevices {
-
-    CsI2C& getController(ControllerId controllerId); // A little forward reference.
-
-    class DacChannel;   // forward reference to DacChannel
 
     class Mcp4728 final : public Component {
 
@@ -26,6 +22,7 @@ namespace CSdevices {
 
             setClassName("DacMcp4728");
             setLabel(label);
+
         }
 
         Mcp4728() = delete;
@@ -33,15 +30,42 @@ namespace CSdevices {
         Mcp4728& operator=(const Mcp4728& other) = delete;
         ~Mcp4728 () override = default;
 
-        [[nodiscard]] CsI2C& getController () const {
-            return CSdevices::getController(getControllerId());
-        }
         [[nodiscard]] ControllerId getControllerId () const {
             return controllerId_;
         }
 
-        [[nodiscard]] bool writeDacInputRegister(const DacChannel& dacChannel, uint16_t data) const;
-        [[nodiscard]] DacId getDacType() const { return dacId_; }
+        [[nodiscard]] bool writeDacInputRegister(DacChannelIds dacChannelId, uint16_t data) const;
+        [[nodiscard]] DacId getDacId() const { return dacId_; }
+
+        [[nodiscard]] DacChannelConfig getDacChannelConfig (DacChannelIds channelId) const;
+        void setChannelConfig (DacChannelIds channelId, const DacChannelConfig &config);
+
+        /**
+         *
+         * @param channelId Can be any value for DacChannelIds. It is used to index into the config array.
+         * @return The value of the DacChannelConfig.channelId for the channel specified.
+         *          This returns DacChannelIds::NOT_A_CHANNEL if channelId is DacChannelIds::NOT_A_CHANNEL or
+         *          if the array entry is not in use for the given Dac.
+         */
+        [[nodiscard]] DacChannelIds getDacChannelIdFromChannelArray (DacChannelIds channelId) const;
+
+        /**
+         *
+         * @param channelId The index into the config array.
+         * @param channelIdValue The value to use for setting the ID within the config index.
+         * This is a strange beast. But it's because we have the ChannelId as a member of the config struct
+         * and we use channelId as an index into the array of config structs. This allows us to have a way
+         * of telling when an array element is not in use. In that case its channelId element will have
+         * a value of DacChannelIds::NOT_A_CHANNEL.
+         */
+        void setDacChannelIdInChannelArray (DacChannelIds channelId, DacChannelIds channelIdValue);
+
+        [[nodiscard]] DacPowerDownValues getDacPowerDownValues (DacChannelIds channelId) const;
+        void setDacPowerDownValues (DacChannelIds channelId, DacPowerDownValues value);
+        [[nodiscard]] DacGainValues getDacGainValues (DacChannelIds channelId) const;
+        void setDacGainValues (DacChannelIds channelId, DacGainValues value);
+        [[nodiscard]] DacVrefValues getDacVrefValues (DacChannelIds channelId) const;
+        void setDacVrefValues (DacChannelIds channelId, DacVrefValues value);
 
     private:
         /**
@@ -64,15 +88,6 @@ namespace CSdevices {
         static constexpr uint8_t MCP4728_CMD_MULTI_WRITE_EEPROM = 0b01010;  // Writes to input registers, and EEPROM.
         // SINGLE_WRITE_EEPROM works like MULTI_WRITE_EEPROM, but just for one channel register and EEPROM.
         static constexpr uint8_t MCP4728_CMD_SINGLE_WRITE_EEPROM = 0b01011;  // Writes to one input register, and EEPROM
-/**
- * @brief Device code and i2c address. These can differ. But this is pretty much the standard approach.
-*/
-        static constexpr uint8_t DEVICE_CODE = 0b1100;   // This is the device code for MCP4728
-        // Note that the Device code gets placed into the byte like this: 0b01100 0000; bottom 3 bits are I2C_ADDRESS
-        // This can be changed via general call, etc. If so, we won't use this constant.
-        static constexpr uint8_t I2C_ADDRESS = 0b000;
-        static constexpr uint8_t READ_BIT = 0b1;    // these get set by the sdk!
-        static constexpr uint8_t WRITE_BIT = 0b0;
 
         struct Mcp4728_Control_Bits {   // Includes 4 bits of data.
             uint8_t dataNibble: 4;    // This is the most significant 4 bits of the data word
@@ -103,8 +118,8 @@ namespace CSdevices {
         using Mcp4728CommandWord_t = Mcp4728CommandByte;
 
 
+        DacChannelConfig channelArray_ [4];
         ControllerId controllerId_;
-
         DacId dacId_;
     };
 

@@ -4,11 +4,20 @@
 
 #include "csi2c.hpp"
 #include "logger.hpp"
+#include "devicesContainer.hpp"
 #include "utilities.hpp"
 
 using namespace CScore;
 
 namespace CSdevices {
+
+    int CsI2C::writeBuffer( const ControllerId controllerId,
+                            const uint8_t deviceAddress,
+                            const uint8_t *pBuffer,
+                            const size_t length) {
+        const auto retValue = getController(controllerId).writeBuffer(deviceAddress, pBuffer, length);
+        return retValue;
+    }
 
 
     int CsI2C::writeBuffer( const uint8_t deviceAddress,

@@ -257,8 +257,8 @@ namespace CSdevices {
     constexpr uint8_t getOperatingModeValue (const Ads111xOperatingMode mode) {
         return ads111xOperatingModeToNumber(mode);  // Just the ordinal number for the enum.
     }
-    constexpr uint8_t getAddressRegisterValue (const Ads1113RegisterAddresses reg) {
-            return ads1113RegisterAddressesToNumber(reg);   // Just the ordinal number for the enum.
+    constexpr uint8_t getAddressRegisterValue (const Ads111xRegisterAddresses reg) {
+            return ads111xRegisterAddressesToNumber(reg);   // Just the ordinal number for the enum.
     }
 
 }   // namespace CSconverters

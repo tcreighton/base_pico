@@ -38,11 +38,11 @@ namespace CSdevices {
             setBaudRate(baudrateInKHz);
         }
 
-        CsI2C (const std::string& label,
-            const ControllerId controllerId,
-            const BaudRate baudrateInKHz = BaudRate::FOUR_HUNDRED_KHZ) :
-                controllerId_(controllerId),
-                requestedBaudRate_(baudrateInKHz) {
+        CsI2C ( const std::string& label,
+                const ControllerId controllerId,
+                const BaudRate baudrateInKHz = BaudRate::FOUR_HUNDRED_KHZ) :
+                    controllerId_(controllerId),
+                    requestedBaudRate_(baudrateInKHz) {
             setClassName("CsI2C");
             setLabel(label);
             setBaudRate(baudrateInKHz);
@@ -160,6 +160,8 @@ namespace CSdevices {
         int writeBuffer(const uint8_t deviceAddress, const uint8_t *pBuffer, const size_t length) {
             return writeBuffer(deviceAddress, pBuffer, length, false);
         }
+
+        static int writeBuffer(ControllerId controllerId, uint8_t deviceAddress, const uint8_t *pBuffer, size_t length);
 
         /**
          * @brief Reads from i2c bus. Blocks on read or until time.

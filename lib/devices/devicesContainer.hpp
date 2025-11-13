@@ -1,8 +1,9 @@
 #pragma once
 #ifndef DEVICES_CONTAINER_HPP_
 
-#include "ads1115.hpp"
 #include "csi2c.hpp"
+#include "external-thermistor.hpp"
+#include "pico-internal-temp-sensor.hpp"
 #include "mcp4728.hpp"
 
 namespace CSdevices {
@@ -50,68 +51,42 @@ namespace CSdevices {
         std::abort();
     }
 
-    /*
-    inline DacChannel& getGridDacChannelA () {    // Heater PS
-        static DacChannel gridDacChannelA_{std::string("gridDacChannelA"),
-                                                          ControllerId::I2C_CONTROLLER_0,
-                                                          DacId::DAC_00,
-                                                          DacChannelIds::CHANNEL_A};
-        return gridDacChannelA_;
+    inline InternalTempSensor& getOnboardTemperatureSensor () {
+        static InternalTempSensor onboardTemperatureSensor_(std::string("OnboardTemperatureSensor"),
+                                                            PicoAin::PICO_AINSEL_4);
+        return onboardTemperatureSensor_;
     }
 
-    inline DacChannel& getGridDacChannelB () {    // Suppressor PS
-        static DacChannel gridDacChannelB_{std::string("gridDacChannelB"),
-                                                          ControllerId::I2C_CONTROLLER_0,
-                                                          DacId::DAC_00,
-                                                          DacChannelIds::CHANNEL_B};
-        return gridDacChannelB_;
+    inline ExternalThermistor& getExternalThermistor0 () {
+        static ExternalThermistor externalThermistor0_(std::string("ExternalThermistor0"),
+                                                   PicoAin::PICO_AINSEL_0);
+        return externalThermistor0_;
     }
 
-    inline DacChannel& getGridDacChannelC () {    // Extractor PS
-        static DacChannel gridDacChannelC_{std::string("gridDacChannelC"),
-                                                          ControllerId::I2C_CONTROLLER_0,
-                                                          DacId::DAC_00,
-                                                          DacChannelIds::CHANNEL_C};
-        return gridDacChannelC_;
+    inline ExternalThermistor& getExternalThermistor1 () {
+        static ExternalThermistor externalThermistor1_(std::string("ExternalThermistor1"),
+                                                   PicoAin::PICO_AINSEL_1);
+        return externalThermistor1_;
     }
 
-    inline DacChannel& getGridDacChannelD () {    // Focus PS
-        static DacChannel gridDacChannelD_{std::string("gridDacChannelD"),
-                                                          ControllerId::I2C_CONTROLLER_0,
-                                                          DacId::DAC_00,
-                                                          DacChannelIds::CHANNEL_D};
-        return gridDacChannelD_;
+    inline ExternalThermistor& getExternalThermistor2 () {
+        static ExternalThermistor externalThermistor2_(std::string("ExternalThermistor2"),
+                                                   PicoAin::PICO_AINSEL_2);
+        return externalThermistor2_;
     }
 
-    inline DacChannel& getAnodeDacChannelA () {    // Anode PS
-        static DacChannel gridAnodeChannelA_{std::string("gridAnodeChannelA"),
-                                                          ControllerId::I2C_CONTROLLER_0,
-                                                          DacId::DAC_01,
-                                                          DacChannelIds::CHANNEL_A};
-        return gridAnodeChannelA_;
-    }
-    */
-
-    inline Ads1115& getAdc0 () {
-        static Ads1115 adc0_{std::string(   "ADC For Heater & Grid 1"),
-                                                ControllerId::I2C_CONTROLLER_0,
-                                            0x48};
-        return adc0_;
+    inline ExternalThermistor& getExternalThermistor (const PicoAin ain) {
+        switch (ain) {
+            default:
+            case PicoAin::PICO_AINSEL_0:
+                return getExternalThermistor0();
+            case PicoAin::PICO_AINSEL_1:
+                return getExternalThermistor1();
+            case PicoAin::PICO_AINSEL_2:
+                return getExternalThermistor2();
+        }
     }
 
-    inline Ads1115& getAdc1 () {
-        static Ads1115 adc1_{std::string(   "ADC For Grid 2 & Grid 3"),
-                                                ControllerId::I2C_CONTROLLER_0,
-                                            0x49};
-        return adc1_;
-    }
-
-    inline Ads1115& getAdc2 () {
-        static Ads1115 adc2_{std::string(   "ADC For Anode"),
-                                                ControllerId::I2C_CONTROLLER_1,
-                                            0x48};
-        return adc2_;
-    }
 
 }
 

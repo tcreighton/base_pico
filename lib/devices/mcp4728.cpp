@@ -1,7 +1,6 @@
 
 #include <iostream>
 
-#include "dac-channel.hpp"
 #include "dac-declarations.hpp"
 #include "logger.hpp"
 #include "mcp4728.hpp"
@@ -11,11 +10,11 @@ namespace CSdevices {
 
 /**
  * @brief - This is the concrete method for writing to an input register on MCP4728
- * @param dacChannel
+ * @param dacChannelId
  * @param data
  * @return true if no errors.
  */
-    bool Mcp4728::writeDacInputRegister(const DacChannel& dacChannel, uint16_t data) const {
+    bool Mcp4728::writeDacInputRegister(const DacChannelIds dacChannelId, uint16_t data) const {
 
 #if defined (LOG_GROUP_DAC)
         logger_.logMethodEntry(LogLevel::Trace,
@@ -25,7 +24,7 @@ namespace CSdevices {
 #endif
 
         auto retCode = false;
-
+        const auto channel = getDacChannelConfig(dacChannelId);
 
         // Now we fill the communications buffer.
         // buffer[0] holds the i2c command and the channel number
@@ -48,7 +47,7 @@ namespace CSdevices {
         Mcp4728CommandWord_t cmd{0};
         cmd.byte = 0;   // initialize (superfluous)
         cmd.bits.command = MCP4728_CMD_MULTI_WRITE;
-        cmd.bits.channel = static_cast<uint8_t>(dacChannel.getChannelId());
+        cmd.bits.channel = static_cast<uint8_t>(channel.getChannelId());
         cmd.bits.udac = 0;   // redundant with initialize line.
 
         buffer[0] = cmd.byte;   // Set command byte
@@ -56,9 +55,9 @@ namespace CSdevices {
         Mcp4728Controls_t controlByte;
         controlByte.byte = 0;
         controlByte.bits.dataNibble = 0;  // This is the most significant nibble of the data word.
-        controlByte.bits.gain = static_cast<uint8_t>(dacChannel.getGain());
-        controlByte.bits.powerDown = static_cast<uint8_t>(dacChannel.getPowerMode());
-        controlByte.bits.vref = static_cast<uint8_t>(dacChannel.getVref());
+        controlByte.bits.gain = static_cast<uint8_t>(channel.getGain());
+        controlByte.bits.powerDown = static_cast<uint8_t>(channel.getPowerMode());
+        controlByte.bits.vref = static_cast<uint8_t>(channel.getVref());
 
 #if defined (LOG_GROUP_TEN)
         if (data >= 4095) {
@@ -105,7 +104,11 @@ namespace CSdevices {
                     ", " + int_to_hex_0x(buffer[2]));
 
 #endif
-        const auto i2cReturn = getController().writeBuffer(addressField.addressByte, buffer, sizeof(buffer));
+//      This removes the circular dependency and forward reference!
+        const auto i2cReturn = CsI2C::writeBuffer(  getControllerId(),  // Calling the static method!
+                                                       addressField.addressByte,
+                                                       buffer,
+                                                       sizeof(buffer));
         retCode = (sizeof(buffer) == i2cReturn);
         if (!retCode) {
             // Error reporting happened already.
@@ -129,7 +132,65 @@ namespace CSdevices {
         return retCode;
     }
 
+    DacChannelConfig Mcp4728::getDacChannelConfig(DacChannelIds channelId) const {
+        const auto ix = static_cast<std::underlying_type_t<DacChannelIds>>(channelId);
+        return channelArray_[ix];
+    }
 
+    void Mcp4728::setChannelConfig(DacChannelIds channelId, const DacChannelConfig &config) {
+        channelArray_[static_cast<std::underlying_type_t<DacChannelIds>>(channelId)] = config;
+    }
+
+    DacChannelIds Mcp4728::getDacChannelIdFromChannelArray(DacChannelIds channelId) const {
+        if (DacChannelIds::NOT_A_CHANNEL != channelId) {
+            return channelArray_[static_cast<std::underlying_type_t<DacChannelIds>>(channelId)].channelId;
+        } else {
+            return DacChannelIds::NOT_A_CHANNEL;
+        }
+    }
+
+    void Mcp4728::setDacChannelIdInChannelArray(DacChannelIds channelId, const DacChannelIds channelIdValue) {
+        if (DacChannelIds::NOT_A_CHANNEL != channelId) {
+            channelArray_[static_cast<std::underlying_type_t<DacChannelIds>>(channelId)].channelId = channelIdValue;
+        }
+        // else ignore the call
+    }
+
+    DacPowerDownValues Mcp4728::getDacPowerDownValues(const DacChannelIds channelId) const {
+        if (DacChannelIds::NOT_A_CHANNEL == channelId) return DacPowerDownValues::NOT_A_PD_VALUE;   // Doesn't really matter
+
+        return channelArray_[static_cast<std::underlying_type_t<DacChannelIds>>(channelId)].powerMode;
+    }
+
+    void Mcp4728::setDacPowerDownValues(const DacChannelIds channelId, const DacPowerDownValues value) {
+        if (DacChannelIds::NOT_A_CHANNEL != channelId) {
+            channelArray_[static_cast<std::underlying_type_t<DacChannelIds>>(channelId)].powerMode = value;
+        }
+    }
+
+    DacGainValues Mcp4728::getDacGainValues(DacChannelIds channelId) const {
+        if (DacChannelIds::NOT_A_CHANNEL == channelId) return DacGainValues::NOT_A_GAIN_VALUE;   // Doesn't really matter
+
+        return channelArray_[static_cast<std::underlying_type_t<DacChannelIds>>(channelId)].gain;
+    }
+
+    void Mcp4728::setDacGainValues(DacChannelIds channelId, const DacGainValues value) {
+        if (DacChannelIds::NOT_A_CHANNEL != channelId) {
+            channelArray_[static_cast<std::underlying_type_t<DacChannelIds>>(channelId)].gain = value;
+        }
+    }
+
+    DacVrefValues Mcp4728::getDacVrefValues(DacChannelIds channelId) const {
+        if (DacChannelIds::NOT_A_CHANNEL == channelId) return DacVrefValues::NOT_A_VREF_VALUE;   // Doesn't really matter
+
+        return channelArray_[static_cast<std::underlying_type_t<DacChannelIds>>(channelId)].vref;
+    }
+
+    void Mcp4728::setDacVrefValues(DacChannelIds channelId, const DacVrefValues value) {
+        if (DacChannelIds::NOT_A_CHANNEL != channelId) {
+            channelArray_[static_cast<std::underlying_type_t<DacChannelIds>>(channelId)].vref = value;
+        }
+    }
 
 } // namespace CSconverters
 

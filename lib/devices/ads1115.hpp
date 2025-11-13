@@ -16,7 +16,7 @@ namespace CSdevices {
                  const ControllerId         controllerId,
                  const uint8_t              i2cAddress,
                  const AdsGainValues        gain = AdsGainValues::GAIN_2p048V,
-                 const Ads111xDataRates     dataRate = Ads111xDataRates::DR_860SPS) :
+                 const Ads111xSampleRates     dataRate = Ads111xSampleRates::SR_860SPS) :
                                             controllerId_(controllerId),
                                             i2cAddress_(i2cAddress),
                                             gain_(gain),
@@ -37,7 +37,7 @@ namespace CSdevices {
         static Ads1115ConfigRegister_t buildConfigRegister (Ads1115Channel_t channel,
                                                             Ads111xOperationalStatus opStatus);
         static Ads1115ConfigRegister_t buildConfigRegister ();
-        static std::string registerAddressToName (Ads1113RegisterAddresses address);
+        static std::string registerAddressToName (Ads111xRegisterAddresses address);
 
         // PGA: 2; FSR: 2.048V
         // 6.25e-5 == (2.048/32767)
@@ -83,11 +83,11 @@ namespace CSdevices {
         // Just the ordinal number for the enum.
         [[nodiscard]] uint8_t getGainValue () const {return adsGainValuesToNumber(getGain());}
         // Just the ordinal number for the enum.
-        [[nodiscard]] Ads111xDataRates getDataRate () const {return dataRate_;}
+        [[nodiscard]] Ads111xSampleRates getDataRate () const {return dataRate_;}
         // Just the ordinal number for the enum.
         [[nodiscard]] uint8_t getDataRateValue () const {return static_cast<uint8_t> (getDataRate());}
         void setGain (const AdsGain_t gain) { gain_ = gain;}
-        void setDataRate (const Ads111xDataRates dataRate) {dataRate_ = dataRate;}
+        void setDataRate (const Ads111xSampleRates dataRate) {dataRate_ = dataRate;}
 
         [[maybe_unused]] [[nodiscard]] uint32_t getExpectedConversionTime_us () const;
 
@@ -115,7 +115,7 @@ namespace CSdevices {
          * @param registerAddresses
          * @return
          */
-        uint16_t setAndReadRegister (Ads1113RegisterAddresses registerAddresses);
+        uint16_t setAndReadRegister (Ads111xRegisterAddresses registerAddresses);
 
         /**
          * @brief Reads the config register.
@@ -127,7 +127,7 @@ namespace CSdevices {
         Ads1115ConfigRegister_t readConfigRegister () {
             Ads1115ConfigRegister_t reg;
 
-            reg.shortWord =  readRegister(Ads1113RegisterAddresses::ADS1113_CONFIG_REG_ADDR);
+            reg.shortWord =  readRegister(Ads111xRegisterAddresses::ADS111X_CONFIG_REG_ADDR);
 
             return reg;
         }
@@ -139,7 +139,7 @@ namespace CSdevices {
          * @param reg
          * @return
          */
-        uint16_t readRegister (const Ads1113RegisterAddresses reg) {
+        uint16_t readRegister (const Ads111xRegisterAddresses reg) {
             return setAndReadRegister(reg);
         }
 
@@ -158,7 +158,7 @@ namespace CSdevices {
          * @param reg
          * @return true on success. false on any error.
          */
-        bool writeAddressRegister(Ads1113RegisterAddresses reg);
+        bool writeAddressRegister(Ads111xRegisterAddresses reg);
 
     private:
 
@@ -167,11 +167,11 @@ namespace CSdevices {
         ControllerId                controllerId_;
         uint8_t                     i2cAddress_;
         AdsGain_t                   gain_;
-        Ads111xDataRates            dataRate_;
+        Ads111xSampleRates            dataRate_;
         uint8_t                     dataBuffer_ [3] = {0,0,0};
         absolute_time_t             conversionTimeout_;    // This gets set when we start a conversion.
         Ads111xOperationalStatus    conversionPending_ =
-                                        Ads111xOperationalStatus::START_NEW_CONVERSION_OR_CONVERSION_COMPLETE;
+                                        Ads111xOperationalStatus::START_CONVERSION_OR_CONVERSION_COMPLETE;
 
     };
 

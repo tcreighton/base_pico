@@ -20,7 +20,7 @@ namespace CSdevices {
 
 //        dataBuffer_[0] = dataBuffer_[1] = dataBuffer_[2] = 0;
 
-        dataBuffer_[0] = ads1113RegisterAddressesToNumber(Ads1113RegisterAddresses::ADS1113_CONFIG_REG_ADDR);
+        dataBuffer_[0] = ads111xRegisterAddressesToNumber(Ads111xRegisterAddresses::ADS111X_CONFIG_REG_ADDR);
         CScore::localUint16ToNetworkByteOrder(configRegister.shortWord, &dataBuffer_[1]);
         constexpr auto bytesToWrite = 3;
 
@@ -42,9 +42,9 @@ namespace CSdevices {
         return retCode;
     }
 
-    bool Ads1115::writeAddressRegister(const Ads1113RegisterAddresses reg) {
+    bool Ads1115::writeAddressRegister(const Ads111xRegisterAddresses reg) {
         auto retCode = false;
-        dataBuffer_[0] = ads1113RegisterAddressesToNumber(reg);
+        dataBuffer_[0] = ads111xRegisterAddressesToNumber(reg);
 
         const auto result = getController().writeBuffer(getDeviceAddress(), dataBuffer_, 1);
 /*
@@ -56,7 +56,7 @@ namespace CSdevices {
         return retCode;
     }
 
-    uint16_t Ads1115::setAndReadRegister(Ads1113RegisterAddresses registerAddress) {
+    uint16_t Ads1115::setAndReadRegister(Ads111xRegisterAddresses registerAddress) {
         uint16_t value = 0;
 
         if (writeAddressRegister(registerAddress)) { // The register address was set.
@@ -94,11 +94,11 @@ namespace CSdevices {
         Ads1115Config config;
 
         // These set values to the defaults as listed in the Datasheet.
-        config.setOperationalStatus(Ads111xOperationalStatus::START_NEW_CONVERSION_OR_CONVERSION_COMPLETE)
+        config.setOperationalStatus(Ads111xOperationalStatus::START_CONVERSION_OR_CONVERSION_COMPLETE)
                 .setMux(Ads1115Channel::AIN0_1_DIFFERENTIAL)
                 .setPGA(AdsGainValues::GAIN_2p048V)
                 .setOperatingMode(Ads111xOperatingMode::SINGLE_SHOT)
-                .setDataRate(Ads111xDataRates::DR_860SPS)
+                .setDataRate(Ads111xSampleRates::SR_860SPS)
                 .setComparatorMode(Ads1115ComparatorMode::TRADITIONAL_COMPARATOR)
                 .setComparatorPolarity(Ads1115ComparatorPolarity::ACTIVE_LOW)
                 .setLatchingComparator(Ads1115LatchingComparator::NON_LATCHING)
@@ -131,29 +131,29 @@ namespace CSdevices {
         uint32_t delay = CONVERSION_TIME_860us;  // The baseline estimate for 860 SPS.
 
         switch (getDataRate()) {
-            case Ads111xDataRates::DR_8SPS:     // 0b000
+            case Ads111xSampleRates::SR_8SPS:     // 0b000
                 delay = CONVERSION_TIME_008us;
                 break;
-            case Ads111xDataRates::DR_16SPS:    // 0b001
+            case Ads111xSampleRates::SR_16SPS:    // 0b001
                 delay = CONVERSION_TIME_016us;
                 break;
-            case Ads111xDataRates::DR_32SPS:    // 0b010
+            case Ads111xSampleRates::SR_32SPS:    // 0b010
                 delay = CONVERSION_TIME_032us;
                 break;
-            case Ads111xDataRates::DR_64SPS:    // 0b011
+            case Ads111xSampleRates::SR_64SPS:    // 0b011
                 delay = CONVERSION_TIME_064us;
                 break;
-            case Ads111xDataRates::DR_128SPS:   // 0b100
+            case Ads111xSampleRates::SR_128SPS:   // 0b100
                 delay = CONVERSION_TIME_128us;
                 break;
-            case Ads111xDataRates::DR_250SPS:   // 0b101
+            case Ads111xSampleRates::SR_250SPS:   // 0b101
                 delay = CONVERSION_TIME_250us;
                 break;
-            case Ads111xDataRates::DR_475SPS:   // 0b110
+            case Ads111xSampleRates::SR_475SPS:   // 0b110
                 delay = CONVERSION_TIME_475us;
                 break;
             default:
-            case Ads111xDataRates::DR_860SPS:   // 0b111
+            case Ads111xSampleRates::SR_860SPS:   // 0b111
                 delay = CONVERSION_TIME_860us;   // 1500 us or 1.5 ms
                 break;
         }
@@ -172,8 +172,8 @@ namespace CSdevices {
 
         const auto muxValue = getMuxValue(channel);
         constexpr auto testOpStatus =
-                (ads1115OperationalStatusToNumber(
-                        Ads111xOperationalStatus::START_NEW_CONVERSION_OR_CONVERSION_COMPLETE));
+                (ads111xOperationalStatusToNumber(
+                        Ads111xOperationalStatus::START_CONVERSION_OR_CONVERSION_COMPLETE));
 
         const auto correctChannel = (muxValue == reg.fields.mux);
         const auto opStatus = (testOpStatus == reg.fields.opStatus);
@@ -199,7 +199,7 @@ namespace CSdevices {
         } else if (!opStatus) { // Need to check back again.
             retCode = Ads111xOperationalStatus::NO_EFFECT_OR_PERFORMING_CONVERSION;
         } else {    // Hurray! All is good.
-            retCode = Ads111xOperationalStatus::START_NEW_CONVERSION_OR_CONVERSION_COMPLETE;
+            retCode = Ads111xOperationalStatus::START_CONVERSION_OR_CONVERSION_COMPLETE;
             setConversionPendingState(retCode);
         }
 
@@ -210,7 +210,7 @@ namespace CSdevices {
         bool returnValue = false;
 
         // check that we are not in conversion
-        if (Ads111xOperationalStatus::START_NEW_CONVERSION_OR_CONVERSION_COMPLETE == isConversionPending()) {
+        if (Ads111xOperationalStatus::START_CONVERSION_OR_CONVERSION_COMPLETE == isConversionPending()) {
             returnValue = writeConfigRegister(configRegister); // This starts the conversion.
             if (returnValue) {
                 setConversionPendingState(Ads111xOperationalStatus::NO_EFFECT_OR_PERFORMING_CONVERSION);
@@ -227,21 +227,21 @@ namespace CSdevices {
     }
 
 
-    std::string Ads1115::registerAddressToName (const Ads1113RegisterAddresses address) {
+    std::string Ads1115::registerAddressToName (const Ads111xRegisterAddresses address) {
 
         std::string name;
 
         switch (address) {
-            case Ads1113RegisterAddresses::ADS1113_CONVERSION_REG_ADDR:
+            case Ads111xRegisterAddresses::ADS111X_CONVERSION_REG_ADDR:
                 name = "ADS1113_CONVERSION_REG_ADDR";
                 break;
-            case Ads1113RegisterAddresses::ADS1113_CONFIG_REG_ADDR:
+            case Ads111xRegisterAddresses::ADS111X_CONFIG_REG_ADDR:
                 name = "ADS1113_CONFIG_REG_ADDR";
                 break;
-            case Ads1113RegisterAddresses::ADS1114_LO_THRESH_REG_ADDR:
+            case Ads111xRegisterAddresses::ADS111X_LO_THRESH_REG_ADDR:
                 name = "ADS1114_LO_THRESH_REG_ADDR";
                 break;
-            case Ads1113RegisterAddresses::ADS1114_HI_THRESH_REG_ADDR:
+            case Ads111xRegisterAddresses::ADS111X_HI_THRESH_REG_ADDR:
                 name = "ADS1114_HI_THRESH_REG_ADDR";
                 break;
         }
@@ -262,7 +262,7 @@ namespace CSdevices {
     bool Ads1115::startConversion (const Ads1115Channel_t channel) {
         const Ads1115ConfigRegister_t configRegister =
                 buildConfigRegister( channel,
-                                     Ads111xOperationalStatus::START_NEW_CONVERSION_OR_CONVERSION_COMPLETE);
+                                     Ads111xOperationalStatus::START_CONVERSION_OR_CONVERSION_COMPLETE);
 
         return startConversion(configRegister);
     }
@@ -302,7 +302,7 @@ namespace CSdevices {
 
         if (! pending && ! error) {// must have completed.
             // get the actual count value!
-            retValue = static_cast<int16_t>(readRegister(Ads1113RegisterAddresses::ADS1113_CONVERSION_REG_ADDR));
+            retValue = static_cast<int16_t>(readRegister(Ads111xRegisterAddresses::ADS111X_CONVERSION_REG_ADDR));
             // This may have set the status code to ERROR and return 0.
         }
 

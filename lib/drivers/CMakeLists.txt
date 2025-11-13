@@ -6,9 +6,6 @@ add_library(drivers
     eeprom0.cpp
     eeprom0.hpp
     eeprom0-page-declarations.hpp
-    dac.hpp
-        adc.hpp
-        adc1113.hpp
 )
 
 target_include_directories(drivers PUBLIC
