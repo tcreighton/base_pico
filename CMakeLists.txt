@@ -7,7 +7,6 @@
 # Set minimum required version of CMake
 cmake_minimum_required(VERSION 3.13...3.30.2)
 
-#set(PROJECT_HOME /home/tom/dev/pico/my_project)
 #set(PROJECT_HOME ${CMAKE_SOURCE_DIR})
 #enable exceptions for the project
 set(PICO_CXX_ENABLE_EXCEPTIONS 1)
