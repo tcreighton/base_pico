@@ -18,20 +18,17 @@ namespace CScore {
         REV_B   // Future revision with additional changes
     };
 
-//#define BOARD_FOCUS500_REV_A
-//#define BOARD_FOCUS500_REV_B
+// The board definition comes in from CMake
 
-    // Define which board we're compiling for
-
-#if defined(BOARD_FOCUS500_REV_A)
+#if defined(BOARD_BASE_PICO_REV_A)
     constexpr auto CURRENT_BOARD = BoardRevision::REV_A;
-    constexpr auto CURRENT_BOARD_NAME = "Focus500 Rev A";
-#elif defined(BOARD_FOCUS500_REV_B)
+    constexpr auto CURRENT_BOARD_NAME = "BasePico Rev A";
+#elif defined(BOARD_BASE_PICO_REV_B)
     constexpr auto CURRENT_BOARD = BoardRevision::REV_B;
-    constexpr auto CURRENT_BOARD_NAME = "Focus500 Rev B";
+    constexpr auto CURRENT_BOARD_NAME = "BasePico Rev B";
 #else
     constexpr auto CURRENT_BOARD = BoardRevision::REV_0;
-    constexpr auto CURRENT_BOARD_NAME = "Focus500 Rev 0";
+    constexpr auto CURRENT_BOARD_NAME = "BasePico Rev 0";
 #endif
 
     constexpr auto getBoardRevision() {return CURRENT_BOARD;}
